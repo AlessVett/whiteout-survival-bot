@@ -8,7 +8,7 @@ from datetime import datetime
 
 class NewsModal(ui.Modal):
     def __init__(self, lang: str):
-        super().__init__(title=t("moderator.news.command_desc", lang), timeout=300)
+        super().__init__(title="Send News", timeout=300)
         self.lang = lang
         
         # Title input
@@ -101,7 +101,7 @@ class ChannelSelectView(ui.View):
 
 class GiftCodeModal(ui.Modal):
     def __init__(self, lang: str):
-        super().__init__(title=t("moderator.gift_code.command_desc", lang), timeout=60)
+        super().__init__(title="Gift Code", timeout=60)
         self.lang = lang
         
         # Gift code input
@@ -139,6 +139,12 @@ class GiftCodeModal(ui.Modal):
                 description=t("moderator.gift_code.embed_description", self.lang),
                 color=discord.Color.gold(),
                 timestamp=datetime.utcnow()
+            )
+            # Link for redeeming the code
+            embed.add_field(
+                name=t("moderator.gift_code.redeem_link", self.lang),
+                value="[Redeem your gift code here](https://wos-giftcode.centurygame.com/)",
+                inline=False
             )
             embed.add_field(
                 name=t("moderator.gift_code.code_field", self.lang),

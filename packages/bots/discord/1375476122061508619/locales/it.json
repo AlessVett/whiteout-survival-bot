@@ -202,6 +202,7 @@
       "error": "❌ Errore invio news: {error}"
     },
     "gift_code": {
+      "redeem_link": "Link di Riscatto",
       "command_desc": "Invia un gift code a tutti i canali gift-code delle alleanze",
       "code_label": "Gift Code",
       "code_placeholder": "Inserisci il gift code",
