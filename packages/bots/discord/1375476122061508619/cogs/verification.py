@@ -376,7 +376,7 @@ class VerificationCog(commands.Cog):
             if alliance_role == "R5":
                 try:
                     alliance_channels = AllianceChannels()
-                    await alliance_channels.ensure_state_r5_channel(guild)
+                    await alliance_channels.ensure_state_r5_channel(guild, member, lang)
                     print(f"Canale R5 council aggiornato per {member.name}")
                 except Exception as e:
                     print(f"ERRORE creazione canale R5 council: {e}")

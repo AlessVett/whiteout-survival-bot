@@ -168,13 +168,31 @@ class AllianceChannels:
         
         return channel
     
-    async def ensure_state_r5_channel(self, guild: discord.Guild):
+    async def ensure_state_r5_channel(self, guild: discord.Guild, member: discord.Member = None, lang: str = "en"):
         """Assicura che esista un canale per tutti gli R5 dello stato"""
         channel_name = "r5-council"  # SEMPRE IN INGLESE
         
         # Controlla se esiste già
         existing = discord.utils.get(guild.text_channels, name=channel_name)
         if existing:
+            # Se esiste già e abbiamo un membro R5, aggiorna i permessi
+            if member:
+                # Trova il ruolo R5 del membro
+                r5_role = None
+                for role in member.roles:
+                    if role.name.endswith(" - R5"):
+                        r5_role = role
+                        break
+                
+                if r5_role:
+                    # Aggiungi permessi per questo ruolo R5
+                    await existing.set_permissions(
+                        r5_role,
+                        read_messages=True,
+                        send_messages=True
+                    )
+                    print(f"Updated R5 council permissions for {r5_role.name}")
+            
             return existing
         
         # Crea categoria se non esiste

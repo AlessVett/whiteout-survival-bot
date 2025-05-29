@@ -702,6 +702,44 @@ class CommandsCog(commands.Cog):
         except Exception as e:
             await interaction.followup.send(f"❌ Error fixing alliance channels: {e}", ephemeral=True)
     
+    @app_commands.command(name="fix_r5_council", description="[Admin] Fix R5 council channel permissions")
+    @app_commands.default_permissions(administrator=True)
+    async def fix_r5_council(self, interaction: discord.Interaction):
+        """Fix R5 council channel permissions for all R5 roles"""
+        await interaction.response.defer(ephemeral=True)
+        
+        try:
+            channel_name = "r5-council"
+            channel = discord.utils.get(interaction.guild.text_channels, name=channel_name)
+            
+            if not channel:
+                await interaction.followup.send("❌ R5 council channel not found!", ephemeral=True)
+                return
+            
+            # Reset permissions
+            overwrites = {
+                interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                interaction.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True, manage_messages=True)
+            }
+            
+            # Add all R5 roles
+            r5_count = 0
+            for role in interaction.guild.roles:
+                if role.name.endswith(" - R5"):
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    r5_count += 1
+            
+            # Apply all permissions at once
+            await channel.edit(overwrites=overwrites)
+            
+            await interaction.followup.send(
+                f"✅ Fixed R5 council permissions! Added access for {r5_count} R5 roles.",
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            await interaction.followup.send(f"❌ Error fixing R5 council: {e}", ephemeral=True)
+    
     @app_commands.command(name="fix_events", description="[Admin] Fix events without channels")
     @app_commands.default_permissions(administrator=True)
     async def fix_events(self, interaction: discord.Interaction):
