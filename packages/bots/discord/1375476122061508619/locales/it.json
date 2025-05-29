@@ -1,0 +1,190 @@
+{
+  "language": {
+    "choose": "Seleziona la tua lingua preferita:",
+    "selected": "Lingua impostata su Italiano"
+  },
+  "welcome": {
+    "title": "Benvenuto su WhiteoutSurvival SvS CRM!",
+    "description": "Per iniziare, devo verificare la tua identità di gioco."
+  },
+  "verification": {
+    "enter_id": "Per favore inserisci il tuo ID di gioco:",
+    "invalid_id": "❌ ID non valido. Per favore inserisci un ID corretto:",
+    "id_verified": "✅ ID verificato con successo!",
+    "in_progress": "⏳ Verifica in corso...",
+    "button": "Verifica ID",
+    "id_help": "Puoi trovare il tuo ID nelle impostazioni del gioco:",
+    "id_location": "Impostazioni → Account → ID Giocatore"
+  },
+  "alliance": {
+    "enter_name": "Inserisci il nome della tua alleanza:",
+    "button": "Conferma Alleanza",
+    "role_created": "Ruolo alleanza creato: {alliance}",
+    "role_assigned": "Ti è stato assegnato il ruolo: {alliance}",
+    "choose_type": "Sei parte di un'alleanza di questo stato?",
+    "type_yes": "✅ Sì, faccio parte di un'alleanza",
+    "type_no": "❌ No alleanza",
+    "type_other": "🌍 Altro stato",
+    "choose_role": "Seleziona il tuo ruolo nell'alleanza:",
+    "role_r5": "R5",
+    "role_r4": "R4",
+    "role_r3": "R3",
+    "role_r2": "R2",
+    "role_r1": "R1"
+  },
+  "setup": {
+    "complete": "✅ Configurazione completata!",
+    "complete_description": "Ora hai accesso al server. Il tuo canale personale rimarrà disponibile per i comandi privati.",
+    "complete_no_alliance": "Sei stato registrato senza alleanza.",
+    "complete_other_state": "Sei stato registrato come giocatore di un altro stato."
+  },
+  "errors": {
+    "generic": "❌ Si è verificato un errore. Riprova più tardi.",
+    "api_error": "❌ Errore nella verifica dell'ID. Riprova.",
+    "timeout": "⏳ Tempo scaduto. Usa /start per continuare il processo di verifica.",
+    "view_timeout": "⏰ Questa interazione è scaduta. Usa /start per continuare."
+  },
+  "commands": {
+    "start": {
+      "description": "Avvia o riprendi il processo di verifica",
+      "resuming": "📋 Riprendendo il tuo processo di verifica...",
+      "no_channel": "❌ Usa questo comando nel tuo canale di verifica.",
+      "already_verified": "✅ Sei già verificato!"
+    },
+    "dashboard": {
+      "description": "Apri il tuo pannello di controllo personale",
+      "title": "🎮 Dashboard Personale",
+      "change_language": "🌍 Cambia Lingua",
+      "change_alliance": "⚔️ Cambia Alleanza",
+      "manage_alliance": "👥 Gestisci Alleanza",
+      "no_permission": "❌ Non hai i permessi per gestire l'alleanza.",
+      "only_personal": "❌ Questo comando funziona solo nel tuo canale personale."
+    }
+  },
+  "personal_channel": {
+    "welcome": "Benvenuto nel tuo canale personale!",
+    "description": "Questo è il tuo spazio privato dove puoi gestire le tue impostazioni e ricevere notifiche importanti.",
+    "dashboard_info": "Usa `/dashboard` per aprire il tuo pannello di controllo dove puoi:",
+    "features": "• Cambiare la tua lingua\n• Cambiare la tua alleanza\n• Gestire i membri dell'alleanza (se sei R4 o R5)"
+  },
+  "alliance_channel": {
+    "welcome": "Benvenuti nel canale dell'alleanza {alliance}!",
+    "description": "Questo è il canale privato per i membri dell'alleanza per coordinarsi e comunicare.",
+    "created": "Canale alleanza creato con successo."
+  },
+  "alliance_management": {
+    "title": "Gestione Alleanza - {alliance}",
+    "members": "Membri",
+    "change_role": "Cambia Ruolo",
+    "transfer_leadership": "Trasferisci Leadership",
+    "dissolve": "Sciogli Alleanza",
+    "manage_events": "📅 Gestisci Eventi",
+    "create_channel": "➕ Crea Canale",
+    "select_member": "Seleziona un membro da gestire:",
+    "select_new_role": "Seleziona il nuovo ruolo per {member}:",
+    "select_new_leader": "Seleziona il nuovo leader R5:",
+    "confirm_transfer": "⚠️ Sei sicuro di voler trasferire la leadership a {member}?",
+    "confirm_dissolve": "⚠️ Sei sicuro di voler sciogliere l'alleanza? Questa azione non può essere annullata!",
+    "role_changed": "✅ Ruolo cambiato con successo.",
+    "leadership_transferred": "✅ Leadership trasferita con successo.",
+    "alliance_dissolved": "💔 L'alleanza è stata sciolta.",
+    "cannot_change_own_role": "❌ Non puoi cambiare il tuo ruolo.",
+    "cannot_change_higher_role": "❌ Non puoi cambiare il ruolo di membri con grado uguale o superiore.",
+    "r5_abandoned": "⚠️ L'R5 ha lasciato. La leadership è stata trasferita automaticamente a {member}."
+  },
+  "events": {
+    "types": {
+      "svs": "Evento SvS",
+      "svs_desc": "Evento battaglia Stato vs Stato",
+      "ke": "Kill Event",
+      "ke_desc": "Kill Event per punti",
+      "trap": "Evento Trappole",
+      "trap_desc": "Evento costruzione trappole",
+      "bear_trap": "Bear Trap",
+      "bear_trap_desc": "Evento Bear Trap (ricorre ogni 2 giorni)",
+      "custom": "Evento Personalizzato",
+      "custom_desc": "Crea un evento personalizzato"
+    },
+    "select_type": "Seleziona tipo di evento",
+    "select_type_prompt": "Che tipo di evento vuoi creare?",
+    "create_event": "Crea Nuovo Evento",
+    "edit_event": "Modifica Evento",
+    "name_label": "Nome Evento",
+    "name_placeholder": "Inserisci nome evento",
+    "description_label": "Descrizione (opzionale)",
+    "description_placeholder": "Inserisci dettagli e istruzioni dell'evento",
+    "start_time_label": "Ora di Inizio",
+    "recurring_label": "Ricorrente (opzionale)",
+    "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
+    "reminders_label": "Ore Promemoria (opzionale)",
+    "reminders_placeholder": "es. 0.25, 0.5, 1, 2, 24 (0.25=15min, 0.5=30min)",
+    "invalid_reminders": "❌ Formato promemoria non valido. Usa ore separate da virgola (es. 0.25, 0.5, 1, 24)",
+    "no_alliance": "❌ Devi essere in un'alleanza per creare eventi",
+    "created_success": "✅ Evento '{name}' creato con successo!",
+    "view_events": "📅 Eventi Alleanza",
+    "invalid_date_format": "❌ Formato data non valido. Usa YYYY-MM-DD HH:MM",
+    "create_new": "➕ Crea Nuovo Evento",
+    "no_description": "Nessuna descrizione fornita",
+    "type": "Tipo",
+    "start_time": "Ora di Inizio",
+    "recurring": "Ricorrente",
+    "reminders": "Promemoria",
+    "status": "Stato",
+    "active": "Attivo",
+    "inactive": "Inattivo",
+    "created_by": "Creato da: <@{id}>",
+    "deactivate": "Disattiva",
+    "activate": "Attiva",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "confirm_delete": "⚠️ Sei sicuro di voler eliminare l'evento '{name}'?",
+    "updated_success": "✅ Evento aggiornato con successo",
+    "deleted_success": "✅ Evento '{name}' eliminato con successo",
+    "delete_cancelled": "❌ Eliminazione annullata",
+    "reminder_title": "Promemoria Evento",
+    "reminder_description": "**{name}** inizia tra {hours} ore!",
+    "started_title": "Evento Iniziato!",
+    "started_description": "**{name}** è iniziato! Buona fortuna a tutti i partecipanti!",
+    "description": "Descrizione",
+    "starts_at": "L'evento inizia alle"
+  },
+  "alliance_channels": {
+    "general": "generale",
+    "reminders": "promemoria",
+    "gift_codes": "codici-regalo",
+    "r4_r5_only": "solo-r4-r5",
+    "communications": "comunicazioni",
+    "event_prefix": "evento-",
+    "welcome_general": "Benvenuti nel canale generale di {alliance}!",
+    "welcome_reminders": "📅 Questo canale è per promemoria eventi e notifiche importanti.",
+    "welcome_gift_codes": "🎁 Condividi i codici regalo qui! Per favore segna quando sono usati.",
+    "welcome_r4_r5": "🔒 Questo è un canale privato solo per la leadership R4 e R5.",
+    "welcome_communications": "📢 Canale comunicazioni dirette per annunci importanti.",
+    "welcome_event": "📅 Canale per l'evento: {event}"
+  },
+  "state_channels": {
+    "r5_council": "consiglio-r5",
+    "welcome": "Benvenuti nel Consiglio R5 dello Stato! Questo canale è per tutti i leader R5 per coordinarsi."
+  },
+  "channels": {
+    "verify_name": "verifica-{username}",
+    "personal_name": "privato-{username}",
+    "alliance_name": "alleanza-{alliance}",
+    "category_welcome": "Benvenuto",
+    "category_personal": "Canali Personali",
+    "category_alliances": "Canali Alleanza"
+  },
+  "roles": {
+    "unverified": "Non Verificato",
+    "verified": "Verificato",
+    "no_alliance": "Senza Alleanza",
+    "other_state": "Altro Stato"
+  },
+  "common": {
+    "back": "Indietro",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "yes": "Sì",
+    "no": "No"
+  }
+}

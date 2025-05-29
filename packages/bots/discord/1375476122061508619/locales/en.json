@@ -1,0 +1,190 @@
+{
+  "language": {
+    "choose": "Please select your preferred language:",
+    "selected": "Language set to English"
+  },
+  "welcome": {
+    "title": "Welcome to WhiteoutSurvival SvS CRM!",
+    "description": "To get started, I need to verify your game identity."
+  },
+  "verification": {
+    "enter_id": "Please enter your game ID:",
+    "invalid_id": "❌ Invalid ID. Please enter a correct ID:",
+    "id_verified": "✅ ID successfully verified!",
+    "in_progress": "⏳ Verification in progress...",
+    "button": "Verify ID",
+    "id_help": "You can find your ID in the game profile:",
+    "id_location": "Settings → Account → Player ID"
+  },
+  "alliance": {
+    "enter_name": "Enter your alliance name:",
+    "button": "Confirm Alliance",
+    "role_created": "Alliance role created: {alliance}",
+    "role_assigned": "You have been assigned the role: {alliance}",
+    "choose_type": "Are you part of an alliance in this state?",
+    "type_yes": "✅ Yes, I'm in an alliance",
+    "type_no": "❌ No alliance",
+    "type_other": "🌍 Other state",
+    "choose_role": "Select your role in the alliance:",
+    "role_r5": "R5",
+    "role_r4": "R4",
+    "role_r3": "R3",
+    "role_r2": "R2",
+    "role_r1": "R1"
+  },
+  "setup": {
+    "complete": "✅ Setup complete!",
+    "complete_description": "You now have access to the server. Your personal channel will remain available for private commands.",
+    "complete_no_alliance": "You have been registered without an alliance.",
+    "complete_other_state": "You have been registered as a player from another state."
+  },
+  "errors": {
+    "generic": "❌ An error occurred. Please try again later.",
+    "api_error": "❌ Error verifying ID. Please try again.",
+    "timeout": "⏳ Time expired. Use /start to continue the verification process.",
+    "view_timeout": "⏰ This interaction has expired. Use /start to continue."
+  },
+  "commands": {
+    "start": {
+      "description": "Start or resume the verification process",
+      "resuming": "📋 Resuming your verification process...",
+      "no_channel": "❌ Please use this command in your verification channel.",
+      "already_verified": "✅ You are already verified!"
+    },
+    "dashboard": {
+      "description": "Open your personal control panel",
+      "title": "🎮 Personal Dashboard",
+      "change_language": "🌍 Change Language",
+      "change_alliance": "⚔️ Change Alliance",
+      "manage_alliance": "👥 Manage Alliance",
+      "no_permission": "❌ You don't have permission to manage the alliance.",
+      "only_personal": "❌ This command only works in your personal channel."
+    }
+  },
+  "personal_channel": {
+    "welcome": "Welcome to your personal channel!",
+    "description": "This is your private space where you can manage your settings and receive important notifications.",
+    "dashboard_info": "Use `/dashboard` to open your control panel where you can:",
+    "features": "• Change your language\n• Change your alliance\n• Manage alliance members (if you're R4 or R5)"
+  },
+  "alliance_channel": {
+    "welcome": "Welcome to {alliance} alliance channel!",
+    "description": "This is the private channel for alliance members to coordinate and communicate.",
+    "created": "Alliance channel created successfully."
+  },
+  "alliance_management": {
+    "title": "Alliance Management - {alliance}",
+    "members": "Members",
+    "change_role": "Change Role",
+    "transfer_leadership": "Transfer Leadership",
+    "dissolve": "Dissolve Alliance",
+    "manage_events": "📅 Manage Events",
+    "create_channel": "➕ Create Channel",
+    "select_member": "Select a member to manage:",
+    "select_new_role": "Select new role for {member}:",
+    "select_new_leader": "Select the new R5 leader:",
+    "confirm_transfer": "⚠️ Are you sure you want to transfer leadership to {member}?",
+    "confirm_dissolve": "⚠️ Are you sure you want to dissolve the alliance? This action cannot be undone!",
+    "role_changed": "✅ Role changed successfully.",
+    "leadership_transferred": "✅ Leadership transferred successfully.",
+    "alliance_dissolved": "💔 Alliance has been dissolved.",
+    "cannot_change_own_role": "❌ You cannot change your own role.",
+    "cannot_change_higher_role": "❌ You cannot change the role of members with equal or higher rank.",
+    "r5_abandoned": "⚠️ The R5 has left. Leadership has been automatically transferred to {member}."
+  },
+  "events": {
+    "types": {
+      "svs": "SvS Event",
+      "svs_desc": "State vs State battle event",
+      "ke": "Kill Event",
+      "ke_desc": "Kill Event for points",
+      "trap": "Trap Event",
+      "trap_desc": "Trap building event",
+      "bear_trap": "Bear Trap",
+      "bear_trap_desc": "Bear Trap event (recurs every 2 days)",
+      "custom": "Custom Event",
+      "custom_desc": "Create a custom event"
+    },
+    "select_type": "Select event type",
+    "select_type_prompt": "What type of event would you like to create?",
+    "create_event": "Create New Event",
+    "edit_event": "Edit Event",
+    "name_label": "Event Name",
+    "name_placeholder": "Enter event name",
+    "description_label": "Description (optional)",
+    "description_placeholder": "Enter event details and instructions",
+    "start_time_label": "Start Time",
+    "recurring_label": "Recurring (optional)",
+    "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
+    "reminders_label": "Reminder Hours (optional)",
+    "reminders_placeholder": "e.g., 0.25, 0.5, 1, 2, 24 (0.25=15min, 0.5=30min)",
+    "invalid_reminders": "❌ Invalid reminder format. Use comma-separated hours (e.g., 0.25, 0.5, 1, 24)",
+    "no_alliance": "❌ You must be in an alliance to create events",
+    "created_success": "✅ Event '{name}' created successfully!",
+    "view_events": "📅 Alliance Events",
+    "invalid_date_format": "❌ Invalid date format. Use YYYY-MM-DD HH:MM",
+    "create_new": "➕ Create New Event",
+    "no_description": "No description provided",
+    "type": "Type",
+    "start_time": "Start Time",
+    "recurring": "Recurring",
+    "reminders": "Reminders",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "created_by": "Created by: <@{id}>",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm_delete": "⚠️ Are you sure you want to delete the event '{name}'?",
+    "updated_success": "✅ Event updated successfully",
+    "deleted_success": "✅ Event '{name}' deleted successfully",
+    "delete_cancelled": "❌ Deletion cancelled",
+    "reminder_title": "Event Reminder",
+    "reminder_description": "**{name}** starts in {hours} hours!",
+    "started_title": "Event Started!",
+    "started_description": "**{name}** has started! Good luck to all participants!",
+    "description": "Description",
+    "starts_at": "Event starts at"
+  },
+  "alliance_channels": {
+    "general": "general",
+    "reminders": "reminders",
+    "gift_codes": "gift-codes",
+    "r4_r5_only": "r4-r5-only",
+    "communications": "communications",
+    "event_prefix": "event-",
+    "welcome_general": "Welcome to the {alliance} general channel!",
+    "welcome_reminders": "📅 This channel is for event reminders and important notifications.",
+    "welcome_gift_codes": "🎁 Share gift codes here! Please mark them when used.",
+    "welcome_r4_r5": "🔒 This is a private channel for R4 and R5 leadership only.",
+    "welcome_communications": "📢 Direct communications channel for important announcements.",
+    "welcome_event": "📅 Channel for the event: {event}"
+  },
+  "state_channels": {
+    "r5_council": "r5-council",
+    "welcome": "Welcome to the State R5 Council! This channel is for all R5 leaders to coordinate."
+  },
+  "channels": {
+    "verify_name": "verify-{username}",
+    "personal_name": "private-{username}",
+    "alliance_name": "alliance-{alliance}",
+    "category_welcome": "Welcome",
+    "category_personal": "Personal Channels",
+    "category_alliances": "Alliance Channels"
+  },
+  "roles": {
+    "unverified": "Unverified",
+    "verified": "Verified",
+    "no_alliance": "No Alliance",
+    "other_state": "Other State"
+  },
+  "common": {
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No"
+  }
+}
