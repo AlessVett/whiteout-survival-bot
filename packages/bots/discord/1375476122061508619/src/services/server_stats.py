@@ -1,11 +1,11 @@
 import discord
 from discord.ext import commands, tasks
 from typing import Dict, List
-from database import get_database
+from src.database import get_database
 import asyncio
 
 
-class ServerStats:
+class ServerStats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = get_database()

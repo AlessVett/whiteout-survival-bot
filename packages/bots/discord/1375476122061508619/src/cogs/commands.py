@@ -2,12 +2,12 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-from config import Config
+from src.config import Config
 from locales import t
-from database import get_database
-from views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
-from dashboard_views import DashboardView, AllianceManagementView
-from alliance_views import AllianceChangeTypeView
+from src.database import get_database
+from src.views.views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
+from src.views.dashboard_views import DashboardView, AllianceManagementView
+from src.views.alliance_views import AllianceChangeTypeView
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot):
@@ -625,7 +625,7 @@ class CommandsCog(commands.Cog):
         await interaction.response.defer(ephemeral=True)
         
         try:
-            from alliance_channels import AllianceChannels
+            from src.services.alliance_channels import AllianceChannels
             alliance_channels_helper = AllianceChannels()
             
             # Get all alliances

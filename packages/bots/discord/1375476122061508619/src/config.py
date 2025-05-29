@@ -5,7 +5,8 @@ load_dotenv()
 
 class Config:
     DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-    GAME_API_URL = os.getenv('GAME_API_URL', 'https://wos-giftcode-api.centurygame.com/api/player')
+    GAME_API_URL = os.getenv('API_BASE_URL', 'https://wos-giftcode-api.centurygame.com/api/player')
+    API_KEY = os.getenv('API_KEY', '')
     GUILD_ID = int(os.getenv('GUILD_ID', '0'))
     
     MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
@@ -13,7 +14,10 @@ class Config:
     
     DEFAULT_LANGUAGE = os.getenv('DEFAULT_LANGUAGE', 'it')
     
-    EMBED_COLOR = 0x5865F2
+    # Parse EMBED_COLOR from environment (can be hex string or int)
+    embed_color_env = os.getenv('EMBED_COLOR', '0x5865F2')
+    EMBED_COLOR = int(embed_color_env, 16) if embed_color_env.startswith('0x') else int(embed_color_env)
+    
     VERIFICATION_TIMEOUT = 600  # 10 minuti
     
     # URL dell'immagine che mostra dove trovare l'ID del giocatore

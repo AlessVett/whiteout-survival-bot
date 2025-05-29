@@ -3,9 +3,9 @@ from discord import ui
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
 import asyncio
-from database import Database
+from src.database import Database
 from locales import t
-from alliance_channels import AllianceChannels
+from src.services.alliance_channels import AllianceChannels
 
 
 class EventTypeSelect(ui.Select):

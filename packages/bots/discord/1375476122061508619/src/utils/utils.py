@@ -3,7 +3,7 @@ import hashlib
 import aiohttp
 import discord
 from typing import Optional
-from config import Config
+from src.config import Config
 import time
 
 

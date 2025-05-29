@@ -3,10 +3,10 @@ from discord.ext import commands
 import asyncio
 import os
 
-from config import Config
+from src.config import Config
 from locales import get_localization
-from database import get_database
-from cron_manager import CronManager
+from src.database import get_database
+from src.services.cron_manager import CronManager
 
 class CRMBot(commands.Bot):
     def __init__(self):
@@ -30,13 +30,15 @@ class CRMBot(commands.Bot):
         await self.db.create_indexes()
         
         # Carica cogs
-        for filename in os.listdir('./cogs'):
+        cogs_dir = os.path.join(os.path.dirname(__file__), 'cogs')
+        for filename in os.listdir(cogs_dir):
             if filename.endswith('.py') and not filename.startswith('_'):
-                await self.load_extension(f'cogs.{filename[:-3]}')
+                await self.load_extension(f'src.cogs.{filename[:-3]}')
                 print(f"Caricato cog: {filename[:-3]}")
         
-        # Carica server stats cog
-        await self.load_extension('server_stats')
+        # Carica server stats service come cog
+        from src.services.server_stats import ServerStats
+        await self.add_cog(ServerStats(self))
         print("Caricato cog: server_stats")
     
     async def on_ready(self):

@@ -2,7 +2,7 @@ import asyncio
 import discord
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
-from database import Database
+from src.database import Database
 from locales import t
 import logging
 

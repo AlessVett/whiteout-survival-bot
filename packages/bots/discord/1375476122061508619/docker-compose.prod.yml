@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  discord-bot:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: whiteout-discord-bot
+    restart: always
+    environment:
+      # Discord Configuration
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      
+      # MongoDB Configuration with authentication
+      MONGODB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
+      MONGODB_DB: ${MONGO_DB:-whiteout_survival_crm}
+      
+      # API Configuration
+      API_BASE_URL: ${API_BASE_URL}
+      API_KEY: ${API_KEY}
+      
+      # Bot Configuration
+      DEFAULT_LANGUAGE: ${DEFAULT_LANGUAGE:-en}
+      EMBED_COLOR: ${EMBED_COLOR:-0x5865F2}
+      GUILD_ID: ${GUILD_ID}
+      
+    depends_on:
+      - mongodb
+    networks:
+      - bot-network
+    volumes:
+      # Persist logs if needed
+      - ./logs:/app/logs:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import discord; print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongodb:
+    image: mongo:7.0
+    container_name: whiteout-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-whiteout_survival_crm}
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - bot-network
+    command: mongod --auth --bind_ip_all
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Optional: MongoDB backup service
+  mongo-backup:
+    image: mongo:7.0
+    container_name: whiteout-mongo-backup
+    restart: always
+    environment:
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB: ${MONGO_DB:-whiteout_survival_crm}
+    volumes:
+      - ./backups:/backups
+    networks:
+      - bot-network
+    command: >
+      sh -c "while true; do
+        mongodump --host=mongodb:27017 --username=$$MONGO_USER --password=$$MONGO_PASSWORD --authenticationDatabase=admin --db=$$MONGO_DB --out=/backups/backup-$$(date +%Y%m%d-%H%M%S);
+        find /backups -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true;
+        sleep 86400;
+      done"
+    depends_on:
+      - mongodb
+
+networks:
+  bot-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local

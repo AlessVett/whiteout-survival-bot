@@ -10,3 +10,4 @@ ENV/
 .vscode/
 .idea/
 *.log
+/.env.production

@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 
-from database import get_database
+from src.database import get_database
 from locales import t
 
 class EventsCog(commands.Cog):

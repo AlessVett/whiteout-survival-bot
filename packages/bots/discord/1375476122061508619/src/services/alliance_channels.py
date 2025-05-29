@@ -1,8 +1,8 @@
 import discord
 from typing import Dict, Optional
-from config import Config
+from src.config import Config
 from locales import t
-from database import get_database
+from src.database import get_database
 
 class AllianceChannels:
     def __init__(self):

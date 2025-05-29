@@ -2,10 +2,10 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 
-from config import Config
+from src.config import Config
 from locales import t
-from utils import get_or_create_role
-from database import get_database
+from src.utils.utils import get_or_create_role
+from src.database import get_database
 
 class AllianceChangeCog(commands.Cog):
     def __init__(self, bot):
@@ -59,7 +59,7 @@ class AllianceChangeCog(commands.Cog):
         
         if new_type == "alliance":
             # Mostra modal per nome alleanza
-            from alliance_views import AllianceChangeNameView
+            from src.views.alliance_views import AllianceChangeNameView
             embed = discord.Embed(
                 description=t("alliance.enter_name", lang),
                 color=Config.EMBED_COLOR
@@ -85,7 +85,7 @@ class AllianceChangeCog(commands.Cog):
         await self.db.update_user_alliance(member.id, alliance=alliance_name)
         
         # Mostra selezione ruolo
-        from alliance_views import AllianceChangeRoleView
+        from src.views.alliance_views import AllianceChangeRoleView
         embed = discord.Embed(
             title=alliance_name,
             description=t("alliance.choose_role", lang),
@@ -156,7 +156,7 @@ class AllianceChangeCog(commands.Cog):
                 if alliance_role == "R5":
                     try:
                         print(f"Creating alliance channels for R5 {member.name} in alliance {alliance}")
-                        from alliance_channels import AllianceChannels
+                        from src.services.alliance_channels import AllianceChannels
                         alliance_channels = AllianceChannels()
                         
                         # Crea tutti i canali standard dell'alleanza

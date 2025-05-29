@@ -4,12 +4,12 @@ from typing import Dict
 import asyncio
 from datetime import datetime
 
-from config import Config
+from src.config import Config
 from locales import t
-from utils import verify_game_id, get_or_create_role, setup_member_channel
-from views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
-from database import get_database
-from alliance_channels import AllianceChannels
+from src.utils.utils import verify_game_id, get_or_create_role, setup_member_channel
+from src.views.views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
+from src.database import get_database
+from src.services.alliance_channels import AllianceChannels
 
 class VerificationCog(commands.Cog):
     def __init__(self, bot):
