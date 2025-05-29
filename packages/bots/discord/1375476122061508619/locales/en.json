@@ -186,5 +186,35 @@
     "cancel": "Cancel",
     "yes": "Yes",
     "no": "No"
+  },
+  "moderator": {
+    "news": {
+      "command_desc": "Send a news announcement to a channel",
+      "title_label": "Title",
+      "title_placeholder": "Enter the news title",
+      "description_label": "Description",
+      "description_placeholder": "Enter the news content",
+      "category_label": "Category",
+      "category_placeholder": "e.g., Update, Event, Maintenance",
+      "channel_label": "Select Channel",
+      "channel_placeholder": "Choose where to send the news",
+      "sent_success": "✅ News sent successfully!",
+      "error": "❌ Error sending news: {error}"
+    },
+    "gift_code": {
+      "command_desc": "Send a gift code to all alliance gift-code channels",
+      "code_label": "Gift Code",
+      "code_placeholder": "Enter the gift code",
+      "sent_success": "✅ Gift code sent to {count} alliance channels!",
+      "no_channels": "❌ No gift-code channels found!",
+      "error": "❌ Error sending gift code: {error}",
+      "embed_title": "🎁 New Gift Code!",
+      "embed_description": "A new gift code has been shared!",
+      "code_field": "Code",
+      "validity_field": "Valid Until",
+      "validity_value": "Use it while it lasts!",
+      "shared_by": "Shared by {moderator}"
+    },
+    "no_permission": "❌ You need the Moderator role to use this command!"
   }
 }

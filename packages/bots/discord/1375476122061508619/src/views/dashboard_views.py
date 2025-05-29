@@ -176,7 +176,7 @@ class ManageEventsButton(ui.Button):
         self.lang = lang
     
     async def callback(self, interaction: discord.Interaction):
-        from event_views import EventListView
+        from .event_views import EventListView
         view = EventListView(self.view.alliance_name, self.lang)
         await view.setup()
         await interaction.response.send_message(

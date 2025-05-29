@@ -20,13 +20,13 @@
 
 2. **Configure environment**
    ```bash
-   cp .env.production.example .env.production
+   cp .env.example .env.production
    nano .env.production  # Edit with your values
    ```
 
 3. **Deploy**
    ```bash
-   ./deploy.sh
+   ./scripts/deploy.sh
    ```
 
 ### Manual Deployment
@@ -174,6 +174,24 @@ docker-compose -f docker-compose.prod.yml ps
 1. Bot needs appropriate Discord permissions
 2. Check bot role position in Discord server
 3. Verify GUILD_ID is correct
+
+#### Required Bot Permissions
+When inviting the bot, ensure these permissions:
+- **Manage Roles** - For verification and alliance roles
+- **Manage Channels** - To create alliance channels
+- **Send Messages** - Basic messaging
+- **Embed Links** - For rich embeds
+- **Mention Everyone** - For moderator announcements
+- **Manage Messages** - For moderation
+- **Read Message History** - For event management
+- **Add Reactions** - For UI interactions
+- **View Channels** - To see all channels
+
+#### Post-Deployment Setup
+1. **Create first moderator**: Use `/add-moderator @user` as admin
+2. **Sync commands**: Commands may take up to 1 hour to appear globally
+3. **Test verification**: Ensure API connection works
+4. **Check channel creation**: Verify bot can create categories/channels
 
 ### Resource Usage
 

@@ -186,5 +186,35 @@
     "cancel": "Annulla",
     "yes": "Sì",
     "no": "No"
+  },
+  "moderator": {
+    "news": {
+      "command_desc": "Invia un annuncio news a un canale",
+      "title_label": "Titolo",
+      "title_placeholder": "Inserisci il titolo della news",
+      "description_label": "Descrizione",
+      "description_placeholder": "Inserisci il contenuto della news",
+      "category_label": "Categoria",
+      "category_placeholder": "es. Aggiornamento, Evento, Manutenzione",
+      "channel_label": "Seleziona Canale",
+      "channel_placeholder": "Scegli dove inviare la news",
+      "sent_success": "✅ News inviata con successo!",
+      "error": "❌ Errore invio news: {error}"
+    },
+    "gift_code": {
+      "command_desc": "Invia un gift code a tutti i canali gift-code delle alleanze",
+      "code_label": "Gift Code",
+      "code_placeholder": "Inserisci il gift code",
+      "sent_success": "✅ Gift code inviato a {count} canali alleanza!",
+      "no_channels": "❌ Nessun canale gift-code trovato!",
+      "error": "❌ Errore invio gift code: {error}",
+      "embed_title": "🎁 Nuovo Gift Code!",
+      "embed_description": "È stato condiviso un nuovo gift code!",
+      "code_field": "Codice",
+      "validity_field": "Valido Fino",
+      "validity_value": "Usalo finché dura!",
+      "shared_by": "Condiviso da {moderator}"
+    },
+    "no_permission": "❌ Devi avere il ruolo Moderator per usare questo comando!"
   }
 }

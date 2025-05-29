@@ -20,6 +20,7 @@ This bot transforms your Discord server into a powerful management hub for White
 - 👑 **R5 Council** - State-wide leadership coordination channel
 - 📊 **Server Statistics** - Real-time member and alliance tracking
 - 🎁 **Gift Code Sharing** - Dedicated channels for alliance gift codes
+- 📰 **Moderator Tools** - News announcements and gift code broadcasting
 
 ## 📁 Project Structure
 
@@ -41,13 +42,15 @@ whiteout-survival-bot/
 │   │   ├── verification.py     # Player verification
 │   │   ├── events.py          # Event management
 │   │   ├── commands.py        # Admin commands
-│   │   └── alliance_change.py # Alliance switching
+│   │   ├── alliance_change.py # Alliance switching
+│   │   └── moderator.py       # Moderator commands
 │   │
 │   ├── views/                  # UI components
 │   │   ├── views.py           # Base verification UI
 │   │   ├── dashboard_views.py # User dashboard
 │   │   ├── event_views.py     # Event UI
-│   │   └── alliance_views.py  # Alliance UI
+│   │   ├── alliance_views.py  # Alliance UI
+│   │   └── moderator_views.py # Moderator UI
 │   │
 │   ├── services/               # Business logic
 │   │   ├── alliance_channels.py # Channel management
@@ -128,6 +131,31 @@ Full multi-language support:
 - All UI elements translated
 - Commands work in both languages
 - Alliance infrastructure in English
+
+#### 📰 **Moderator System** (`src/cogs/moderator.py`)
+Server-wide moderation tools:
+- `/send-news` - Send formatted news to any channel
+- `/notify-gift-code` - Broadcast codes to all alliance gift channels
+- `/add-moderator` - Grant moderator permissions
+- `/remove-moderator` - Revoke moderator permissions
+- Automatic Moderator role creation with appropriate permissions
+
+## 🛡️ Roles & Permissions
+
+### Discord Roles Created by Bot
+- **Verified** - Players who completed verification
+- **Unverified** - New members awaiting verification
+- **No Alliance** - Verified players without an alliance
+- **Other State** - Players from different states
+- **{Alliance}** - Alliance membership role
+- **{Alliance} - R1/R2/R3/R4/R5** - Rank within alliance
+- **Moderator** - Server moderators with special commands
+
+### Permission Levels
+1. **Regular Users** - Access to verification and dashboard
+2. **R4/R5** - Can manage alliance events and members
+3. **Moderators** - Can send news and gift codes server-wide
+4. **Administrators** - Full bot management and debug commands
 
 ## 🚀 Deployment
 
