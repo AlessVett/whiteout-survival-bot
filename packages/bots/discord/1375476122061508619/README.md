@@ -258,6 +258,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
   <p>Built with ❄️ for the WhiteOut Survival community</p>
   <p>
     <a href="https://github.com/AlessVett/whiteout-survival-bot/issues">Issues</a> •
-    <a href="DEPLOYMENT.md">Deploy</a>
+    <a href="docs/DEPLOYMENT.md">Deploy</a>
   </p>
 </div>
