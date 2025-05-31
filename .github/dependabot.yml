@@ -26,24 +26,14 @@ updates:
           - "minor"
           - "patch"
 
-  # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "04:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "AlessVett"
-    assignees:
-      - "AlessVett"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
-    labels:
-      - "dependencies"
-      - "github-actions"
+  # Future: GitHub Actions dependencies when workflows are added
+  # - package-ecosystem: "github-actions"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   labels:
+  #     - "dependencies"
+  #     - "github-actions"
 
   # Future: npm dependencies when frontend is added
   # - package-ecosystem: "npm"
