@@ -1,6 +1,6 @@
-# 🏔️ WhiteOut Survival Discord CRM Bot
+# 🏔️ WhiteOut Survival Discord Bot
 
-> A comprehensive Discord CRM bot designed for WhiteOut Survival alliances, featuring automated player verification, alliance management, event scheduling, and cross-alliance coordination.
+> A comprehensive Discord bot designed for WhiteOut Survival alliances, featuring automated player verification, alliance management, event scheduling, and cross-alliance coordination.
 
 [![Discord.py](https://img.shields.io/badge/discord.py-2.3.2-blue.svg)](https://github.com/Rapptz/discord.py)
 [![Python](https://img.shields.io/badge/python-3.11+-yellow.svg)](https://www.python.org)
