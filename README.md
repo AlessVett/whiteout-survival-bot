@@ -28,8 +28,8 @@ The Discord bot provides:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    FastAPI Gateway                           │
-│                 (API Gateway & Load Balancer)                │
+│                    FastAPI Gateway                          │
+│                 (API Gateway & Load Balancer)               │
 └─────────────────┬─────────────────────────┬─────────────────┘
                   │                         │
         ┌─────────┴─────────┐      ┌────────┴────────┐
