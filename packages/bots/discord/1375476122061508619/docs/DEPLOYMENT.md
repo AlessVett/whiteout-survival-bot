@@ -14,7 +14,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/AlessVett/whiteout-survival-bot.git
    cd packages/bots/discord/1375476122061508619
    ```
 
