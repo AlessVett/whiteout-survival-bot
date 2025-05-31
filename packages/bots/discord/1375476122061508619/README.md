@@ -62,7 +62,8 @@ whiteout-survival-bot/
 │
 ├── locales/                    # Translations
 │   ├── en.json                # English
-│   └── it.json                # Italian
+│   ├── it.json                # Italian
+│   └── ...
 │
 ├── docker/                     # Docker files
 │   ├── Dockerfile             # Container config
@@ -256,8 +257,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 <div align="center">
   <p>Built with ❄️ for the WhiteOut Survival community</p>
   <p>
-    <a href="https://discord.gg/yourserver">Discord</a> •
-    <a href="https://github.com/yourusername/repo/issues">Issues</a> •
+    <a href="https://github.com/AlessVett/whiteout-survival-bot/issues">Issues</a> •
     <a href="DEPLOYMENT.md">Deploy</a>
   </p>
 </div>
