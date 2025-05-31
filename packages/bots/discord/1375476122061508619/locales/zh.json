@@ -1,0 +1,221 @@
+{
+  "language": {
+    "choose": "请选择您喜欢的语言：",
+    "selected": "语言已设置为中文"
+  },
+  "welcome": {
+    "title": "欢迎来到 WhiteoutSurvival SvS CRM！",
+    "description": "要开始使用，我需要验证您的游戏身份。"
+  },
+  "verification": {
+    "enter_id": "请输入您的游戏ID：",
+    "invalid_id": "❌ 无效的ID。请输入正确的ID：",
+    "id_verified": "✅ ID验证成功！",
+    "in_progress": "⏳ 正在验证中...",
+    "button": "验证ID",
+    "id_help": "您可以在游戏资料中找到您的ID：",
+    "id_location": "设置 → 账户 → 玩家ID"
+  },
+  "alliance": {
+    "enter_name": "输入您的联盟名称：",
+    "button": "确认联盟",
+    "role_created": "联盟角色已创建：{alliance}",
+    "role_assigned": "您已被分配角色：{alliance}",
+    "choose_type": "您是否属于本州的联盟？",
+    "type_yes": "✅ 是的，我在联盟中",
+    "type_no": "❌ 无联盟",
+    "type_other": "🌍 其他州",
+    "choose_role": "选择您在联盟中的角色：",
+    "role_r5": "R5",
+    "role_r4": "R4",
+    "role_r3": "R3",
+    "role_r2": "R2",
+    "role_r1": "R1"
+  },
+  "setup": {
+    "complete": "✅ 设置完成！",
+    "complete_description": "您现在可以访问服务器了。您的个人频道将保持可用于私人命令。",
+    "complete_no_alliance": "您已注册为无联盟玩家。",
+    "complete_other_state": "您已注册为其他州的玩家。"
+  },
+  "errors": {
+    "generic": "❌ 发生错误。请稍后重试。",
+    "api_error": "❌ 验证ID时出错。请重试。",
+    "timeout": "⏳ 时间已过期。使用 /start 继续验证过程。",
+    "view_timeout": "⏰ 此交互已过期。使用 /start 继续。"
+  },
+  "commands": {
+    "start": {
+      "description": "开始或恢复验证过程",
+      "resuming": "📋 恢复您的验证过程...",
+      "no_channel": "❌ 请在您的验证频道中使用此命令。",
+      "already_verified": "✅ 您已经验证过了！"
+    },
+    "dashboard": {
+      "description": "打开您的个人控制面板",
+      "title": "🎮 个人仪表板",
+      "change_language": "🌍 更改语言",
+      "change_alliance": "⚔️ 更改联盟",
+      "manage_alliance": "👥 管理联盟",
+      "no_permission": "❌ 您没有管理联盟的权限。",
+      "only_personal": "❌ 此命令仅在您的个人频道中有效。"
+    }
+  },
+  "personal_channel": {
+    "welcome": "欢迎来到您的个人频道！",
+    "description": "这是您的私人空间，您可以在这里管理设置并接收重要通知。",
+    "dashboard_info": "使用 `/dashboard` 打开控制面板，您可以：",
+    "features": "• 更改语言\n• 更改联盟\n• 管理联盟成员（如果您是R4或R5）"
+  },
+  "alliance_channel": {
+    "welcome": "欢迎来到 {alliance} 联盟频道！",
+    "description": "这是联盟成员协调和交流的私人频道。",
+    "created": "联盟频道创建成功。"
+  },
+  "alliance_management": {
+    "title": "联盟管理 - {alliance}",
+    "members": "成员",
+    "change_role": "更改角色",
+    "transfer_leadership": "转移领导权",
+    "dissolve": "解散联盟",
+    "manage_events": "📅 管理活动",
+    "create_channel": "➕ 创建频道",
+    "select_member": "选择要管理的成员：",
+    "select_new_role": "为 {member} 选择新角色：",
+    "select_new_leader": "选择新的R5领导者：",
+    "confirm_transfer": "⚠️ 您确定要将领导权转移给 {member} 吗？",
+    "confirm_dissolve": "⚠️ 您确定要解散联盟吗？此操作无法撤销！",
+    "role_changed": "✅ 角色更改成功。",
+    "leadership_transferred": "✅ 领导权转移成功。",
+    "alliance_dissolved": "💔 联盟已解散。",
+    "cannot_change_own_role": "❌ 您不能更改自己的角色。",
+    "cannot_change_higher_role": "❌ 您不能更改同级或更高级别成员的角色。",
+    "r5_abandoned": "⚠️ R5已离开。领导权已自动转移给 {member}。"
+  },
+  "events": {
+    "types": {
+      "svs": "SvS活动",
+      "svs_desc": "州对州战斗活动",
+      "ke": "击杀活动",
+      "ke_desc": "为积分击杀活动",
+      "trap": "陷阱活动",
+      "trap_desc": "陷阱建造活动",
+      "bear_trap": "熊陷阱",
+      "bear_trap_desc": "熊陷阱活动（每2天重复）",
+      "custom": "自定义活动",
+      "custom_desc": "创建自定义活动"
+    },
+    "select_type": "选择活动类型",
+    "select_type_prompt": "您想创建什么类型的活动？",
+    "create_event": "创建新活动",
+    "edit_event": "编辑活动",
+    "name_label": "活动名称",
+    "name_placeholder": "输入活动名称",
+    "description_label": "描述（可选）",
+    "description_placeholder": "输入活动详情和说明",
+    "start_time_label": "开始时间",
+    "recurring_label": "重复（可选）",
+    "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
+    "reminders_label": "提醒小时数（可选）",
+    "reminders_placeholder": "例如：0.25, 0.5, 1, 2, 24（0.25=15分钟，0.5=30分钟）",
+    "invalid_reminders": "❌ 无效的提醒格式。使用逗号分隔的小时数（例如：0.25, 0.5, 1, 24）",
+    "no_alliance": "❌ 您必须在联盟中才能创建活动",
+    "created_success": "✅ 活动 '{name}' 创建成功！",
+    "view_events": "📅 联盟活动",
+    "invalid_date_format": "❌ 无效的日期格式。使用 YYYY-MM-DD HH:MM",
+    "create_new": "➕ 创建新活动",
+    "no_description": "未提供描述",
+    "type": "类型",
+    "start_time": "开始时间",
+    "recurring": "重复",
+    "reminders": "提醒",
+    "status": "状态",
+    "active": "活跃",
+    "inactive": "非活跃",
+    "created_by": "创建者：<@{id}>",
+    "deactivate": "停用",
+    "activate": "激活",
+    "edit": "编辑",
+    "delete": "删除",
+    "confirm_delete": "⚠️ 您确定要删除活动 '{name}' 吗？",
+    "updated_success": "✅ 活动更新成功",
+    "deleted_success": "✅ 活动 '{name}' 删除成功",
+    "delete_cancelled": "❌ 删除已取消",
+    "reminder_title": "活动提醒",
+    "reminder_description": "**{name}** 将在 {hours} 小时后开始！",
+    "started_title": "活动开始！",
+    "started_description": "**{name}** 已经开始！祝所有参与者好运！",
+    "description": "描述",
+    "starts_at": "活动开始时间"
+  },
+  "alliance_channels": {
+    "general": "综合",
+    "reminders": "提醒",
+    "gift_codes": "礼品码",
+    "r4_r5_only": "r4-r5-专用",
+    "communications": "通讯",
+    "event_prefix": "活动-",
+    "welcome_general": "欢迎来到 {alliance} 综合频道！",
+    "welcome_reminders": "📅 此频道用于活动提醒和重要通知。",
+    "welcome_gift_codes": "🎁 在这里分享礼品码！使用后请标记。",
+    "welcome_r4_r5": "🔒 这是仅供R4和R5领导层使用的私人频道。",
+    "welcome_communications": "📢 重要公告的直接通讯频道。",
+    "welcome_event": "📅 活动频道：{event}"
+  },
+  "state_channels": {
+    "r5_council": "r5-议会",
+    "welcome": "欢迎来到州R5议会！这个频道供所有R5领导者协调。"
+  },
+  "channels": {
+    "verify_name": "验证-{username}",
+    "personal_name": "私人-{username}",
+    "alliance_name": "联盟-{alliance}",
+    "category_welcome": "欢迎",
+    "category_personal": "个人频道",
+    "category_alliances": "联盟频道"
+  },
+  "roles": {
+    "unverified": "未验证",
+    "verified": "已验证",
+    "no_alliance": "无联盟",
+    "other_state": "其他州"
+  },
+  "common": {
+    "back": "返回",
+    "confirm": "确认",
+    "cancel": "取消",
+    "yes": "是",
+    "no": "否"
+  },
+  "moderator": {
+    "news": {
+      "command_desc": "向频道发送新闻公告",
+      "title_label": "标题",
+      "title_placeholder": "输入新闻标题",
+      "description_label": "描述",
+      "description_placeholder": "输入新闻内容",
+      "category_label": "类别",
+      "category_placeholder": "例如：更新、活动、维护",
+      "channel_label": "选择频道",
+      "channel_placeholder": "选择发送新闻的位置",
+      "sent_success": "✅ 新闻发送成功！",
+      "error": "❌ 发送新闻错误：{error}"
+    },
+    "gift_code": {
+      "redeem_link": "兑换链接",
+      "command_desc": "向所有联盟礼品码频道发送礼品码",
+      "code_label": "礼品码",
+      "code_placeholder": "输入礼品码",
+      "sent_success": "✅ 礼品码已发送到 {count} 个联盟频道！",
+      "no_channels": "❌ 未找到礼品码频道！",
+      "error": "❌ 发送礼品码错误：{error}",
+      "embed_title": "🎁 新礼品码！",
+      "embed_description": "分享了一个新的礼品码！",
+      "code_field": "代码",
+      "validity_field": "有效期至",
+      "validity_value": "尽快使用！",
+      "shared_by": "由 {moderator} 分享"
+    },
+    "no_permission": "❌ 您需要管理员角色才能使用此命令！"
+  }
+}

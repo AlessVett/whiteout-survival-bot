@@ -1,0 +1,221 @@
+{
+  "language": {
+    "choose": "Por favor, selecciona tu idioma preferido:",
+    "selected": "Idioma establecido en español"
+  },
+  "welcome": {
+    "title": "¡Bienvenido a WhiteoutSurvival SvS CRM!",
+    "description": "Para comenzar, necesito verificar tu identidad del juego."
+  },
+  "verification": {
+    "enter_id": "Por favor, ingresa tu ID del juego:",
+    "invalid_id": "❌ ID inválido. Por favor, ingresa un ID correcto:",
+    "id_verified": "✅ ¡ID verificado exitosamente!",
+    "in_progress": "⏳ Verificación en progreso...",
+    "button": "Verificar ID",
+    "id_help": "Puedes encontrar tu ID en el perfil del juego:",
+    "id_location": "Configuración → Cuenta → ID del jugador"
+  },
+  "alliance": {
+    "enter_name": "Ingresa el nombre de tu alianza:",
+    "button": "Confirmar Alianza",
+    "role_created": "Rol de alianza creado: {alliance}",
+    "role_assigned": "Se te ha asignado el rol: {alliance}",
+    "choose_type": "¿Eres parte de una alianza en este estado?",
+    "type_yes": "✅ Sí, estoy en una alianza",
+    "type_no": "❌ Sin alianza",
+    "type_other": "🌍 Otro estado",
+    "choose_role": "Selecciona tu rol en la alianza:",
+    "role_r5": "R5",
+    "role_r4": "R4",
+    "role_r3": "R3",
+    "role_r2": "R2",
+    "role_r1": "R1"
+  },
+  "setup": {
+    "complete": "✅ ¡Configuración completa!",
+    "complete_description": "Ahora tienes acceso al servidor. Tu canal personal permanecerá disponible para comandos privados.",
+    "complete_no_alliance": "Has sido registrado sin alianza.",
+    "complete_other_state": "Has sido registrado como jugador de otro estado."
+  },
+  "errors": {
+    "generic": "❌ Ocurrió un error. Por favor, intenta más tarde.",
+    "api_error": "❌ Error al verificar el ID. Por favor, intenta de nuevo.",
+    "timeout": "⏳ Tiempo agotado. Usa /start para continuar el proceso de verificación.",
+    "view_timeout": "⏰ Esta interacción ha expirado. Usa /start para continuar."
+  },
+  "commands": {
+    "start": {
+      "description": "Iniciar o reanudar el proceso de verificación",
+      "resuming": "📋 Reanudando tu proceso de verificación...",
+      "no_channel": "❌ Por favor, usa este comando en tu canal de verificación.",
+      "already_verified": "✅ ¡Ya estás verificado!"
+    },
+    "dashboard": {
+      "description": "Abrir tu panel de control personal",
+      "title": "🎮 Panel Personal",
+      "change_language": "🌍 Cambiar Idioma",
+      "change_alliance": "⚔️ Cambiar Alianza",
+      "manage_alliance": "👥 Gestionar Alianza",
+      "no_permission": "❌ No tienes permiso para gestionar la alianza.",
+      "only_personal": "❌ Este comando solo funciona en tu canal personal."
+    }
+  },
+  "personal_channel": {
+    "welcome": "¡Bienvenido a tu canal personal!",
+    "description": "Este es tu espacio privado donde puedes gestionar tu configuración y recibir notificaciones importantes.",
+    "dashboard_info": "Usa `/dashboard` para abrir tu panel de control donde puedes:",
+    "features": "• Cambiar tu idioma\n• Cambiar tu alianza\n• Gestionar miembros de la alianza (si eres R4 o R5)"
+  },
+  "alliance_channel": {
+    "welcome": "¡Bienvenido al canal de la alianza {alliance}!",
+    "description": "Este es el canal privado para que los miembros de la alianza se coordinen y comuniquen.",
+    "created": "Canal de alianza creado exitosamente."
+  },
+  "alliance_management": {
+    "title": "Gestión de Alianza - {alliance}",
+    "members": "Miembros",
+    "change_role": "Cambiar Rol",
+    "transfer_leadership": "Transferir Liderazgo",
+    "dissolve": "Disolver Alianza",
+    "manage_events": "📅 Gestionar Eventos",
+    "create_channel": "➕ Crear Canal",
+    "select_member": "Selecciona un miembro para gestionar:",
+    "select_new_role": "Selecciona el nuevo rol para {member}:",
+    "select_new_leader": "Selecciona el nuevo líder R5:",
+    "confirm_transfer": "⚠️ ¿Estás seguro de que quieres transferir el liderazgo a {member}?",
+    "confirm_dissolve": "⚠️ ¿Estás seguro de que quieres disolver la alianza? ¡Esta acción no se puede deshacer!",
+    "role_changed": "✅ Rol cambiado exitosamente.",
+    "leadership_transferred": "✅ Liderazgo transferido exitosamente.",
+    "alliance_dissolved": "💔 La alianza ha sido disuelta.",
+    "cannot_change_own_role": "❌ No puedes cambiar tu propio rol.",
+    "cannot_change_higher_role": "❌ No puedes cambiar el rol de miembros con rango igual o superior.",
+    "r5_abandoned": "⚠️ El R5 se ha ido. El liderazgo ha sido transferido automáticamente a {member}."
+  },
+  "events": {
+    "types": {
+      "svs": "Evento SvS",
+      "svs_desc": "Evento de batalla estado contra estado",
+      "ke": "Evento de Bajas",
+      "ke_desc": "Evento de bajas por puntos",
+      "trap": "Evento de Trampas",
+      "trap_desc": "Evento de construcción de trampas",
+      "bear_trap": "Trampa de Oso",
+      "bear_trap_desc": "Evento de trampa de oso (se repite cada 2 días)",
+      "custom": "Evento Personalizado",
+      "custom_desc": "Crear un evento personalizado"
+    },
+    "select_type": "Seleccionar tipo de evento",
+    "select_type_prompt": "¿Qué tipo de evento te gustaría crear?",
+    "create_event": "Crear Nuevo Evento",
+    "edit_event": "Editar Evento",
+    "name_label": "Nombre del Evento",
+    "name_placeholder": "Ingresa el nombre del evento",
+    "description_label": "Descripción (opcional)",
+    "description_placeholder": "Ingresa detalles e instrucciones del evento",
+    "start_time_label": "Hora de Inicio",
+    "recurring_label": "Recurrente (opcional)",
+    "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
+    "reminders_label": "Horas de Recordatorio (opcional)",
+    "reminders_placeholder": "ej. 0.25, 0.5, 1, 2, 24 (0.25=15min, 0.5=30min)",
+    "invalid_reminders": "❌ Formato de recordatorio inválido. Usa horas separadas por comas (ej. 0.25, 0.5, 1, 24)",
+    "no_alliance": "❌ Debes estar en una alianza para crear eventos",
+    "created_success": "✅ ¡Evento '{name}' creado exitosamente!",
+    "view_events": "📅 Eventos de la Alianza",
+    "invalid_date_format": "❌ Formato de fecha inválido. Usa YYYY-MM-DD HH:MM",
+    "create_new": "➕ Crear Nuevo Evento",
+    "no_description": "No se proporcionó descripción",
+    "type": "Tipo",
+    "start_time": "Hora de Inicio",
+    "recurring": "Recurrente",
+    "reminders": "Recordatorios",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "created_by": "Creado por: <@{id}>",
+    "deactivate": "Desactivar",
+    "activate": "Activar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm_delete": "⚠️ ¿Estás seguro de que quieres eliminar el evento '{name}'?",
+    "updated_success": "✅ Evento actualizado exitosamente",
+    "deleted_success": "✅ Evento '{name}' eliminado exitosamente",
+    "delete_cancelled": "❌ Eliminación cancelada",
+    "reminder_title": "Recordatorio de Evento",
+    "reminder_description": "¡**{name}** comienza en {hours} horas!",
+    "started_title": "¡Evento Iniciado!",
+    "started_description": "¡**{name}** ha comenzado! ¡Buena suerte a todos los participantes!",
+    "description": "Descripción",
+    "starts_at": "El evento comienza en"
+  },
+  "alliance_channels": {
+    "general": "general",
+    "reminders": "recordatorios",
+    "gift_codes": "códigos-regalo",
+    "r4_r5_only": "r4-r5-solo",
+    "communications": "comunicaciones",
+    "event_prefix": "evento-",
+    "welcome_general": "¡Bienvenido al canal general de {alliance}!",
+    "welcome_reminders": "📅 Este canal es para recordatorios de eventos y notificaciones importantes.",
+    "welcome_gift_codes": "🎁 ¡Comparte códigos de regalo aquí! Por favor, márcalos cuando se usen.",
+    "welcome_r4_r5": "🔒 Este es un canal privado solo para el liderazgo R4 y R5.",
+    "welcome_communications": "📢 Canal de comunicaciones directas para anuncios importantes.",
+    "welcome_event": "📅 Canal para el evento: {event}"
+  },
+  "state_channels": {
+    "r5_council": "consejo-r5",
+    "welcome": "¡Bienvenido al Consejo R5 del Estado! Este canal es para que todos los líderes R5 se coordinen."
+  },
+  "channels": {
+    "verify_name": "verificar-{username}",
+    "personal_name": "privado-{username}",
+    "alliance_name": "alianza-{alliance}",
+    "category_welcome": "Bienvenida",
+    "category_personal": "Canales Personales",
+    "category_alliances": "Canales de Alianza"
+  },
+  "roles": {
+    "unverified": "No Verificado",
+    "verified": "Verificado",
+    "no_alliance": "Sin Alianza",
+    "other_state": "Otro Estado"
+  },
+  "common": {
+    "back": "Atrás",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "moderator": {
+    "news": {
+      "command_desc": "Enviar un anuncio de noticias a un canal",
+      "title_label": "Título",
+      "title_placeholder": "Ingresa el título de la noticia",
+      "description_label": "Descripción",
+      "description_placeholder": "Ingresa el contenido de la noticia",
+      "category_label": "Categoría",
+      "category_placeholder": "ej. Actualización, Evento, Mantenimiento",
+      "channel_label": "Seleccionar Canal",
+      "channel_placeholder": "Elige dónde enviar las noticias",
+      "sent_success": "✅ ¡Noticia enviada exitosamente!",
+      "error": "❌ Error al enviar la noticia: {error}"
+    },
+    "gift_code": {
+      "redeem_link": "Enlace de Canje",
+      "command_desc": "Enviar un código de regalo a todos los canales de códigos de regalo de la alianza",
+      "code_label": "Código de Regalo",
+      "code_placeholder": "Ingresa el código de regalo",
+      "sent_success": "✅ ¡Código de regalo enviado a {count} canales de alianza!",
+      "no_channels": "❌ ¡No se encontraron canales de códigos de regalo!",
+      "error": "❌ Error al enviar el código de regalo: {error}",
+      "embed_title": "🎁 ¡Nuevo Código de Regalo!",
+      "embed_description": "¡Se ha compartido un nuevo código de regalo!",
+      "code_field": "Código",
+      "validity_field": "Válido Hasta",
+      "validity_value": "¡Úsalo mientras dure!",
+      "shared_by": "Compartido por {moderator}"
+    },
+    "no_permission": "❌ ¡Necesitas el rol de Moderador para usar este comando!"
+  }
+}

@@ -259,15 +259,24 @@ class VerificationCog(commands.Cog):
     
     async def handle_alliance_role_selection(self, interaction: discord.Interaction, role: str):
         """Gestisce la selezione del ruolo nell'alleanza"""
+        print(f"=== INIZIO handle_alliance_role_selection per {interaction.user.name} - Ruolo: {role} ===")
         await interaction.response.defer()
         member = interaction.user
         
-        # Aggiorna ruolo alleanza nel database
-        await self.db.update_user_alliance(member.id, alliance_role=role)
-        await self.db.update_user_verification_step(member.id, 'completed')
-        
-        # Completa setup con alleanza
-        await self.complete_setup(interaction, alliance_type="alliance", alliance_role=role)
+        try:
+            # Aggiorna ruolo alleanza nel database
+            await self.db.update_user_alliance(member.id, alliance_role=role)
+            await self.db.update_user_verification_step(member.id, 'completed')
+            print(f"Database aggiornato per {member.name} - Ruolo: {role}")
+            
+            # Completa setup con alleanza
+            await self.complete_setup(interaction, alliance_type="alliance", alliance_role=role)
+            print(f"=== FINE handle_alliance_role_selection per {member.name} - SUCCESSO ===")
+        except Exception as e:
+            print(f"=== ERRORE in handle_alliance_role_selection per {member.name}: {e} ===")
+            import traceback
+            traceback.print_exc()
+            await interaction.followup.send(t("errors.generic", "en"), ephemeral=True)
     
     async def complete_setup(self, interaction: discord.Interaction, alliance_type: str, alliance_role: str = None):
         """Completa il setup dell'utente"""
@@ -401,16 +410,25 @@ class VerificationCog(commands.Cog):
             pass
         
         # Crea canale personale permanente
+        print(f"Creando canale personale per {member.name}...")
         personal_channel_name = f"private-{game_nickname}"
-        personal_channel = await setup_member_channel(
-            guild,
-            member,
-            "Personal Channels",
-            personal_channel_name
-        )
-        
-        # Aggiorna canale personale nel database
-        await self.db.update_user_channels(member.id, personal_channel_id=personal_channel.id)
+        try:
+            personal_channel = await setup_member_channel(
+                guild,
+                member,
+                "Personal Channels",
+                personal_channel_name
+            )
+            print(f"Canale personale creato: {personal_channel.name}")
+            
+            # Aggiorna canale personale nel database
+            await self.db.update_user_channels(member.id, personal_channel_id=personal_channel.id)
+            print(f"Database aggiornato con canale personale per {member.name}")
+        except Exception as e:
+            print(f"ERRORE creazione canale personale per {member.name}: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
         
         # Invia messaggio di benvenuto nel canale personale - SEMPRE IN INGLESE
         welcome_embed = discord.Embed(

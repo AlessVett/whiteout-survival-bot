@@ -11,7 +11,16 @@ class LanguageSelectView(ui.View):
         # Add language buttons
         languages = [
             ("🇬🇧", "English", "en"),
-            ("🇮🇹", "Italiano", "it")
+            ("🇮🇹", "Italiano", "it"),
+            ("🇰🇷", "한국어", "ko"),
+            ("🇨🇳", "中文", "zh"),
+            ("🇯🇵", "日本語", "ja"),
+            ("🇸🇦", "العربية", "ar"),
+            ("🇪🇸", "Español", "es"),
+            ("🇩🇪", "Deutsch", "de"),
+            ("🇫🇷", "Français", "fr"),
+            ("🇷🇺", "Русский", "ru"),
+            ("🇺🇦", "Українська", "uk")
         ]
         
         for emoji, label, code in languages:

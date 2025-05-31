@@ -45,6 +45,22 @@ class CRMBot(commands.Bot):
         print(f'{self.user} è online!')
         print(f'ID Bot: {self.user.id}')
         
+        # Verifica che il bot sia nel server autorizzato
+        authorized_guild = self.get_guild(Config.GUILD_ID)
+        if not authorized_guild:
+            print(f"❌ ERRORE: Il bot non è nel server autorizzato (ID: {Config.GUILD_ID})")
+            print("❌ Il bot si spegnerà per motivi di sicurezza.")
+            await self.close()
+            return
+        
+        print(f"✅ Bot autorizzato per il server: {authorized_guild.name} (ID: {authorized_guild.id})")
+        
+        # Lascia tutti i server non autorizzati
+        for guild in self.guilds:
+            if guild.id != Config.GUILD_ID:
+                print(f"⚠️ Uscendo dal server non autorizzato: {guild.name} (ID: {guild.id})")
+                await guild.leave()
+        
         # Imposta presenza
         await self.change_presence(
             activity=discord.Activity(
@@ -57,12 +73,21 @@ class CRMBot(commands.Bot):
         self.cron_manager = CronManager(self)
         await self.cron_manager.start()
         
-        # Sincronizza i comandi slash
+        # Sincronizza i comandi slash solo per il guild autorizzato
         try:
-            synced = await self.tree.sync()
-            print(f"Sincronizzati {len(synced)} comandi slash")
+            synced = await self.tree.sync(guild=authorized_guild)
+            print(f"Sincronizzati {len(synced)} comandi slash per {authorized_guild.name}")
         except Exception as e:
             print(f"Errore sincronizzazione comandi: {e}")
+    
+    async def on_guild_join(self, guild):
+        """Quando il bot viene aggiunto a un nuovo server"""
+        if guild.id != Config.GUILD_ID:
+            print(f"⚠️ Tentativo di aggiunta a server non autorizzato: {guild.name} (ID: {guild.id})")
+            print(f"⚠️ Uscendo dal server...")
+            await guild.leave()
+        else:
+            print(f"✅ Aggiunto al server autorizzato: {guild.name}")
     
     async def close(self):
         """Chiudi connessioni prima di spegnere il bot"""

@@ -1,0 +1,221 @@
+{
+  "language": {
+    "choose": "Veuillez sélectionner votre langue préférée :",
+    "selected": "Langue définie en français"
+  },
+  "welcome": {
+    "title": "Bienvenue sur WhiteoutSurvival SvS CRM !",
+    "description": "Pour commencer, j'ai besoin de vérifier votre identité de jeu."
+  },
+  "verification": {
+    "enter_id": "Veuillez entrer votre ID de jeu :",
+    "invalid_id": "❌ ID invalide. Veuillez entrer un ID correct :",
+    "id_verified": "✅ ID vérifié avec succès !",
+    "in_progress": "⏳ Vérification en cours...",
+    "button": "Vérifier l'ID",
+    "id_help": "Vous pouvez trouver votre ID dans le profil du jeu :",
+    "id_location": "Paramètres → Compte → ID du joueur"
+  },
+  "alliance": {
+    "enter_name": "Entrez le nom de votre alliance :",
+    "button": "Confirmer l'Alliance",
+    "role_created": "Rôle d'alliance créé : {alliance}",
+    "role_assigned": "Vous avez reçu le rôle : {alliance}",
+    "choose_type": "Faites-vous partie d'une alliance dans cet état ?",
+    "type_yes": "✅ Oui, je suis dans une alliance",
+    "type_no": "❌ Pas d'alliance",
+    "type_other": "🌍 Autre état",
+    "choose_role": "Sélectionnez votre rôle dans l'alliance :",
+    "role_r5": "R5",
+    "role_r4": "R4",
+    "role_r3": "R3",
+    "role_r2": "R2",
+    "role_r1": "R1"
+  },
+  "setup": {
+    "complete": "✅ Configuration terminée !",
+    "complete_description": "Vous avez maintenant accès au serveur. Votre canal personnel restera disponible pour les commandes privées.",
+    "complete_no_alliance": "Vous avez été enregistré sans alliance.",
+    "complete_other_state": "Vous avez été enregistré comme joueur d'un autre état."
+  },
+  "errors": {
+    "generic": "❌ Une erreur s'est produite. Veuillez réessayer plus tard.",
+    "api_error": "❌ Erreur lors de la vérification de l'ID. Veuillez réessayer.",
+    "timeout": "⏳ Temps écoulé. Utilisez /start pour continuer le processus de vérification.",
+    "view_timeout": "⏰ Cette interaction a expiré. Utilisez /start pour continuer."
+  },
+  "commands": {
+    "start": {
+      "description": "Démarrer ou reprendre le processus de vérification",
+      "resuming": "📋 Reprise de votre processus de vérification...",
+      "no_channel": "❌ Veuillez utiliser cette commande dans votre canal de vérification.",
+      "already_verified": "✅ Vous êtes déjà vérifié !"
+    },
+    "dashboard": {
+      "description": "Ouvrir votre panneau de contrôle personnel",
+      "title": "🎮 Tableau de Bord Personnel",
+      "change_language": "🌍 Changer de Langue",
+      "change_alliance": "⚔️ Changer d'Alliance",
+      "manage_alliance": "👥 Gérer l'Alliance",
+      "no_permission": "❌ Vous n'avez pas la permission de gérer l'alliance.",
+      "only_personal": "❌ Cette commande ne fonctionne que dans votre canal personnel."
+    }
+  },
+  "personal_channel": {
+    "welcome": "Bienvenue dans votre canal personnel !",
+    "description": "C'est votre espace privé où vous pouvez gérer vos paramètres et recevoir des notifications importantes.",
+    "dashboard_info": "Utilisez `/dashboard` pour ouvrir votre panneau de contrôle où vous pouvez :",
+    "features": "• Changer votre langue\n• Changer votre alliance\n• Gérer les membres de l'alliance (si vous êtes R4 ou R5)"
+  },
+  "alliance_channel": {
+    "welcome": "Bienvenue dans le canal de l'alliance {alliance} !",
+    "description": "C'est le canal privé pour que les membres de l'alliance se coordonnent et communiquent.",
+    "created": "Canal d'alliance créé avec succès."
+  },
+  "alliance_management": {
+    "title": "Gestion de l'Alliance - {alliance}",
+    "members": "Membres",
+    "change_role": "Changer le Rôle",
+    "transfer_leadership": "Transférer le Leadership",
+    "dissolve": "Dissoudre l'Alliance",
+    "manage_events": "📅 Gérer les Événements",
+    "create_channel": "➕ Créer un Canal",
+    "select_member": "Sélectionnez un membre à gérer :",
+    "select_new_role": "Sélectionnez le nouveau rôle pour {member} :",
+    "select_new_leader": "Sélectionnez le nouveau leader R5 :",
+    "confirm_transfer": "⚠️ Êtes-vous sûr de vouloir transférer le leadership à {member} ?",
+    "confirm_dissolve": "⚠️ Êtes-vous sûr de vouloir dissoudre l'alliance ? Cette action ne peut pas être annulée !",
+    "role_changed": "✅ Rôle changé avec succès.",
+    "leadership_transferred": "✅ Leadership transféré avec succès.",
+    "alliance_dissolved": "💔 L'alliance a été dissoute.",
+    "cannot_change_own_role": "❌ Vous ne pouvez pas changer votre propre rôle.",
+    "cannot_change_higher_role": "❌ Vous ne pouvez pas changer le rôle de membres de rang égal ou supérieur.",
+    "r5_abandoned": "⚠️ Le R5 est parti. Le leadership a été automatiquement transféré à {member}."
+  },
+  "events": {
+    "types": {
+      "svs": "Événement SvS",
+      "svs_desc": "Événement de bataille état contre état",
+      "ke": "Événement de Kill",
+      "ke_desc": "Événement de kill pour des points",
+      "trap": "Événement de Pièges",
+      "trap_desc": "Événement de construction de pièges",
+      "bear_trap": "Piège à Ours",
+      "bear_trap_desc": "Événement piège à ours (se répète tous les 2 jours)",
+      "custom": "Événement Personnalisé",
+      "custom_desc": "Créer un événement personnalisé"
+    },
+    "select_type": "Sélectionner le type d'événement",
+    "select_type_prompt": "Quel type d'événement souhaitez-vous créer ?",
+    "create_event": "Créer un Nouvel Événement",
+    "edit_event": "Modifier l'Événement",
+    "name_label": "Nom de l'Événement",
+    "name_placeholder": "Entrez le nom de l'événement",
+    "description_label": "Description (optionnel)",
+    "description_placeholder": "Entrez les détails et instructions de l'événement",
+    "start_time_label": "Heure de Début",
+    "recurring_label": "Récurrent (optionnel)",
+    "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
+    "reminders_label": "Heures de Rappel (optionnel)",
+    "reminders_placeholder": "ex. 0.25, 0.5, 1, 2, 24 (0.25=15min, 0.5=30min)",
+    "invalid_reminders": "❌ Format de rappel invalide. Utilisez des heures séparées par des virgules (ex. 0.25, 0.5, 1, 24)",
+    "no_alliance": "❌ Vous devez être dans une alliance pour créer des événements",
+    "created_success": "✅ Événement '{name}' créé avec succès !",
+    "view_events": "📅 Événements de l'Alliance",
+    "invalid_date_format": "❌ Format de date invalide. Utilisez YYYY-MM-DD HH:MM",
+    "create_new": "➕ Créer un Nouvel Événement",
+    "no_description": "Aucune description fournie",
+    "type": "Type",
+    "start_time": "Heure de Début",
+    "recurring": "Récurrent",
+    "reminders": "Rappels",
+    "status": "Statut",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "created_by": "Créé par : <@{id}>",
+    "deactivate": "Désactiver",
+    "activate": "Activer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirm_delete": "⚠️ Êtes-vous sûr de vouloir supprimer l'événement '{name}' ?",
+    "updated_success": "✅ Événement mis à jour avec succès",
+    "deleted_success": "✅ Événement '{name}' supprimé avec succès",
+    "delete_cancelled": "❌ Suppression annulée",
+    "reminder_title": "Rappel d'Événement",
+    "reminder_description": "**{name}** commence dans {hours} heures !",
+    "started_title": "Événement Commencé !",
+    "started_description": "**{name}** a commencé ! Bonne chance à tous les participants !",
+    "description": "Description",
+    "starts_at": "L'événement commence à"
+  },
+  "alliance_channels": {
+    "general": "général",
+    "reminders": "rappels",
+    "gift_codes": "codes-cadeaux",
+    "r4_r5_only": "r4-r5-seulement",
+    "communications": "communications",
+    "event_prefix": "événement-",
+    "welcome_general": "Bienvenue dans le canal général de {alliance} !",
+    "welcome_reminders": "📅 Ce canal est pour les rappels d'événements et les notifications importantes.",
+    "welcome_gift_codes": "🎁 Partagez les codes cadeaux ici ! Veuillez les marquer lorsqu'ils sont utilisés.",
+    "welcome_r4_r5": "🔒 C'est un canal privé réservé au leadership R4 et R5.",
+    "welcome_communications": "📢 Canal de communications directes pour les annonces importantes.",
+    "welcome_event": "📅 Canal pour l'événement : {event}"
+  },
+  "state_channels": {
+    "r5_council": "conseil-r5",
+    "welcome": "Bienvenue au Conseil R5 de l'État ! Ce canal est pour que tous les leaders R5 se coordonnent."
+  },
+  "channels": {
+    "verify_name": "vérifier-{username}",
+    "personal_name": "privé-{username}",
+    "alliance_name": "alliance-{alliance}",
+    "category_welcome": "Bienvenue",
+    "category_personal": "Canaux Personnels",
+    "category_alliances": "Canaux d'Alliance"
+  },
+  "roles": {
+    "unverified": "Non Vérifié",
+    "verified": "Vérifié",
+    "no_alliance": "Sans Alliance",
+    "other_state": "Autre État"
+  },
+  "common": {
+    "back": "Retour",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "moderator": {
+    "news": {
+      "command_desc": "Envoyer une annonce de nouvelles à un canal",
+      "title_label": "Titre",
+      "title_placeholder": "Entrez le titre des nouvelles",
+      "description_label": "Description",
+      "description_placeholder": "Entrez le contenu des nouvelles",
+      "category_label": "Catégorie",
+      "category_placeholder": "ex. Mise à jour, Événement, Maintenance",
+      "channel_label": "Sélectionner le Canal",
+      "channel_placeholder": "Choisissez où envoyer les nouvelles",
+      "sent_success": "✅ Nouvelles envoyées avec succès !",
+      "error": "❌ Erreur lors de l'envoi des nouvelles : {error}"
+    },
+    "gift_code": {
+      "redeem_link": "Lien d'échange",
+      "command_desc": "Envoyer un code cadeau à tous les canaux de codes cadeaux d'alliance",
+      "code_label": "Code Cadeau",
+      "code_placeholder": "Entrez le code cadeau",
+      "sent_success": "✅ Code cadeau envoyé à {count} canaux d'alliance !",
+      "no_channels": "❌ Aucun canal de codes cadeaux trouvé !",
+      "error": "❌ Erreur lors de l'envoi du code cadeau : {error}",
+      "embed_title": "🎁 Nouveau Code Cadeau !",
+      "embed_description": "Un nouveau code cadeau a été partagé !",
+      "code_field": "Code",
+      "validity_field": "Valide Jusqu'à",
+      "validity_value": "Utilisez-le tant qu'il est valide !",
+      "shared_by": "Partagé par {moderator}"
+    },
+    "no_permission": "❌ Vous avez besoin du rôle Modérateur pour utiliser cette commande !"
+  }
+}

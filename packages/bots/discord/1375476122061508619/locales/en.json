@@ -217,5 +217,35 @@
       "shared_by": "Shared by {moderator}"
     },
     "no_permission": "❌ You need the Moderator role to use this command!"
+  },
+  "privacy": {
+    "title": "🔒 Privacy & Data Management",
+    "description": "Manage your personal data stored by this bot",
+    "view_data": "📄 View My Data",
+    "delete_data": "🗑️ Delete My Data",
+    "privacy_policy": "📋 Privacy Policy",
+    "terms_service": "📜 Terms of Service",
+    "data_overview": "Data Overview",
+    "discord_id": "Discord ID",
+    "game_id": "Game ID",
+    "nickname": "Nickname",
+    "alliance": "Alliance",
+    "alliance_role": "Alliance Role",
+    "language": "Language",
+    "verified": "Verified",
+    "created_at": "Account Created",
+    "last_activity": "Last Activity",
+    "delete_confirmation": "⚠️ Delete All My Data",
+    "delete_warning": "This will permanently delete all your data from our systems. This action cannot be undone!\n\n**What will be deleted:**\n• Your verification status\n• Alliance membership\n• Event history\n• Language preferences\n• All associated records\n\n**Note:** You will need to verify again to use the bot.",
+    "delete_confirm": "🗑️ Yes, Delete Everything",
+    "delete_cancel": "❌ Cancel",
+    "deletion_complete": "✅ Your data has been permanently deleted from our systems.",
+    "no_data": "ℹ️ No data found for your account.",
+    "policy_links": "📚 Legal Documents",
+    "policy_description": "Review our privacy policy and terms of service:",
+    "data_retention": "📅 Data Retention",
+    "retention_info": "Your data is retained while you actively use the bot. Inactive accounts are automatically cleaned after 90 days.",
+    "your_rights": "🛡️ Your Rights",
+    "rights_info": "You have the right to access, correct, export, or delete your personal data at any time using this command."
   }
 }

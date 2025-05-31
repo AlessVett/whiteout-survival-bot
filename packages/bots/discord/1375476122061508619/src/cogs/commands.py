@@ -8,6 +8,7 @@ from src.database import get_database
 from src.views.views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
 from src.views.dashboard_views import DashboardView, AllianceManagementView
 from src.views.alliance_views import AllianceChangeTypeView
+from src.views.privacy_views import PrivacyView
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot):
@@ -176,6 +177,175 @@ class CommandsCog(commands.Cog):
         
         view = DashboardView(lang, user_data, self)
         await interaction.response.send_message(embed=embed, view=view)
+    
+    @app_commands.command(name="privacy", description="Manage your personal data and privacy settings")
+    async def privacy_command(self, interaction: discord.Interaction):
+        """Comando per gestire privacy e dati personali"""
+        member = interaction.user
+        
+        # Recupera dati utente per la lingua
+        user_data = await self.db.get_user(member.id)
+        lang = self.get_user_lang(user_data)
+        
+        # Crea embed principale
+        embed = discord.Embed(
+            title=t("privacy.title", lang),
+            description=t("privacy.description", lang),
+            color=discord.Color.blue()
+        )
+        
+        # Aggiungi informazioni sui diritti
+        embed.add_field(
+            name=t("privacy.your_rights", lang),
+            value=t("privacy.rights_info", lang),
+            inline=False
+        )
+        
+        # Aggiungi informazioni sulla conservazione
+        embed.add_field(
+            name=t("privacy.data_retention", lang),
+            value=t("privacy.retention_info", lang),
+            inline=False
+        )
+        
+        view = PrivacyView(lang, self)
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+    
+    async def handle_view_data(self, interaction: discord.Interaction, lang: str):
+        """Mostra tutti i dati dell'utente"""
+        member = interaction.user
+        user_data = await self.db.get_user(member.id)
+        
+        if not user_data:
+            await interaction.response.send_message(
+                t("privacy.no_data", lang),
+                ephemeral=True
+            )
+            return
+        
+        embed = discord.Embed(
+            title=t("privacy.data_overview", lang),
+            color=discord.Color.blue()
+        )
+        
+        # Dati di base
+        embed.add_field(
+            name=t("privacy.discord_id", lang),
+            value=str(user_data.get('discord_id', 'N/A')),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.game_id", lang),
+            value=str(user_data.get('game_id', 'N/A')),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.nickname", lang),
+            value=user_data.get('game_nickname', 'N/A'),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.alliance", lang),
+            value=user_data.get('alliance', 'None'),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.alliance_role", lang),
+            value=user_data.get('alliance_role', 'N/A'),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.language", lang),
+            value=user_data.get('language', 'en'),
+            inline=True
+        )
+        embed.add_field(
+            name=t("privacy.verified", lang),
+            value="✅ Yes" if user_data.get('verified') else "❌ No",
+            inline=True
+        )
+        
+        # Date se disponibili
+        if user_data.get('created_at'):
+            embed.add_field(
+                name=t("privacy.created_at", lang),
+                value=user_data['created_at'].strftime('%Y-%m-%d %H:%M UTC'),
+                inline=True
+            )
+        if user_data.get('last_activity'):
+            embed.add_field(
+                name=t("privacy.last_activity", lang),
+                value=user_data['last_activity'].strftime('%Y-%m-%d %H:%M UTC'),
+                inline=True
+            )
+        
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    
+    async def handle_delete_data(self, interaction: discord.Interaction, lang: str):
+        """Elimina tutti i dati dell'utente"""
+        member = interaction.user
+        guild = interaction.guild
+        
+        try:
+            # Ottieni dati utente prima della cancellazione
+            user_data = await self.db.get_user(member.id)
+            
+            if user_data:
+                # Rimuovi ruoli Discord se è in un'alleanza
+                if user_data.get('alliance'):
+                    alliance_name = user_data['alliance']
+                    
+                    # Rimuovi ruolo alleanza principale
+                    alliance_role = discord.utils.get(guild.roles, name=alliance_name)
+                    if alliance_role and alliance_role in member.roles:
+                        await member.remove_roles(alliance_role)
+                    
+                    # Rimuovi ruoli R1-R5
+                    for role_name in ["R1", "R2", "R3", "R4", "R5"]:
+                        role = discord.utils.get(guild.roles, name=f"{alliance_name} - {role_name}")
+                        if role and role in member.roles:
+                            await member.remove_roles(role)
+                
+                # Rimuovi ruoli di verifica
+                verified_role = discord.utils.get(guild.roles, name="Verified")
+                if verified_role and verified_role in member.roles:
+                    await member.remove_roles(verified_role)
+                
+                no_alliance_role = discord.utils.get(guild.roles, name="No Alliance")
+                other_state_role = discord.utils.get(guild.roles, name="Other State")
+                
+                if no_alliance_role and no_alliance_role in member.roles:
+                    await member.remove_roles(no_alliance_role)
+                if other_state_role and other_state_role in member.roles:
+                    await member.remove_roles(other_state_role)
+            
+            # Elimina eventi creati dall'utente
+            await self.db.events.delete_many({"creator_id": member.id})
+            
+            # Elimina dati utente dal database
+            await self.db.users.delete_one({"discord_id": member.id})
+            
+            # Elimina canali personali se esistono
+            if user_data and user_data.get('personal_channel_id'):
+                personal_channel = guild.get_channel(user_data['personal_channel_id'])
+                if personal_channel:
+                    await personal_channel.delete()
+            
+            if user_data and user_data.get('verification_channel_id'):
+                verification_channel = guild.get_channel(user_data['verification_channel_id'])
+                if verification_channel:
+                    await verification_channel.delete()
+            
+            await interaction.response.send_message(
+                t("privacy.deletion_complete", lang),
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            await interaction.response.send_message(
+                f"❌ Error during data deletion: {str(e)}",
+                ephemeral=True
+            )
     
     async def handle_language_change(self, interaction: discord.Interaction, new_lang: str):
         """Gestisce il cambio lingua dal dashboard"""
@@ -397,14 +567,31 @@ class CommandsCog(commands.Cog):
         
         try:
             # Ottieni il cog delle statistiche
-            stats_cog = self.bot.get_cog('ServerStatsCog')
+            stats_cog = self.bot.get_cog('ServerStats')
             if stats_cog:
-                await stats_cog.stats.update_stats(interaction.guild)
+                await stats_cog.update_stats(interaction.guild)
                 await interaction.followup.send("✅ Statistiche aggiornate!", ephemeral=True)
             else:
                 await interaction.followup.send("❌ Sistema statistiche non trovato!", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Errore aggiornamento statistiche: {e}", ephemeral=True)
+    
+    @app_commands.command(name="setup_stats", description="[Admin] Setup server statistics channels")
+    @app_commands.default_permissions(administrator=True)
+    async def setup_stats(self, interaction: discord.Interaction):
+        """Setup the statistics channels"""
+        await interaction.response.defer(ephemeral=True)
+        
+        try:
+            # Get stats cog
+            stats_cog = self.bot.get_cog('ServerStats')
+            if stats_cog:
+                await stats_cog.setup_stats_channels(interaction.guild)
+                await interaction.followup.send("✅ Statistics channels setup completed!", ephemeral=True)
+            else:
+                await interaction.followup.send("❌ Statistics system not found!", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Error setting up statistics: {e}", ephemeral=True)
     
     @app_commands.command(name="cleanup_stats", description="[Admin] Clean up duplicate statistics channels")
     @app_commands.default_permissions(administrator=True)
@@ -414,12 +601,12 @@ class CommandsCog(commands.Cog):
         
         try:
             # Ottieni il cog delle statistiche
-            stats_cog = self.bot.get_cog('ServerStatsCog')
+            stats_cog = self.bot.get_cog('ServerStats')
             if stats_cog:
                 # Trova la categoria stats
                 category = discord.utils.get(interaction.guild.categories, name="📊 Server Statistics")
                 if category:
-                    await stats_cog.stats._cleanup_duplicate_stats(category)
+                    await stats_cog._cleanup_duplicate_stats(category)
                     await interaction.followup.send("✅ Pulizia canali duplicati completata!", ephemeral=True)
                 else:
                     await interaction.followup.send("❌ Categoria statistiche non trovata!", ephemeral=True)
@@ -588,7 +775,7 @@ class CommandsCog(commands.Cog):
             
             # Schedule the event
             if hasattr(self.bot, 'cron_manager') and self.bot.cron_manager:
-                await self.bot.cron_manager._schedule_event(event_data)
+                await self.bot.cron_manager.schedule_event(event_data)
                 
                 now = datetime.utcnow()
                 reminder_15min = start_time - timedelta(minutes=15)
@@ -701,6 +888,149 @@ class CommandsCog(commands.Cog):
             
         except Exception as e:
             await interaction.followup.send(f"❌ Error fixing alliance channels: {e}", ephemeral=True)
+    
+    @app_commands.command(name="fix_private_channels", description="[Admin] Fix private channels and stats visibility")
+    @app_commands.default_permissions(administrator=True)
+    async def fix_private_channels(self, interaction: discord.Interaction):
+        """Fix private channels permissions and recreate missing ones"""
+        await interaction.response.defer(ephemeral=True)
+        
+        try:
+            guild = interaction.guild
+            fixed_count = 0
+            recreated_count = 0
+            stats_fixed = False
+            report = []
+            
+            # Fix stats channels visibility first
+            stats_category = discord.utils.get(guild.categories, name="📊 Server Statistics")
+            if not stats_category:
+                # Create stats if they don't exist
+                stats_cog = self.bot.get_cog('ServerStats')
+                if stats_cog:
+                    await stats_cog.setup_stats_channels(guild)
+                    stats_category = discord.utils.get(guild.categories, name="📊 Server Statistics")
+                    report.append("✅ Created Server Statistics category and channels")
+                    stats_fixed = True
+                else:
+                    report.append("❌ Stats system not available")
+            
+            if stats_category:
+                verified_role = discord.utils.get(guild.roles, name="Verified")
+                if verified_role:
+                    # Update permissions for stats category
+                    overwrites = {
+                        guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                        guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True, manage_channels=True),
+                        verified_role: discord.PermissionOverwrite(read_messages=True, send_messages=False)
+                    }
+                    await stats_category.edit(overwrites=overwrites)
+                    
+                    # Apply to all channels in the category
+                    for channel in stats_category.channels:
+                        await channel.edit(overwrites=overwrites)
+                    
+                    stats_fixed = True
+                    report.append("✅ Fixed stats visibility for Verified users")
+                else:
+                    report.append("❌ Verified role not found")
+            
+            # Fix private channels
+            personal_category = discord.utils.get(guild.categories, name="Personal Channels")
+            if not personal_category:
+                # Create category if missing
+                personal_category = await guild.create_category("Personal Channels")
+                report.append("✅ Created Personal Channels category")
+            
+            # Get all users with private channels
+            cursor = self.db.users.find({"personal_channel_id": {"$exists": True, "$ne": None}})
+            users = await cursor.to_list(length=None)
+            
+            for user_data in users:
+                member = guild.get_member(user_data['discord_id'])
+                if not member:
+                    report.append(f"⏭️ User {user_data['discord_id']} not in server")
+                    continue
+                
+                channel_id = user_data.get('personal_channel_id')
+                channel = guild.get_channel(channel_id) if channel_id else None
+                
+                if not channel:
+                    # Recreate missing channel
+                    game_nickname = user_data.get('game_nickname', member.name)
+                    channel_name = f"private-{game_nickname}"
+                    
+                    # Create channel with proper permissions
+                    overwrites = {
+                        guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                        member: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+                        guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    }
+                    
+                    channel = await personal_category.create_text_channel(
+                        name=channel_name,
+                        overwrites=overwrites
+                    )
+                    
+                    # Update database
+                    await self.db.update_user_channels(member.id, personal_channel_id=channel.id)
+                    
+                    # Send welcome message
+                    welcome_embed = discord.Embed(
+                        title="Welcome to your personal channel!",
+                        description="This is your private space where you can manage your settings and receive important notifications.",
+                        color=discord.Color.blue()
+                    )
+                    welcome_embed.add_field(
+                        name="Use `/dashboard` to open your control panel where you can:",
+                        value="• Change your language\n• Change your alliance\n• Manage alliance members (if you're R4 or R5)",
+                        inline=False
+                    )
+                    await channel.send(embed=welcome_embed)
+                    
+                    recreated_count += 1
+                    report.append(f"✅ Recreated channel for {member.display_name}")
+                else:
+                    # Fix permissions if channel exists
+                    overwrites = {
+                        guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                        member: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+                        guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    }
+                    
+                    await channel.edit(overwrites=overwrites)
+                    
+                    # Move to correct category if needed
+                    if channel.category != personal_category:
+                        await channel.edit(category=personal_category)
+                    
+                    fixed_count += 1
+                    report.append(f"✔️ Fixed permissions for {member.display_name}")
+            
+            # Create response embed
+            embed = discord.Embed(
+                title="🔧 Private Channels Fix Report",
+                description=f"**Summary:**\n• Stats Fixed: {'Yes' if stats_fixed else 'No'}\n• Channels Fixed: {fixed_count}\n• Channels Recreated: {recreated_count}",
+                color=discord.Color.green()
+            )
+            
+            # Add detailed report
+            if len(report) > 10:
+                # Truncate if too many
+                report_text = "\n".join(report[:10]) + f"\n... and {len(report)-10} more"
+            else:
+                report_text = "\n".join(report)
+            
+            embed.add_field(
+                name="Details",
+                value=report_text if report_text else "No actions needed",
+                inline=False
+            )
+            
+            await interaction.followup.send(embed=embed, ephemeral=True)
+            
+        except Exception as e:
+            await interaction.followup.send(f"❌ Error fixing private channels: {e}", ephemeral=True)
     
     @app_commands.command(name="fix_r5_council", description="[Admin] Fix R5 council channel permissions")
     @app_commands.default_permissions(administrator=True)

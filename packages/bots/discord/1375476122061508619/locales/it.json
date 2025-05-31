@@ -217,5 +217,35 @@
       "shared_by": "Condiviso da {moderator}"
     },
     "no_permission": "❌ Devi avere il ruolo Moderator per usare questo comando!"
+  },
+  "privacy": {
+    "title": "🔒 Privacy e Gestione Dati",
+    "description": "Gestisci i tuoi dati personali memorizzati da questo bot",
+    "view_data": "📄 Visualizza i Miei Dati",
+    "delete_data": "🗑️ Elimina i Miei Dati",
+    "privacy_policy": "📋 Privacy Policy",
+    "terms_service": "📜 Termini di Servizio",
+    "data_overview": "Panoramica Dati",
+    "discord_id": "ID Discord",
+    "game_id": "ID Gioco",
+    "nickname": "Nickname",
+    "alliance": "Alleanza",
+    "alliance_role": "Ruolo Alleanza",
+    "language": "Lingua",
+    "verified": "Verificato",
+    "created_at": "Account Creato",
+    "last_activity": "Ultima Attività",
+    "delete_confirmation": "⚠️ Elimina Tutti i Miei Dati",
+    "delete_warning": "Questo eliminerà permanentemente tutti i tuoi dati dai nostri sistemi. Questa azione non può essere annullata!\n\n**Cosa sarà eliminato:**\n• Il tuo stato di verifica\n• Appartenenza all'alleanza\n• Cronologia eventi\n• Preferenze linguistiche\n• Tutti i record associati\n\n**Nota:** Dovrai verificarti di nuovo per usare il bot.",
+    "delete_confirm": "🗑️ Sì, Elimina Tutto",
+    "delete_cancel": "❌ Annulla",
+    "deletion_complete": "✅ I tuoi dati sono stati eliminati permanentemente dai nostri sistemi.",
+    "no_data": "ℹ️ Nessun dato trovato per il tuo account.",
+    "policy_links": "📚 Documenti Legali",
+    "policy_description": "Consulta la nostra privacy policy e i termini di servizio:",
+    "data_retention": "📅 Conservazione Dati",
+    "retention_info": "I tuoi dati vengono conservati mentre usi attivamente il bot. Gli account inattivi vengono puliti automaticamente dopo 90 giorni.",
+    "your_rights": "🛡️ I Tuoi Diritti",
+    "rights_info": "Hai il diritto di accedere, correggere, esportare o eliminare i tuoi dati personali in qualsiasi momento usando questo comando."
   }
 }

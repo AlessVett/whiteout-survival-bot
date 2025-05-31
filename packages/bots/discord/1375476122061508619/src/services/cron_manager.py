@@ -39,6 +39,11 @@ class CronManager:
         self.tasks.clear()
         logger.info("CronManager stopped")
     
+    async def schedule_event(self, event: Dict[str, Any]):
+        """Public method to schedule a single event"""
+        print(f"CronManager: Scheduling event '{event['name']}'")
+        await self._schedule_event_reminders(event)
+    
     async def _cron_loop(self):
         """Main cron loop that checks for events and schedules reminders"""
         print("CronManager: Loop principale avviato")
@@ -276,8 +281,12 @@ class CronManager:
             
             embed.set_footer(text="Event starts at")
             
-            # Send reminder
-            await channel.send(embed=embed)
+            # Get alliance role for mention
+            alliance_role = discord.utils.get(channel.guild.roles, name=event['alliance'])
+            mention_text = alliance_role.mention if alliance_role else f"@{event['alliance']}"
+            
+            # Send reminder with alliance mention
+            await channel.send(content=mention_text, embed=embed)
             
             # Also send to alliance reminders channel if exists
             reminders_channel_name = f"{event['alliance'].lower()}-reminders"
@@ -286,7 +295,7 @@ class CronManager:
                 name=reminders_channel_name
             )
             if reminders_channel and reminders_channel.id != channel.id:
-                await reminders_channel.send(embed=embed)
+                await reminders_channel.send(content=mention_text, embed=embed)
             
         except Exception as e:
             logger.error(f"Error sending reminder: {e}")
@@ -317,8 +326,12 @@ class CronManager:
                     inline=False
                 )
             
-            # Send notification
-            await channel.send(embed=embed)
+            # Get alliance role for mention
+            alliance_role = discord.utils.get(channel.guild.roles, name=event['alliance'])
+            mention_text = alliance_role.mention if alliance_role else f"@{event['alliance']}"
+            
+            # Send notification with alliance mention
+            await channel.send(content=mention_text, embed=embed)
             
         except Exception as e:
             logger.error(f"Error sending event started notification: {e}")

@@ -11,14 +11,81 @@ class ServerStats(commands.Cog):
         self.db = get_database()
         self.stats_category_name = "📊 Server Statistics"
         self.update_interval = 15  # Update every 15 seconds
+        self.update_stats_task.start()
+    
+    def cog_unload(self):
+        self.update_stats_task.cancel()
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        """Setup stats channels when bot is ready"""
+        for guild in self.bot.guilds:
+            await self.setup_stats_channels(guild)
+    
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        """Update stats when member joins"""
+        await self.update_stats(member.guild)
+    
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        """Update stats when member leaves"""
+        await self.update_stats(member.guild)
+    
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        """Update stats when member roles change"""
+        if before.roles != after.roles:
+            await self.update_stats(after.guild)
+    
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        """Update online count when presence changes"""
+        if before.status != after.status:
+            # Only update if status changed from/to offline
+            if before.status == discord.Status.offline or after.status == discord.Status.offline:
+                await self.update_stats(after.guild)
+    
+    @tasks.loop(seconds=15)
+    async def update_stats_task(self):
+        """Periodically update all stats"""
+        print("Updating server statistics...")
+        for guild in self.bot.guilds:
+            await self.update_stats(guild)
+    
+    @update_stats_task.before_loop
+    async def before_update_stats(self):
+        await self.bot.wait_until_ready()
         
     async def setup_stats_channels(self, guild: discord.Guild):
         """Setup all statistics channels"""
         # Find or create statistics category
         category = discord.utils.get(guild.categories, name=self.stats_category_name)
         if not category:
+            # Create overwrites for category
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(
+                    read_messages=False,
+                    view_channel=False
+                ),
+                guild.me: discord.PermissionOverwrite(
+                    read_messages=True,
+                    view_channel=True,
+                    manage_channels=True
+                )
+            }
+            
+            # Add verified role permission if it exists
+            verified_role = discord.utils.get(guild.roles, name="Verified")
+            if verified_role:
+                overwrites[verified_role] = discord.PermissionOverwrite(
+                    read_messages=True,
+                    view_channel=True
+                )
+            
             category = await guild.create_category(
                 self.stats_category_name,
+                overwrites=overwrites,
                 position=0  # Put at top
             )
         
@@ -107,7 +174,7 @@ class ServerStats(commands.Cog):
                 overwrites = {
                     guild.default_role: discord.PermissionOverwrite(
                         connect=False,
-                        view_channel=True
+                        view_channel=False
                     ),
                     guild.me: discord.PermissionOverwrite(
                         connect=True,
@@ -115,6 +182,14 @@ class ServerStats(commands.Cog):
                         manage_channels=True
                     )
                 }
+                
+                # Add verified role permission if it exists
+                verified_role = discord.utils.get(guild.roles, name="Verified")
+                if verified_role:
+                    overwrites[verified_role] = discord.PermissionOverwrite(
+                        connect=False,
+                        view_channel=True
+                    )
                 
                 await guild.create_voice_channel(
                     name=channel_name,
@@ -301,55 +376,5 @@ class ServerStats(commands.Cog):
                 print(f"Errore eliminazione canale {channel.name}: {e}")
 
 
-class ServerStatsCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.stats = ServerStats(bot)
-        self.update_stats_task.start()
-    
-    def cog_unload(self):
-        self.update_stats_task.cancel()
-    
-    @commands.Cog.listener()
-    async def on_ready(self):
-        """Setup stats channels when bot is ready"""
-        for guild in self.bot.guilds:
-            await self.stats.setup_stats_channels(guild)
-    
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        """Update stats when member joins"""
-        await self.stats.update_stats(member.guild)
-    
-    @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        """Update stats when member leaves"""
-        await self.stats.update_stats(member.guild)
-    
-    @commands.Cog.listener()
-    async def on_member_update(self, before, after):
-        """Update stats when member roles change"""
-        if before.roles != after.roles:
-            await self.stats.update_stats(after.guild)
-    
-    @commands.Cog.listener()
-    async def on_presence_update(self, before, after):
-        """Update online count when presence changes"""
-        if before.status != after.status:
-            # Only update if status changed from/to offline
-            if before.status == discord.Status.offline or after.status == discord.Status.offline:
-                await self.stats.update_stats(after.guild)
-    
-    @tasks.loop(seconds=15)
-    async def update_stats_task(self):
-        """Periodically update all stats"""
-        for guild in self.bot.guilds:
-            await self.stats.update_stats(guild)
-    
-    @update_stats_task.before_loop
-    async def before_update_stats(self):
-        await self.bot.wait_until_ready()
-
-
 async def setup(bot):
-    await bot.add_cog(ServerStatsCog(bot))
+    await bot.add_cog(ServerStats(bot))
