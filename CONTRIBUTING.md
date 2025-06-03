@@ -87,7 +87,7 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
 # Configure .env with Discord credentials
-python src/bot.py
+python main.py
 ```
 
 #### Telegram Bot (Future)
