@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Issue
+    url: mailto:support@wos-2630.fun
+    about: Please report security vulnerabilities via email
+  - name: Discord Community
+    url: https://discord.gg/your-invite-link
+    about: Join our Discord server for general questions and discussions
+  - name: Documentation
+    url: https://github.com/AlessVett/whiteout-survival-bot/wiki
+    about: Check our documentation for setup and usage guides
