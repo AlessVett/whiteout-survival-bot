@@ -26,6 +26,31 @@ updates:
           - "minor"
           - "patch"
 
+  - package-ecosystem: "pip"
+    directory: "packages/global/captcha-solver"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "AlessVett"
+    assignees:
+      - "AlessVett"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+    groups:
+      python-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
   # Future: GitHub Actions dependencies when workflows are added
   # - package-ecosystem: "github-actions"
   #   directory: "/"
