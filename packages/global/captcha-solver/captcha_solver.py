@@ -3,6 +3,7 @@ from PIL import Image
 from torchvision import transforms
 import string
 from model import CaptchaCNN
+import os
 
 class CaptchaSolver:
     def __init__(self, model_path='best_captcha_model.pth'):
@@ -62,13 +63,16 @@ class CaptchaSolver:
 
 def test_solver():
     solver = CaptchaSolver()
+
+    letters_dir = 'letters'
     
     test_images = [
-        'letters/226md.png',
-        'letters/22d5n.png', 
-        'letters/2356g.png'
+        f'{letters_dir}/{f}' for f in os.listdir(letters_dir)
+        if f.endswith('.png') or f.endswith('.jpg')
     ]
-    
+
+    counter = 0
+
     for img_path in test_images:
         try:
             prediction, confidence = solver.solve(img_path)
@@ -79,8 +83,15 @@ def test_solver():
             print(f"Confidence: {[f'{c:.3f}' for c in confidence]}")
             print(f"Correct: {prediction.lower() == actual.lower()}")
             print("-" * 50)
+            if len(prediction) > len(actual):
+                prediction = prediction[:len(actual)]
+
+            if prediction.lower() == actual.lower():
+                counter += 1
         except Exception as e:
             print(f"Error processing {img_path}: {e}")
+
+    print(f"Total correct predictions: {counter}/{len(test_images)}")
 
 if __name__ == "__main__":
     test_solver()
