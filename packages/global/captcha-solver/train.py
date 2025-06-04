@@ -100,4 +100,4 @@ def train_model(data_dir, epochs=50, batch_size=32, learning_rate=0.001):
 
 if __name__ == "__main__":
     data_dir = "letters"
-    model = train_model(data_dir, epochs=1000, batch_size=16, learning_rate=0.001)
+    model = train_model(data_dir, epochs=4000, batch_size=16, learning_rate=0.001)

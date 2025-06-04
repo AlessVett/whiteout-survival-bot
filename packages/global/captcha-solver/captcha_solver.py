@@ -77,14 +77,16 @@ def test_solver():
         try:
             prediction, confidence = solver.solve(img_path)
             actual = img_path.split('/')[-1].split('.')[0]
+
+            if len(prediction) > len(actual):
+                prediction = prediction[:len(actual)]
+
             print(f"Image: {img_path}")
             print(f"Actual: {actual}")
             print(f"Predicted: {prediction}")
             print(f"Confidence: {[f'{c:.3f}' for c in confidence]}")
             print(f"Correct: {prediction.lower() == actual.lower()}")
             print("-" * 50)
-            if len(prediction) > len(actual):
-                prediction = prediction[:len(actual)]
 
             if prediction.lower() == actual.lower():
                 counter += 1
