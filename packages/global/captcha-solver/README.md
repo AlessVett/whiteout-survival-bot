@@ -35,7 +35,7 @@ The system consists of four main components:
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/AlessVett/whiteout-survival-bot.git
 cd packages/global/captcha-solver
 ```
 
@@ -117,7 +117,7 @@ Supported image formats: PNG, JPG, JPEG
 - **Training Accuracy**: ~99.9%
 - **Validation Accuracy**: ~99.8%
 - **Test Set Performance**: Near 100% confidence on most samples
-- **Training Time**: ~4-6 hours on GPU
+- **Training Time**: ~1-2 hours on GPU
 
 ### Character-wise Accuracy
 The model tracks accuracy for each character position:
