@@ -1,15 +1,30 @@
-# 🏔️ WhiteOut Survival Discord Bot
+# 🏔️ WhiteOut Survival Discord Bot - Microservice
 
-> A comprehensive Discord bot designed for WhiteOut Survival alliances, featuring automated player verification, alliance management, event scheduling, and cross-alliance coordination.
+> **✅ LIVE & OPERATIONAL** - A production-ready Discord bot microservice for WhiteOut Survival alliances, running as part of the DWOS distributed platform with FastAPI integration, health monitoring, and scalable architecture.
 
 [![Discord.py](https://img.shields.io/badge/discord.py-2.3.2-blue.svg)](https://github.com/Rapptz/discord.py)
 [![Python](https://img.shields.io/badge/python-3.11+-yellow.svg)](https://www.python.org)
 [![MongoDB](https://img.shields.io/badge/mongodb-7.0-green.svg)](https://www.mongodb.com)
-[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com)
+[![FastAPI](https://img.shields.io/badge/fastapi-microservice-red.svg)](https://fastapi.tiangolo.com)
+[![Docker](https://img.shields.io/badge/docker-swarm--ready-blue.svg)](https://www.docker.com)
 
-## 🎯 Introduction
+## 🚀 **Microservice Status**
 
-This bot transforms your Discord server into a powerful management hub for WhiteOut Survival alliances. It automates player verification through the game's API, creates organized alliance channels, manages events with reminders, and facilitates state-wide coordination between R5 leaders.
+**Current Status**: ✅ **ONLINE & HEALTHY**  
+**Service Port**: `8001`  
+**Health Endpoint**: `http://localhost:8001/health`  
+**Admin Panel**: `http://localhost:8001/admin/status`  
+
+### 🔧 **Microservice Features**
+- **Health Monitoring**: Real-time process status and health checks
+- **Service Discovery**: Auto-registration with Consul
+- **API Management**: RESTful endpoints for bot control
+- **Hot Reload**: Zero-downtime restarts via API Gateway
+- **Container Ready**: Docker containerization with auto-scaling
+
+## 🎯 **Discord Bot Features**
+
+This bot transforms your Discord server into a powerful management hub for WhiteOut Survival alliances, with enterprise-grade reliability and monitoring.
 
 ### Key Features
 
