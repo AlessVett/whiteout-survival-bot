@@ -1,0 +1,137 @@
+
+services:
+  # API Gateway
+  api-gateway:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=development
+      - DEBUG=True
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+    depends_on:
+      - redis
+      - rabbitmq
+      - consul
+    networks:
+      - dwos-network
+    volumes:
+      - ./:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Discord Bot Microservice
+  discord-bot:
+    build: ./packages/bots/discord/1375476122061508619
+    ports:
+      - "8001:8001"
+    environment:
+      - SERVICE_NAME=discord-bot
+      - SERVICE_PORT=8001
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+      - MONGODB_URI=mongodb://mongodb:27017/
+      - MONGODB_DB=dwos
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - GUILD_ID=${GUILD_ID}
+      - API_KEY=${API_KEY}
+    depends_on:
+      - rabbitmq
+      - consul
+      - mongodb
+    networks:
+      - dwos-network
+    volumes:
+      - ./packages/bots/discord/1375476122061508619:/app
+    restart: unless-stopped
+
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=dwos
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - dwos-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - dwos-network
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - dwos-network
+
+  # Consul for Service Discovery
+  consul:
+    image: hashicorp/consul:latest
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command: agent -server -ui -bootstrap-expect=1 -client=0.0.0.0
+    volumes:
+      - consul_data:/consul/data
+    networks:
+      - dwos-network
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - dwos-network
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - dwos-network
+
+networks:
+  dwos-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
+  rabbitmq_data:
+  consul_data:
+  prometheus_data:
+  grafana_data:
