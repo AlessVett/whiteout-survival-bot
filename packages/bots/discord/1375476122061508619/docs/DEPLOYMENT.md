@@ -15,7 +15,7 @@
 1. **Clone the repository**
    ```bash
    git clone https://github.com/AlessVett/whiteout-survival-bot.git
-   cd packages/bots/discord/1375476122061508619
+   cd whiteout-survival-bot/packages/bots/discord/1375476122061508619
    ```
 
 2. **Configure environment**
