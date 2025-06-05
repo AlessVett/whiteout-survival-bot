@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "DWOS Team", email = "info@dwos.platform"},
+    {name = "DWOS Team", email = "support@wos-2630.fun"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -24,9 +24,9 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/dwos/platform"
-"Bug Tracker" = "https://github.com/dwos/platform/issues"
-"Documentation" = "https://docs.dwos.platform"
+"Homepage" = "https://github.com/AlessVett/whiteout-survival-bot"
+"Bug Tracker" = "https://github.com/AlessVett/whiteout-survival-bot/issues"
+"Documentation" = "https://github.com/AlessVett/whiteout-survival-bot"
 
 [tool.black]
 line-length = 88
