@@ -28,7 +28,7 @@ python-dotenv==1.0.1
 
 # Monitoring and Logging
 prometheus-client==0.21.1
-structlog==24.4.0
+structlog==25.4.0
 
 # Rate Limiting
 slowapi==0.1.9
