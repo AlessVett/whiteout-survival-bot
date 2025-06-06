@@ -9,19 +9,16 @@ class AllianceChangeTypeView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(style=discord.ButtonStyle.success, emoji="✅")
+    @ui.button(label="🏰 Join Alliance", style=discord.ButtonStyle.success, row=0)
     async def alliance_yes(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_yes", self.lang)
         await self.cog.handle_alliance_change_type(interaction, "alliance")
     
-    @ui.button(style=discord.ButtonStyle.danger, emoji="❌")
+    @ui.button(label="🚶‍♂️ No Alliance", style=discord.ButtonStyle.primary, row=0)
     async def alliance_no(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_no", self.lang)
         await self.cog.handle_alliance_change_type(interaction, "no_alliance")
     
-    @ui.button(style=discord.ButtonStyle.secondary, emoji="🌍")
+    @ui.button(label="🌍 Other State", style=discord.ButtonStyle.gray, row=1)
     async def alliance_other(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_other", self.lang)
         await self.cog.handle_alliance_change_type(interaction, "other_state")
 
 class AllianceChangeNameModal(ui.Modal):
@@ -50,7 +47,7 @@ class AllianceChangeNameView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(label="Enter Alliance Name", style=discord.ButtonStyle.success, emoji="⚔️")
+    @ui.button(label="✏️ Enter Alliance Name", style=discord.ButtonStyle.success, row=0)
     async def alliance_button(self, interaction: discord.Interaction, button: ui.Button):
         modal = AllianceChangeNameModal(self.lang, self.cog.handle_alliance_change_name if self.cog else None)
         await interaction.response.send_modal(modal)
@@ -61,13 +58,21 @@ class AllianceChangeRoleView(ui.View):
         self.lang = lang
         self.cog = cog
         
-        # Aggiungi bottoni per ogni ruolo
-        roles = ["R5", "R4", "R3", "R2", "R1"]
-        for role in roles:
+        # Add buttons for each role with enhanced styling
+        roles_info = [
+            ("R5", "👑", discord.ButtonStyle.danger, "Leader"),      # Red for leader
+            ("R4", "⚔️", discord.ButtonStyle.primary, "Officer"),    # Blue for officer  
+            ("R3", "🛡️", discord.ButtonStyle.success, "Elite"),     # Green for elite
+            ("R2", "⚡", discord.ButtonStyle.secondary, "Veteran"),  # Gray for veteran
+            ("R1", "🌱", discord.ButtonStyle.secondary, "Member")    # Gray for member
+        ]
+        
+        for role, emoji, style, title in roles_info:
             button = ui.Button(
-                label=t(f"alliance.role_{role.lower()}", lang),
-                style=discord.ButtonStyle.primary,
-                custom_id=role
+                label=f"{emoji} {role} - {title}",
+                style=style,
+                custom_id=role,
+                row=0 if role in ["R5", "R4"] else 1  # Leadership roles on top
             )
             button.callback = self.make_callback(role)
             self.add_item(button)

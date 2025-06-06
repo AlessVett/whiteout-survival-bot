@@ -40,15 +40,44 @@ class NewsModal(ui.Modal):
         self.add_item(self.category)
     
     async def on_submit(self, interaction: discord.Interaction):
-        # Create news embed
+        # Create enhanced news embed
         embed = discord.Embed(
             title=f"📰 {self.title_input.value}",
-            description=self.description.value,
-            color=discord.Color.blue(),
+            color=0x3498DB,  # Professional blue
             timestamp=datetime.utcnow()
         )
-        embed.add_field(name="Category", value=self.category.value, inline=True)
-        embed.set_footer(text=f"Posted by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+        embed.set_author(
+            name="📢 Official Announcement",
+            icon_url="https://cdn.discordapp.com/emojis/megaphone.gif"
+        )
+        
+        embed.description = (
+            f"┌─────────────────────────────────────┐\n"
+            f"│  **{self.category.value}**         │\n"
+            f"└─────────────────────────────────────┘\n\n"
+            f"{self.description.value}"
+        )
+        
+        embed.add_field(
+            name="📋 Category",
+            value=f"🔸 {self.category.value}",
+            inline=True
+        )
+        embed.add_field(
+            name="👤 Author", 
+            value=f"🔸 {interaction.user.display_name}",
+            inline=True
+        )
+        embed.add_field(
+            name="🕒 Posted",
+            value=f"🔸 <t:{int(datetime.utcnow().timestamp())}:R>",
+            inline=True
+        )
+        
+        embed.set_footer(
+            text="🎯 Official Server News • Stay informed",
+            icon_url=interaction.user.display_avatar.url if interaction.user.display_avatar else None
+        )
         
         # Show channel selection
         view = ChannelSelectView(embed, self.lang)
@@ -133,12 +162,39 @@ class GiftCodeModal(ui.Modal):
                 )
                 return
             
-            # Create gift code embed
+            # Create enhanced gift code embed
             embed = discord.Embed(
-                title=t("moderator.gift_code.embed_title", self.lang),
-                description=t("moderator.gift_code.embed_description", self.lang),
-                color=discord.Color.gold(),
+                title="🎁 " + t("moderator.gift_code.embed_title", self.lang),
+                color=0xFFD700,  # Gold color
                 timestamp=datetime.utcnow()
+            )
+            embed.set_author(
+                name="🎉 Free Gift Code Available!",
+                icon_url="https://cdn.discordapp.com/emojis/gift.gif"
+            )
+            
+            embed.description = (
+                f"┌─────────────────────────────────────┐\n"
+                f"│  **🎁 GIFT CODE ALERT! 🎁**        │\n"
+                f"└─────────────────────────────────────┘\n\n"
+                f"🎯 {t('moderator.gift_code.embed_description', self.lang)}\n\n"
+                f"**🔥 How to Claim:**\n"
+                f"1️⃣ Copy the code below\n"
+                f"2️⃣ Open the game\n"
+                f"3️⃣ Go to Settings → Gift Code\n"
+                f"4️⃣ Enter the code and claim your rewards!"
+            )
+            
+            embed.add_field(
+                name="🎟️ Gift Code",
+                value=f"```\n{self.code.value}\n```",
+                inline=False
+            )
+            
+            embed.add_field(
+                name="⏰ Time Sensitive",
+                value="🚨 **Claim quickly!** Codes may expire or run out of uses",
+                inline=False
             )
             # Link for redeeming the code
             embed.add_field(

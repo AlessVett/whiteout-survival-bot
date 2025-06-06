@@ -235,11 +235,12 @@ class EventListView(ui.View):
     def update_buttons(self):
         self.clear_items()
         
-        # Create new event button
+        # Create new event button - enhanced
         create_btn = ui.Button(
-            label=t("events.create_new", self.lang),
+            label=f"📅 {t('events.create_new', self.lang)}",
             style=discord.ButtonStyle.success,
-            custom_id="create_event"
+            custom_id="create_event",
+            row=0
         )
         create_btn.callback = self.create_event
         self.add_item(create_btn)
@@ -248,10 +249,20 @@ class EventListView(ui.View):
         start_idx = self.current_page * self.events_per_page
         end_idx = min(start_idx + self.events_per_page, len(self.events))
         
+        # Add event type emojis
+        event_emojis = {
+            'svs': '⚔️',
+            'ke': '👑', 
+            'trap': '🪤',
+            'bear_trap': '🐻',
+            'custom': '🎯'
+        }
+        
         for i in range(start_idx, end_idx):
             event = self.events[i]
+            emoji = event_emojis.get(event['type'], '📅')
             btn = ui.Button(
-                label=f"{event['name']} ({event['type'].upper()})",
+                label=f"{emoji} {event['name']}",
                 style=discord.ButtonStyle.primary,
                 custom_id=f"event_{str(event['_id'])}",
                 row=1 + (i - start_idx) // 2
@@ -262,8 +273,8 @@ class EventListView(ui.View):
         # Navigation buttons
         if self.total_pages > 1:
             prev_btn = ui.Button(
-                label="◀",
-                style=discord.ButtonStyle.secondary,
+                label="⏮️ Previous",
+                style=discord.ButtonStyle.gray,
                 disabled=self.current_page == 0,
                 custom_id="prev_page",
                 row=4
@@ -272,7 +283,7 @@ class EventListView(ui.View):
             self.add_item(prev_btn)
             
             page_label = ui.Button(
-                label=f"{self.current_page + 1}/{self.total_pages}",
+                label=f"📄 {self.current_page + 1}/{self.total_pages}",
                 style=discord.ButtonStyle.secondary,
                 disabled=True,
                 row=4
@@ -280,8 +291,8 @@ class EventListView(ui.View):
             self.add_item(page_label)
             
             next_btn = ui.Button(
-                label="▶",
-                style=discord.ButtonStyle.secondary,
+                label="Next ⏭️",
+                style=discord.ButtonStyle.gray,
                 disabled=self.current_page >= self.total_pages - 1,
                 custom_id="next_page",
                 row=4
@@ -373,29 +384,33 @@ class EventDetailView(ui.View):
         self.event = event
         self.lang = lang
         
-        # Toggle active/inactive button
+        # Toggle active/inactive button - enhanced
+        is_active = event.get('active', True)
         toggle_btn = ui.Button(
-            label=t("events.deactivate" if event.get('active', True) else "events.activate", lang),
-            style=discord.ButtonStyle.danger if event.get('active', True) else discord.ButtonStyle.success,
-            custom_id="toggle_active"
+            label=f"{'⏸️ ' if is_active else '▶️ '}{t('events.deactivate' if is_active else 'events.activate', lang)}",
+            style=discord.ButtonStyle.danger if is_active else discord.ButtonStyle.success,
+            custom_id="toggle_active",
+            row=0
         )
         toggle_btn.callback = self.toggle_active
         self.add_item(toggle_btn)
         
-        # Edit button
+        # Edit button - enhanced
         edit_btn = ui.Button(
-            label=t("events.edit", lang),
+            label=f"✏️ {t('events.edit', lang)}",
             style=discord.ButtonStyle.primary,
-            custom_id="edit_event"
+            custom_id="edit_event",
+            row=0
         )
         edit_btn.callback = self.edit_event
         self.add_item(edit_btn)
         
-        # Delete button
+        # Delete button - enhanced
         delete_btn = ui.Button(
-            label=t("events.delete", lang),
+            label=f"🗑️ {t('events.delete', lang)}",
             style=discord.ButtonStyle.danger,
-            custom_id="delete_event"
+            custom_id="delete_event",
+            row=1
         )
         delete_btn.callback = self.delete_event
         self.add_item(delete_btn)
@@ -566,17 +581,19 @@ class ConfirmDeleteView(ui.View):
         self.lang = lang
         
         confirm_btn = ui.Button(
-            label=t("common.confirm", lang),
+            label=f"🗑️ {t('common.confirm', lang)}",
             style=discord.ButtonStyle.danger,
-            custom_id="confirm"
+            custom_id="confirm",
+            row=0
         )
         confirm_btn.callback = self.confirm_delete
         self.add_item(confirm_btn)
         
         cancel_btn = ui.Button(
-            label=t("common.cancel", lang),
-            style=discord.ButtonStyle.secondary,
-            custom_id="cancel"
+            label=f"❌ {t('common.cancel', lang)}",
+            style=discord.ButtonStyle.success,
+            custom_id="cancel",
+            row=0
         )
         cancel_btn.callback = self.cancel
         self.add_item(cancel_btn)

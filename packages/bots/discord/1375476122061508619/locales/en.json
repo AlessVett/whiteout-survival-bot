@@ -9,28 +9,86 @@
   },
   "verification": {
     "enter_id": "Please enter your game ID:",
+    "enter_id_title": "Enter Game ID",
+    "game_id_label": "Game ID",
+    "game_id_placeholder": "123456789",
     "invalid_id": "❌ Invalid ID. Please enter a correct ID:",
     "id_verified": "✅ ID successfully verified!",
+    "id_verified_title": "✅ ID Verified Successfully!",
+    "id_verified_description": "Your game account has been linked successfully.",
+    "id_verification_error": "❌ An error occurred during ID verification. Please try again.",
     "in_progress": "⏳ Verification in progress...",
     "button": "Verify ID",
     "id_help": "You can find your ID in the game profile:",
-    "id_location": "Settings → Account → Player ID"
+    "id_location": "Settings → Account → Player ID",
+    "id_title": "🎮 Game ID Verification",
+    "id_description": "Please enter your Game ID to link your account",
+    "manual_method": "Manual Verification",
+    "api_method": "Automatic Verification",
+    "manual_help_title": "Manual Verification",
+    "manual_help_description": "Enter your game ID manually for verification",
+    "api_help_title": "Automatic Verification",
+    "api_help_description": "Link your account automatically using the game API",
+    "help_title": "Verification Help",
+    "help_description": "Here's how to complete the verification process",
+    "show_tutorial": "Show Tutorial",
+    "tutorial_title": "How to Find Your Game ID",
+    "tutorial_description": "Follow these steps to locate your Game ID:",
+    "tutorial_step1": "Open the game",
+    "tutorial_step2": "Go to Settings",
+    "tutorial_step3": "Select Account",
+    "tutorial_step4": "Find your Player ID",
+    "step": "Step",
+    "max_retries_reached": "Maximum verification attempts reached",
+    "skip_confirm_title": "Skip Verification?",
+    "skip_confirm_description": "Are you sure you want to skip verification? Some features may be limited.",
+    "opening_dashboard": "Opening your dashboard...",
+    "resuming": "Resuming verification process...",
+    "reverify_title": "Re-verify Account",
+    "reverify_confirm": "Are you sure you want to re-verify your account?",
+    "reverify_cancelled": "Re-verification cancelled",
+    "complete_title": "🎉 Verification Complete!",
+    "complete_description": "Welcome! You now have full access to the server."
   },
   "alliance": {
     "enter_name": "Enter your alliance name:",
+    "enter_name_title": "Enter Alliance Name",
+    "enter_name_description": "Please enter the name of your alliance",
+    "enter_name_button": "Enter Alliance",
+    "name_label": "Alliance Name",
+    "name_placeholder": "MyAlliance",
+    "name_requirements": "Requirements",
+    "name_requirements_text": "• 2-50 characters\n• Letters, numbers, spaces allowed",
+    "name_too_short": "❌ Alliance name must be at least 2 characters",
+    "suggestions": "Popular Alliances",
     "button": "Confirm Alliance",
     "role_created": "Alliance role created: {alliance}",
     "role_assigned": "You have been assigned the role: {alliance}",
     "choose_type": "Are you part of an alliance in this state?",
+    "choose_role": "Select your role in the alliance:",
+    "type_title": "⚔️ Alliance Configuration",
+    "type_description": "Select your alliance status",
     "type_yes": "✅ Yes, I'm in an alliance",
     "type_no": "❌ No alliance",
     "type_other": "🌍 Other state",
-    "choose_role": "Select your role in the alliance:",
+    "type_alliance": "Alliance Member",
+    "type_no_alliance": "No Alliance",
+    "type_other_state": "Other State",
+    "type_alliance_description": "I'm a member of an alliance in this state",
+    "type_no_alliance_description": "I play independently without an alliance",
+    "type_other_state_description": "I'm from a different game state",
+    "role_selection_title": "Role Selection",
+    "role_selection_description": "What is your role in the alliance?",
     "role_r5": "R5",
     "role_r4": "R4",
     "role_r3": "R3",
     "role_r2": "R2",
-    "role_r1": "R1"
+    "role_r1": "R1",
+    "role_r5_description": "Alliance Leader (R5) - Full permissions",
+    "role_r4_description": "Officer (R4) - Management permissions",
+    "role_r3_description": "Elite Member (R3) - Trusted member",
+    "role_r2_description": "Senior Member (R2) - Active member",
+    "role_r1_description": "Member (R1) - Standard member"
   },
   "setup": {
     "complete": "✅ Setup complete!",
@@ -40,9 +98,15 @@
   },
   "errors": {
     "generic": "❌ An error occurred. Please try again later.",
+    "generic_error": "❌ An error occurred. Please try again later.",
     "api_error": "❌ Error verifying ID. Please try again.",
     "timeout": "⏳ Time expired. Use /start to continue the verification process.",
-    "view_timeout": "⏰ This interaction has expired. Use /start to continue."
+    "view_timeout": "⏰ This interaction has expired. Use /start to continue.",
+    "verification_cog_not_found": "❌ Verification system is not available at the moment.",
+    "interaction_error": "❌ An error occurred with this interaction.",
+    "modal_error": "❌ An error occurred processing your input.",
+    "not_your_interaction": "❌ This button is not for you!",
+    "cannot_delete": "❌ Cannot delete this message."
   },
   "commands": {
     "start": {
@@ -186,6 +250,30 @@
     "cancel": "Cancel",
     "yes": "Yes",
     "no": "No"
+  },
+  "buttons": {
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
+    "skip": "Skip",
+    "help": "Help",
+    "open_dashboard": "Open Dashboard",
+    "get_help": "Get Help"
+  },
+  "modal": {
+    "submitted": "✅ Information submitted successfully"
+  },
+  "pagination": {
+    "no_items": "No items to display"
+  },
+  "help": {
+    "welcome_title": "Welcome to the Bot!",
+    "welcome_description": "Here are the available commands:"
+  },
+  "dashboard": {
+    "title": "🎛️ Personal Dashboard",
+    "description": "Manage your account settings and preferences"
   },
   "moderator": {
     "news": {

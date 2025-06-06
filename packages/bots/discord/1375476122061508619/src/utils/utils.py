@@ -21,29 +21,26 @@ async def verify_game_id(game_id: str) -> tuple[bool, Optional[dict]]:
 
             async with session.post(f"{Config.GAME_API_URL}", data=form_data) as response:
                 print(f"Status code: {response.status}")
+                print(f"Response headers: {response.headers}")
                 if response.status == 200:
-                    print(response)
-                    data = await response.json()
-                    print(f"Response data: {data}")
-                    #  {
-                    #     "code": 0,
-                    #     "data": {
-                    #         "fid": 409449988,
-                    #         "nickname": "FalteHD",
-                    #         "kid": 2630,
-                    #         "stove_lv": 35,
-                    #         "stove_lv_content": "https:\/\/gof-formal-avatar.akamaized.net\/img\/icon\/stove_lv_1.png",
-                    #         "avatar_image": "https:\/\/gof-formal-avatar.akamaized.net\/avatar\/2025\/04\/10\/llkLk5_1744314924.png",
-                    #         "total_recharge_amount": 0
-                    #     },
-                    #     "msg": "success",
-                    #     "err_code": ""
-                    # }
-                    if data.get("code") == 0 and data["msg"] == "success":
-                        return True, data.get("data", {})
-                    else:
+                    try:
+                        data = await response.json()
+                        print(f"Response data: {data}")
+                        
+                        if data.get("code") == 0 and data.get("msg") == "success":
+                            print("API verification successful!")
+                            return True, data.get("data", {})
+                        else:
+                            print(f"API returned error - code: {data.get('code')}, msg: {data.get('msg')}")
+                            return False, None
+                    except Exception as json_error:
+                        print(f"Failed to parse JSON response: {json_error}")
+                        response_text = await response.text()
+                        print(f"Raw response: {response_text}")
                         return False, None
-                return False, None
+                else:
+                    print(f"HTTP error: {response.status}")
+                    return False, None
     except Exception as e:
         print(f"Errore durante la verifica dell'ID di gioco: {e}")
         return False, None

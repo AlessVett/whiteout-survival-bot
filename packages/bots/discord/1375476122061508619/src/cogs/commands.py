@@ -1,182 +1,261 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+import json
+import io
+from datetime import datetime
 
 from src.config import Config
 from locales import t
-from src.database import get_database
-from src.views.views import LanguageSelectView, VerificationView, AllianceTypeView, AllianceView, AllianceRoleView
+from src.cogs.base import BaseCog
+from src.views.views import LanguageSelectView, VerificationView, AllianceView, AllianceRoleView
+from src.views.verification_views import AllianceSelectionView
 from src.views.dashboard_views import DashboardView, AllianceManagementView
 from src.views.alliance_views import AllianceChangeTypeView
 from src.views.privacy_views import PrivacyView
 
-class CommandsCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.db = get_database()
+class CommandsCog(BaseCog):
+    """Main commands cog with improved error handling and base functionality."""
     
-    def get_user_lang(self, user_data: dict) -> str:
-        """Ottiene la lingua dell'utente dal database o usa default"""
-        return user_data.get('language', 'en') if user_data else 'en'
+    def __init__(self, bot):
+        super().__init__(bot)
     
     @app_commands.command(name="start", description="Start or resume the verification process")
     async def start_command(self, interaction: discord.Interaction):
-        """Comando per avviare o riprendere il processo di verifica"""
-        member = interaction.user
-        guild = interaction.guild
-        
-        # Recupera dati utente
-        user_data = await self.db.get_user(member.id)
-        
-        # Se non esiste, crealo
-        if not user_data:
-            user_data = await self.db.create_user(member.id, member.name)
-        
-        lang = self.get_user_lang(user_data)
-        
-        # Controlla se già verificato
-        if user_data.get('verified'):
-            await interaction.response.send_message(
-                t("commands.start.already_verified", lang), 
-                ephemeral=True
-            )
-            return
-        
-        # Controlla se siamo nel canale giusto
-        if user_data.get('verification_channel_id'):
-            if interaction.channel.id != user_data['verification_channel_id']:
-                await interaction.response.send_message(
-                    t("commands.start.no_channel", lang), 
+        """Start or resume the verification process."""
+        try:
+            member = interaction.user
+            
+            # Get or create user data
+            user_data = await self.ensure_user_exists(member.id, member.name)
+            lang = self.get_user_lang(user_data)
+            
+            # Check if already verified
+            if user_data.get('verified'):
+                await self.send_success_message(
+                    interaction,
+                    "commands.start.already_verified",
+                    lang=lang,
                     ephemeral=True
                 )
                 return
-        
-        # Mostra messaggio di ripresa
-        await interaction.response.send_message(
-            t("commands.start.resuming", lang),
-            ephemeral=True
-        )
-        
-        # Riprendi dal punto giusto basandosi sullo step salvato
-        verification_step = user_data.get('verification_step', 'language_selection')
-        
-        # Importa il cog di verifica per accedere alle sue funzioni
-        verification_cog = self.bot.get_cog('VerificationCog')
-        if not verification_cog:
-            return
-        
-        if verification_step == 'language_selection':
-            # Mostra selezione lingua
-            embed = discord.Embed(
-                title="🌍 Language Selection / Selezione Lingua",
-                description="Please select your preferred language:\nSeleziona la tua lingua preferita:",
-                color=Config.EMBED_COLOR
-            )
-            view = LanguageSelectView(verification_cog)
-            await interaction.followup.send(embed=embed, view=view)
             
-        elif verification_step == 'id_verification':
-            # Mostra richiesta ID
-            embed = discord.Embed(
-                title=t("welcome.title", lang),
-                description=t("welcome.description", lang),
-                color=Config.EMBED_COLOR
+            # Check if we're in the right channel
+            if user_data.get('verification_channel_id'):
+                if interaction.channel.id != user_data['verification_channel_id']:
+                    await self.send_error_message(
+                        interaction,
+                        "commands.start.wrong_channel",
+                        lang=lang,
+                        ephemeral=True
+                )
+                return
+            
+            # Show resuming message
+            await self.send_success_message(
+                interaction,
+                "commands.start.resuming",
+                lang=lang,
+                ephemeral=True
             )
             
-            # Aggiungi informazioni su dove trovare l'ID
+            # Resume from the appropriate step
+            verification_step = user_data.get('verification_step', 'language_selection')
+            
+            # Get verification cog to use its functions
+            verification_cog = self.bot.get_cog('VerificationCog')
+            if not verification_cog:
+                await self.send_error_message(
+                    interaction,
+                    "errors.verification_cog_not_found",
+                    lang=lang,
+                    ephemeral=True
+                )
+                return
+            
+            if verification_step == 'language_selection':
+                # Show language selection
+                embed = discord.Embed(
+                    title="🌍 Language Selection / Selezione Lingua",
+                    description="Please select your preferred language:\nSeleziona la tua lingua preferita:",
+                    color=Config.EMBED_COLOR
+                )
+                view = LanguageSelectView(verification_cog)
+                await interaction.followup.send(embed=embed, view=view)
+                
+            elif verification_step == 'id_verification':
+                # Show ID verification
+                embed = discord.Embed(
+                    title=t("welcome.title", lang),
+                    description=t("welcome.description", lang),
+                    color=Config.EMBED_COLOR
+                )
+                
+                # Add helpful information
+                embed.add_field(
+                    name=t("verification.id_help", lang),
+                    value=t("verification.id_location", lang),
+                    inline=False
+                )
+                
+                # Add tutorial image if configured
+                if Config.PLAYER_ID_TUTORIAL_IMAGE:
+                    embed.set_image(url=Config.PLAYER_ID_TUTORIAL_IMAGE)
+                
+                view = VerificationView(lang, verification_cog)
+                await interaction.followup.send(embed=embed, view=view)
+                
+            elif verification_step == 'alliance_type':
+                # Show alliance type selection
+                embed = discord.Embed(
+                    title=t("verification.id_verified", lang),
+                    description=t("alliance.choose_type", lang),
+                    color=discord.Color.green()
+                )
+                
+                if user_data.get('game_id'):
+                    embed.add_field(name="Game ID", value=user_data['game_id'], inline=True)
+                if user_data.get('game_nickname'):
+                    embed.add_field(name="Nickname", value=user_data['game_nickname'], inline=True)
+                if user_data.get('stove_lv'):
+                    embed.add_field(name="Level", value=f"Lv. {user_data['stove_lv']}", inline=True)
+                
+                view = AllianceSelectionView(
+                    callback=verification_cog.handle_alliance_type_selection,
+                    user_id=interaction.user.id,
+                    lang=lang
+                )
+                await interaction.followup.send(embed=embed, view=view)
+                
+            elif verification_step == 'alliance_selection':
+                # Show alliance name input
+                embed = discord.Embed(
+                    description=t("alliance.enter_name", lang),
+                    color=Config.EMBED_COLOR
+                )
+                view = AllianceView(lang, verification_cog)
+                await interaction.followup.send(embed=embed, view=view)
+                
+            elif verification_step == 'alliance_role':
+                # Show alliance role selection
+                alliance_name = user_data.get('alliance', 'Alliance')
+                embed = discord.Embed(
+                    title=alliance_name,
+                    description=t("alliance.choose_role", lang),
+                    color=Config.EMBED_COLOR
+                )
+                view = AllianceRoleView(lang, verification_cog)
+                await interaction.followup.send(embed=embed, view=view)
+                
+            elif verification_step == 'complete':
+                # User is already verified
+                await self.send_success_message(
+                    interaction,
+                    "commands.start.already_verified",
+                    lang=lang,
+                    ephemeral=True
+                )
+                
+            else:
+                # Unknown step, restart from language selection
+                await self.db.update_user(interaction.user.id, {
+                    'verification_step': 'language_selection'
+                })
+                embed = discord.Embed(
+                    title="🌍 Language Selection / Selezione Lingua",
+                    description="Please select your preferred language:\nSeleziona la tua lingua preferita:",
+                    color=Config.EMBED_COLOR
+                )
+                view = LanguageSelectView(verification_cog)
+                await interaction.followup.send(embed=embed, view=view)
+            
+        except Exception as e:
+            await self.handle_cog_error(interaction, e)
+    
+    @app_commands.command(name="dashboard", description="Open your personal dashboard")
+    async def dashboard_command(self, interaction: discord.Interaction):
+        """Open user dashboard with management options."""
+        try:
+            # Get user data
+            user_data = await self.ensure_user_exists(interaction.user.id, interaction.user.name)
+            lang = self.get_user_lang(user_data)
+            
+            # Check if verified
+            if not user_data.get('verified'):
+                await self.send_error_message(
+                    interaction,
+                    "commands.dashboard.not_verified",
+                    lang=lang,
+                    ephemeral=True
+                )
+                return
+            
+            # Create enhanced dashboard embed
+            embed = discord.Embed(
+                title="🎛️ " + t("dashboard.title", lang),
+                color=0x3498DB  # Professional blue
+            )
+            embed.set_author(
+                name=f"Dashboard • {interaction.user.display_name}",
+                icon_url=interaction.user.display_avatar.url
+            )
+            
+            embed.description = (
+                f"┌────────────────────────────────────┐\n"
+                f"│  **Welcome to your Control Panel** │\n"
+                f"└────────────────────────────────────┘\n\n"
+                f"💫 {t('dashboard.description', lang)}"
+            )
+            
+            # Create profile summary in code block
+            profile_summary = "```yaml\n"
+            profile_summary += f"Game ID: {user_data.get('game_id', 'N/A')}\n"
+            profile_summary += f"Nickname: {user_data.get('game_nickname', 'N/A')}\n"
+            profile_summary += f"Language: {user_data.get('language', 'en').upper()}\n"
+            
+            if user_data.get('alliance'):
+                profile_summary += f"Alliance: {user_data['alliance']}\n"
+                profile_summary += f"Role: {user_data.get('alliance_role', 'N/A')}\n"
+            else:
+                profile_summary += f"Status: Independent Player\n"
+            
+            if user_data.get('verified_at'):
+                verified_date = user_data['verified_at'].strftime('%Y-%m-%d')
+                profile_summary += f"Verified: {verified_date}\n"
+            
+            profile_summary += "```"
+            
             embed.add_field(
-                name=t("verification.id_help", lang),
-                value=t("verification.id_location", lang),
+                name="👤 Your Profile",
+                value=profile_summary,
                 inline=False
             )
             
-            # Aggiungi immagine tutorial se configurata
-            if Config.PLAYER_ID_TUTORIAL_IMAGE:
-                embed.set_image(url=Config.PLAYER_ID_TUTORIAL_IMAGE)
-            
-            view = VerificationView(lang, verification_cog)
-            await interaction.followup.send(embed=embed, view=view)
-            
-        elif verification_step == 'alliance_type_selection':
-            # Mostra selezione tipo alleanza
-            embed = discord.Embed(
-                title=t("verification.id_verified", lang),
-                description=t("alliance.choose_type", lang),
-                color=discord.Color.green()
+            # Add quick actions guide
+            embed.add_field(
+                name="🚀 Quick Actions",
+                value=(
+                    "🌍 **Change Language** - Switch your interface language\n"
+                    "⚔️ **Change Alliance** - Join/leave alliances\n"
+                    "👥 **Manage Alliance** - Leadership tools (R4/R5 only)\n"
+                    "🔒 **Privacy Settings** - Data management options"
+                ),
+                inline=False
             )
             
-            if user_data.get('game_id'):
-                embed.add_field(name="Game ID", value=user_data['game_id'], inline=True)
-            if user_data.get('game_nickname'):
-                embed.add_field(name="Nickname", value=user_data['game_nickname'], inline=True)
-            if user_data.get('stove_lv'):
-                embed.add_field(name="Level", value=f"Lv. {user_data['stove_lv']}", inline=True)
+            embed.set_footer(
+                text="💡 Use the buttons below to manage your account • All changes are instant",
+                icon_url="https://cdn.discordapp.com/emojis/gear.gif"
+            )
+            embed.set_thumbnail(
+                url="https://cdn.discordapp.com/attachments/dashboard_icon.png"
+            )
             
-            view = AllianceTypeView(lang, verification_cog)
-            await interaction.followup.send(embed=embed, view=view)
+            view = DashboardView(lang, user_data, self)
+            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
             
-        elif verification_step == 'alliance_name':
-            # Mostra richiesta nome alleanza
-            embed = discord.Embed(
-                description=t("alliance.enter_name", lang),
-                color=Config.EMBED_COLOR
-            )
-            view = AllianceView(lang, verification_cog)
-            await interaction.followup.send(embed=embed, view=view)
-            
-        elif verification_step == 'alliance_role':
-            # Mostra selezione ruolo
-            alliance_name = user_data.get('alliance', 'Alliance')
-            embed = discord.Embed(
-                title=alliance_name,
-                description=t("alliance.choose_role", lang),
-                color=Config.EMBED_COLOR
-            )
-            view = AllianceRoleView(lang, verification_cog)
-            await interaction.followup.send(embed=embed, view=view)
-    
-    @app_commands.command(name="dashboard", description="Open your personal control panel")
-    async def dashboard_command(self, interaction: discord.Interaction):
-        """Comando per aprire il dashboard personale"""
-        member = interaction.user
-        
-        # Recupera dati utente
-        user_data = await self.db.get_user(member.id)
-        if not user_data:
-            await interaction.response.send_message(
-                "❌ You need to be verified first. Use /start in a verification channel.",
-                ephemeral=True
-            )
-            return
-        
-        lang = self.get_user_lang(user_data)
-        
-        # Controlla se siamo nel canale personale
-        if interaction.channel.id != user_data.get('personal_channel_id'):
-            await interaction.response.send_message(
-                t("commands.dashboard.only_personal", lang),
-                ephemeral=True
-            )
-            return
-        
-        # Crea e mostra dashboard
-        embed = discord.Embed(
-            title=t("commands.dashboard.title", lang),
-            color=Config.EMBED_COLOR
-        )
-        
-        # Mostra info utente
-        embed.add_field(name="Game ID", value=user_data.get('game_id', 'N/A'), inline=True)
-        embed.add_field(name="Nickname", value=user_data.get('game_nickname', 'N/A'), inline=True)
-        
-        if user_data.get('alliance'):
-            embed.add_field(name="Alliance", value=user_data['alliance'], inline=True)
-            embed.add_field(name="Role", value=user_data.get('alliance_role', 'N/A'), inline=True)
-        else:
-            embed.add_field(name="Alliance", value="None", inline=True)
-        
-        view = DashboardView(lang, user_data, self)
-        await interaction.response.send_message(embed=embed, view=view)
+        except Exception as e:
+            await self.handle_cog_error(interaction, e)
     
     @app_commands.command(name="privacy", description="Manage your personal data and privacy settings")
     async def privacy_command(self, interaction: discord.Interaction):
@@ -187,25 +266,52 @@ class CommandsCog(commands.Cog):
         user_data = await self.db.get_user(member.id)
         lang = self.get_user_lang(user_data)
         
-        # Crea embed principale
+        # Create enhanced privacy embed
         embed = discord.Embed(
-            title=t("privacy.title", lang),
-            description=t("privacy.description", lang),
-            color=discord.Color.blue()
+            title="🔒 " + t("privacy.title", lang),
+            color=0xE74C3C  # Red for privacy/security
+        )
+        embed.set_author(
+            name="Privacy & Data Management",
+            icon_url="https://cdn.discordapp.com/emojis/shield.gif"
         )
         
-        # Aggiungi informazioni sui diritti
+        embed.description = (
+            f"┌──────────────────────────────────────┐\n"
+            f"│  **Your Data, Your Control**        │\n"
+            f"└──────────────────────────────────────┘\n\n"
+            f"🛡️ {t('privacy.description', lang)}\n\n"
+            f"**🔐 Data Security Promise:**\n"
+            f"└─ We protect your information with industry-standard security"
+        )
+        
+        # Enhanced rights information
         embed.add_field(
-            name=t("privacy.your_rights", lang),
-            value=t("privacy.rights_info", lang),
+            name="📋 " + t("privacy.your_rights", lang),
+            value=(
+                f"🔍 **View Data** - See all information we store about you\n"
+                f"🗑️ **Delete Data** - Permanently remove your account and data\n"
+                f"📝 **Modify Data** - Update your information anytime\n"
+                f"🚫 **Data Portability** - Request your data in a readable format"
+            ),
             inline=False
         )
         
-        # Aggiungi informazioni sulla conservazione
+        # Enhanced retention info
         embed.add_field(
-            name=t("privacy.data_retention", lang),
-            value=t("privacy.retention_info", lang),
+            name="⏱️ " + t("privacy.data_retention", lang),
+            value=(
+                f"💾 **Active Account**: Data stored while you're an active member\n"
+                f"🗂️ **Inactive Account**: Auto-deleted after 180 days of inactivity\n"
+                f"🔥 **Manual Deletion**: Instant when you request it\n"
+                f"🔒 **Security**: All data encrypted and securely stored"
+            ),
             inline=False
+        )
+        
+        embed.set_footer(
+            text="💡 Use the buttons below to manage your data • GDPR Compliant",
+            icon_url="https://cdn.discordapp.com/emojis/info.gif"
         )
         
         view = PrivacyView(lang, self)
@@ -280,6 +386,100 @@ class CommandsCog(commands.Cog):
             )
         
         await interaction.response.send_message(embed=embed, ephemeral=True)
+    
+    async def handle_export_data(self, interaction: discord.Interaction, lang: str):
+        """Esporta tutti i dati dell'utente in formato JSON"""
+        member = interaction.user
+        user_data = await self.db.get_user(member.id)
+        
+        if not user_data:
+            await interaction.response.send_message(
+                t("privacy.no_data", lang),
+                ephemeral=True
+            )
+            return
+        
+        try:
+            # Defer the response for file processing
+            await interaction.response.defer(ephemeral=True)
+            self.logger.info(f"Starting data export for user {member.id}")
+            
+            # Create export data
+            export_data = {
+                "export_info": {
+                    "exported_by": f"{member.name}#{member.discriminator}",
+                    "export_date": datetime.utcnow().isoformat(),
+                    "format_version": "1.0"
+                },
+                "user_data": {}
+            }
+            
+            # Clean and prepare user data for export
+            for key, value in user_data.items():
+                if key == '_id':
+                    continue  # Skip MongoDB ObjectId
+                if isinstance(value, datetime):
+                    export_data["user_data"][key] = value.isoformat()
+                else:
+                    export_data["user_data"][key] = value
+            
+            # Create JSON file
+            json_data = json.dumps(export_data, indent=2, ensure_ascii=False)
+            
+            # Create a Discord file
+            filename = f"data_export_{member.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+            
+            # Convert string to bytes for Discord file
+            json_bytes = json_data.encode('utf-8')
+            file = discord.File(
+                io.BytesIO(json_bytes),
+                filename=filename
+            )
+            
+            # Success embed
+            embed = discord.Embed(
+                title="📥 Data Export Complete",
+                description="Your personal data export has been generated successfully!",
+                color=0x27AE60  # Green for success
+            )
+            embed.set_author(
+                name="📋 Personal Data Export",
+                icon_url="https://cdn.discordapp.com/emojis/file_cabinet.gif"
+            )
+            
+            embed.add_field(
+                name="📄 File Information",
+                value=f"• **Format**: JSON\n• **Size**: {len(json_data)} characters\n• **Generated**: <t:{int(datetime.utcnow().timestamp())}:R>",
+                inline=False
+            )
+            
+            embed.add_field(
+                name="🔒 Privacy Notice",
+                value="• This file contains all your personal data\n• Keep it secure and don't share publicly\n• Contains sensitive information like Discord ID",
+                inline=False
+            )
+            
+            embed.set_footer(
+                text="💾 File generated on request • Delete after download if needed",
+                icon_url="https://cdn.discordapp.com/emojis/lock.gif"
+            )
+            
+            self.logger.info(f"Sending data export file to user {member.id}, size: {len(json_bytes)} bytes")
+            
+            await interaction.followup.send(
+                embed=embed,
+                file=file,
+                ephemeral=True
+            )
+            
+            self.logger.info(f"Data export sent successfully to user {member.id}")
+            
+        except Exception as e:
+            self.logger.error(f"Error exporting data for user {member.id}: {e}")
+            await interaction.followup.send(
+                "❌ An error occurred while exporting your data. Please try again later.",
+                ephemeral=True
+            )
     
     async def handle_delete_data(self, interaction: discord.Interaction, lang: str):
         """Elimina tutti i dati dell'utente"""

@@ -32,7 +32,7 @@ class CRMBot(commands.Bot):
         # Carica cogs
         cogs_dir = os.path.join(os.path.dirname(__file__), 'cogs')
         for filename in os.listdir(cogs_dir):
-            if filename.endswith('.py') and not filename.startswith('_'):
+            if filename.endswith('.py') and not filename.startswith('_') and filename != 'base.py':
                 await self.load_extension(f'src.cogs.{filename[:-3]}')
                 print(f"Caricato cog: {filename[:-3]}")
         
