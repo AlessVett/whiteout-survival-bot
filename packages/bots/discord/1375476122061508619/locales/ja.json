@@ -4,49 +4,113 @@
     "selected": "言語が日本語に設定されました"
   },
   "welcome": {
-    "title": "WhiteoutSurvival SvS CRMへようこそ！",
+    "title": "WhiteoutSurvival SvSへようこそ！",
     "description": "始めるには、ゲームIDを確認する必要があります。"
   },
   "verification": {
     "enter_id": "ゲームIDを入力してください：",
+    "enter_id_title": "ゲームID入力",
+    "game_id_label": "ゲームID",
+    "game_id_placeholder": "123456789",
     "invalid_id": "❌ 無効なIDです。正しいIDを入力してください：",
     "id_verified": "✅ IDが正常に確認されました！",
+    "id_verified_title": "✅ ID確認完了！",
+    "id_verified_description": "ゲームアカウントが正常にリンクされました。",
+    "id_verification_error": "❌ ID確認中にエラーが発生しました。再試行してください。",
     "in_progress": "⏳ 確認中...",
     "button": "ID確認",
     "id_help": "ゲームプロフィールでIDを確認できます：",
-    "id_location": "設定 → アカウント → プレイヤーID"
+    "id_location": "設定 → アカウント → プレイヤーID",
+    "id_title": "🎮 ゲームID確認",
+    "id_description": "アカウントをリンクするためにゲームIDを入力してください",
+    "manual_method": "手動確認",
+    "api_method": "自動確認",
+    "manual_help_title": "手動確認",
+    "manual_help_description": "確認のためにゲームIDを手動で入力してください",
+    "api_help_title": "自動確認",
+    "api_help_description": "ゲームAPIを使用してアカウントを自動的にリンクします",
+    "help_title": "確認ヘルプ",
+    "help_description": "確認プロセスを完了する方法は以下の通りです",
+    "show_tutorial": "チュートリアルを表示",
+    "tutorial_title": "ゲームIDの見つけ方",
+    "tutorial_description": "ゲームIDを見つけるには以下の手順に従ってください：",
+    "tutorial_step1": "ゲームを開く",
+    "tutorial_step2": "設定に移動",
+    "tutorial_step3": "アカウントを選択",
+    "tutorial_step4": "プレイヤーIDを見つける",
+    "step": "ステップ",
+    "max_retries_reached": "最大確認試行回数に達しました",
+    "skip_confirm_title": "確認をスキップしますか？",
+    "skip_confirm_description": "確認をスキップしてもよろしいですか？一部の機能が制限される場合があります。",
+    "opening_dashboard": "ダッシュボードを開いています...",
+    "resuming": "確認プロセスを再開しています...",
+    "reverify_title": "アカウント再確認",
+    "reverify_confirm": "アカウントを再確認してもよろしいですか？",
+    "reverify_cancelled": "再確認がキャンセルされました",
+    "complete_title": "🎉 確認完了！",
+    "complete_description": "ようこそ！サーバーに完全にアクセスできるようになりました。"
   },
   "alliance": {
     "enter_name": "同盟名を入力してください：",
+    "enter_name_title": "同盟名入力",
+    "enter_name_description": "同盟の名前を入力してください",
+    "enter_name_button": "同盟入力",
+    "name_label": "同盟名",
+    "name_placeholder": "マイアライアンス",
+    "name_requirements": "要件",
+    "name_requirements_text": "• 2-50文字\n• 文字、数字、スペースが使用可能",
+    "name_too_short": "❌ 同盟名は少なくとも2文字である必要があります",
+    "suggestions": "人気の同盟",
     "button": "同盟確認",
     "role_created": "同盟ロールが作成されました：{alliance}",
-    "role_assigned": "ロールが割り当てられました：{alliance}",
+    "role_assigned": "あなたにロールが割り当てられました：{alliance}",
     "choose_type": "この州の同盟に所属していますか？",
+    "choose_role": "同盟での役割を選択してください：",
+    "type_title": "⚔️ 同盟設定",
+    "type_description": "同盟のステータスを選択してください",
     "type_yes": "✅ はい、同盟に所属しています",
     "type_no": "❌ 同盟なし",
     "type_other": "🌍 他の州",
-    "choose_role": "同盟でのロールを選択してください：",
+    "type_alliance": "同盟メンバー",
+    "type_no_alliance": "同盟なし",
+    "type_other_state": "他の州",
+    "type_alliance_description": "この州の同盟のメンバーです",
+    "type_no_alliance_description": "同盟なしで独立してプレイしています",
+    "type_other_state_description": "別のゲーム州出身です",
+    "role_selection_title": "役割選択",
+    "role_selection_description": "同盟での役割は何ですか？",
     "role_r5": "R5",
     "role_r4": "R4",
     "role_r3": "R3",
     "role_r2": "R2",
-    "role_r1": "R1"
+    "role_r1": "R1",
+    "role_r5_description": "同盟リーダー（R5）- 完全な権限",
+    "role_r4_description": "オフィサー（R4）- 管理権限",
+    "role_r3_description": "エリートメンバー（R3）- 信頼できるメンバー",
+    "role_r2_description": "シニアメンバー（R2）- アクティブメンバー",
+    "role_r1_description": "メンバー（R1）- 標準メンバー"
   },
   "setup": {
     "complete": "✅ セットアップ完了！",
-    "complete_description": "サーバーにアクセスできるようになりました。個人チャンネルはプライベートコマンド用に引き続き使用できます。",
+    "complete_description": "サーバーにアクセスできるようになりました。個人チャンネルはプライベートコマンドのために利用可能なままです。",
     "complete_no_alliance": "同盟なしで登録されました。",
-    "complete_other_state": "他州のプレイヤーとして登録されました。"
+    "complete_other_state": "他の州のプレイヤーとして登録されました。"
   },
   "errors": {
-    "generic": "❌ エラーが発生しました。後でもう一度お試しください。",
-    "api_error": "❌ ID確認中にエラーが発生しました。もう一度お試しください。",
+    "generic": "❌ エラーが発生しました。後で再試行してください。",
+    "generic_error": "❌ エラーが発生しました。後で再試行してください。",
+    "api_error": "❌ ID確認エラー。再試行してください。",
     "timeout": "⏳ 時間切れです。/startを使用して確認プロセスを続行してください。",
-    "view_timeout": "⏰ このインタラクションは期限切れです。/startを使用して続行してください。"
+    "view_timeout": "⏰ この操作は期限切れです。/startを使用して続行してください。",
+    "verification_cog_not_found": "❌ 確認システムは現在利用できません。",
+    "interaction_error": "❌ この操作でエラーが発生しました。",
+    "modal_error": "❌ 入力の処理中にエラーが発生しました。",
+    "not_your_interaction": "❌ このボタンはあなたのものではありません！",
+    "cannot_delete": "❌ このメッセージを削除できません。"
   },
   "commands": {
     "start": {
-      "description": "確認プロセスを開始または再開",
+      "description": "確認プロセスを開始または再開する",
       "resuming": "📋 確認プロセスを再開しています...",
       "no_channel": "❌ 確認チャンネルでこのコマンドを使用してください。",
       "already_verified": "✅ すでに確認済みです！"
@@ -58,62 +122,62 @@
       "change_alliance": "⚔️ 同盟変更",
       "manage_alliance": "👥 同盟管理",
       "no_permission": "❌ 同盟を管理する権限がありません。",
-      "only_personal": "❌ このコマンドは個人チャンネルでのみ機能します。"
+      "only_personal": "❌ このコマンドは個人チャンネルでのみ動作します。"
     }
   },
   "personal_channel": {
     "welcome": "個人チャンネルへようこそ！",
-    "description": "ここは設定を管理し、重要な通知を受け取るプライベートスペースです。",
-    "dashboard_info": "`/dashboard`を使用してコントロールパネルを開き、以下を実行できます：",
-    "features": "• 言語を変更\n• 同盟を変更\n• 同盟メンバーを管理（R4またはR5の場合）"
+    "description": "ここは設定を管理し、重要な通知を受け取るためのプライベートスペースです。",
+    "dashboard_info": "`/dashboard`を使用してコントロールパネルを開くと、以下のことができます：",
+    "features": "• 言語の変更\n• 同盟の変更\n• 同盟メンバーの管理（R4またはR5の場合）"
   },
   "alliance_channel": {
     "welcome": "{alliance}同盟チャンネルへようこそ！",
-    "description": "ここは同盟メンバーが調整と交流を行うプライベートチャンネルです。",
+    "description": "これは同盟メンバーが調整とコミュニケーションを行うためのプライベートチャンネルです。",
     "created": "同盟チャンネルが正常に作成されました。"
   },
   "alliance_management": {
     "title": "同盟管理 - {alliance}",
     "members": "メンバー",
-    "change_role": "ロール変更",
-    "transfer_leadership": "リーダーシップ移譲",
+    "change_role": "役割変更",
+    "transfer_leadership": "リーダーシップ移管",
     "dissolve": "同盟解散",
     "manage_events": "📅 イベント管理",
     "create_channel": "➕ チャンネル作成",
-    "select_member": "管理するメンバーを選択：",
-    "select_new_role": "{member}の新しいロールを選択：",
-    "select_new_leader": "新しいR5リーダーを選択：",
-    "confirm_transfer": "⚠️ {member}にリーダーシップを移譲してもよろしいですか？",
-    "confirm_dissolve": "⚠️ 同盟を解散してもよろしいですか？この操作は取り消せません！",
-    "role_changed": "✅ ロールが正常に変更されました。",
-    "leadership_transferred": "✅ リーダーシップが正常に移譲されました。",
+    "select_member": "管理するメンバーを選択してください：",
+    "select_new_role": "{member}の新しい役割を選択してください：",
+    "select_new_leader": "新しいR5リーダーを選択してください：",
+    "confirm_transfer": "⚠️ {member}にリーダーシップを移管してもよろしいですか？",
+    "confirm_dissolve": "⚠️ 同盟を解散してもよろしいですか？この操作は元に戻せません！",
+    "role_changed": "✅ 役割が正常に変更されました。",
+    "leadership_transferred": "✅ リーダーシップが正常に移管されました。",
     "alliance_dissolved": "💔 同盟が解散されました。",
-    "cannot_change_own_role": "❌ 自分のロールは変更できません。",
-    "cannot_change_higher_role": "❌ 同等以上のランクのメンバーのロールは変更できません。",
-    "r5_abandoned": "⚠️ R5が離脱しました。リーダーシップは{member}に自動的に移譲されました。"
+    "cannot_change_own_role": "❌ 自分の役割は変更できません。",
+    "cannot_change_higher_role": "❌ 同等以上のランクのメンバーの役割は変更できません。",
+    "r5_abandoned": "⚠️ R5が離脱しました。リーダーシップが自動的に{member}に移管されました。"
   },
   "events": {
     "types": {
       "svs": "SvSイベント",
       "svs_desc": "州対州バトルイベント",
       "ke": "キルイベント",
-      "ke_desc": "ポイントのためのキルイベント",
+      "ke_desc": "ポイント獲得キルイベント",
       "trap": "トラップイベント",
       "trap_desc": "トラップ建設イベント",
       "bear_trap": "ベアトラップ",
-      "bear_trap_desc": "ベアトラップイベント（2日ごとに繰り返し）",
+      "bear_trap_desc": "ベアトラップイベント（2日毎に繰り返し）",
       "custom": "カスタムイベント",
       "custom_desc": "カスタムイベントを作成"
     },
     "select_type": "イベントタイプを選択",
-    "select_type_prompt": "どのタイプのイベントを作成しますか？",
-    "create_event": "新規イベント作成",
+    "select_type_prompt": "どのようなイベントを作成しますか？",
+    "create_event": "新しいイベントを作成",
     "edit_event": "イベント編集",
     "name_label": "イベント名",
     "name_placeholder": "イベント名を入力",
     "description_label": "説明（オプション）",
     "description_placeholder": "イベントの詳細と指示を入力",
-    "start_time_label": "開始時刻",
+    "start_time_label": "開始時間",
     "recurring_label": "繰り返し（オプション）",
     "recurring_placeholder": "daily, 2days, weekly, biweekly, monthly",
     "reminders_label": "リマインダー時間（オプション）",
@@ -122,11 +186,11 @@
     "no_alliance": "❌ イベントを作成するには同盟に所属している必要があります",
     "created_success": "✅ イベント'{name}'が正常に作成されました！",
     "view_events": "📅 同盟イベント",
-    "invalid_date_format": "❌ 無効な日付形式です。YYYY-MM-DD HH:MM形式を使用してください",
-    "create_new": "➕ 新規イベント作成",
-    "no_description": "説明がありません",
+    "invalid_date_format": "❌ 無効な日付形式です。YYYY-MM-DD HH:MMを使用してください",
+    "create_new": "➕ 新しいイベントを作成",
+    "no_description": "説明が提供されていません",
     "type": "タイプ",
-    "start_time": "開始時刻",
+    "start_time": "開始時間",
     "recurring": "繰り返し",
     "reminders": "リマインダー",
     "status": "ステータス",
@@ -144,33 +208,33 @@
     "reminder_title": "イベントリマインダー",
     "reminder_description": "**{name}**が{hours}時間後に開始されます！",
     "started_title": "イベント開始！",
-    "started_description": "**{name}**が開始されました！参加者の皆様に幸運を！",
+    "started_description": "**{name}**が開始されました！全参加者の健闘を祈ります！",
     "description": "説明",
     "starts_at": "イベント開始時刻"
   },
   "alliance_channels": {
-    "general": "全般",
+    "general": "一般",
     "reminders": "リマインダー",
     "gift_codes": "ギフトコード",
-    "r4_r5_only": "r4-r5-専用",
+    "r4_r5_only": "r4-r5-のみ",
     "communications": "コミュニケーション",
     "event_prefix": "イベント-",
-    "welcome_general": "{alliance}全般チャンネルへようこそ！",
-    "welcome_reminders": "📅 このチャンネルはイベントリマインダーと重要な通知用です。",
-    "welcome_gift_codes": "🎁 ここでギフトコードを共有してください！使用時はマークしてください。",
-    "welcome_r4_r5": "🔒 R4とR5リーダーシップ専用のプライベートチャンネルです。",
-    "welcome_communications": "📢 重要なお知らせのための直接コミュニケーションチャンネルです。",
-    "welcome_event": "📅 イベントチャンネル：{event}"
+    "welcome_general": "{alliance}一般チャンネルへようこそ！",
+    "welcome_reminders": "📅 このチャンネルはイベントリマインダーと重要な通知のためのものです。",
+    "welcome_gift_codes": "🎁 ここでギフトコードを共有してください！使用時にマークしてください。",
+    "welcome_r4_r5": "🔒 これはR4とR5リーダーシップ専用のプライベートチャンネルです。",
+    "welcome_communications": "📢 重要な発表のための直接コミュニケーションチャンネルです。",
+    "welcome_event": "📅 イベント用チャンネル：{event}"
   },
   "state_channels": {
     "r5_council": "r5-評議会",
-    "welcome": "州R5評議会へようこそ！このチャンネルは全R5リーダーが調整するための場所です。"
+    "welcome": "州R5評議会へようこそ！このチャンネルは全てのR5リーダーが調整するためのものです。"
   },
   "channels": {
     "verify_name": "確認-{username}",
     "personal_name": "プライベート-{username}",
     "alliance_name": "同盟-{alliance}",
-    "category_welcome": "ようこそ",
+    "category_welcome": "ウェルカム",
     "category_personal": "個人チャンネル",
     "category_alliances": "同盟チャンネル"
   },
@@ -178,7 +242,7 @@
     "unverified": "未確認",
     "verified": "確認済み",
     "no_alliance": "同盟なし",
-    "other_state": "他州"
+    "other_state": "他の州"
   },
   "common": {
     "back": "戻る",
@@ -187,6 +251,60 @@
     "yes": "はい",
     "no": "いいえ"
   },
+  "buttons": {
+    "back": "戻る",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "skip": "スキップ",
+    "help": "ヘルプ",
+    "open_dashboard": "ダッシュボードを開く",
+    "get_help": "ヘルプを取得"
+  },
+  "modal": {
+    "submitted": "✅ 情報が正常に送信されました"
+  },
+  "pagination": {
+    "no_items": "表示するアイテムがありません"
+  },
+  "help": {
+    "welcome_title": "ボットへようこそ！",
+    "welcome_description": "利用可能なコマンドは以下の通りです："
+  },
+  "dashboard": {
+    "title": "🎛️ 個人ダッシュボード",
+    "description": "アカウント設定と設定を管理する"
+  },
+  "privacy": {
+    "title": "🔒 プライバシーとデータ管理",
+    "description": "このボットが保存するあなたの個人データを管理する",
+    "view_data": "📄 私のデータを表示",
+    "delete_data": "🗑️ 私のデータを削除",
+    "privacy_policy": "📋 プライバシーポリシー",
+    "terms_service": "📜 利用規約",
+    "data_overview": "データ概要",
+    "discord_id": "Discord ID",
+    "game_id": "ゲームID",
+    "nickname": "ニックネーム",
+    "alliance": "同盟",
+    "alliance_role": "同盟役割",
+    "language": "言語",
+    "verified": "確認済み",
+    "created_at": "アカウント作成日",
+    "last_activity": "最終アクティビティ",
+    "delete_confirmation": "⚠️ 私のすべてのデータを削除",
+    "delete_warning": "⚠️ これにより、あなたのすべてのデータが永続的に削除されます。この操作は元に戻せません！",
+    "delete_confirm": "🗑️ はい、すべて削除",
+    "delete_cancel": "❌ キャンセル",
+    "deletion_complete": "✅ あなたのデータはシステムから永続的に削除されました。",
+    "no_data": "ℹ️ あなたのアカウントのデータが見つかりません。",
+    "policy_links": "📚 法的文書",
+    "policy_description": "プライバシーポリシーと利用規約をご確認ください：",
+    "data_retention": "📅 データ保持",
+    "retention_info": "あなたのデータは、ボットを積極的に使用している間保持されます。非アクティブなアカウントは90日後に自動的にクリーンアップされます。",
+    "your_rights": "🛡️ あなたの権利",
+    "rights_info": "このコマンドを使用して、いつでも個人データにアクセス、修正、エクスポート、削除する権利があります。"
+  },
   "moderator": {
     "news": {
       "command_desc": "チャンネルにニュースアナウンスを送信",
@@ -194,9 +312,9 @@
       "title_placeholder": "ニュースタイトルを入力",
       "description_label": "説明",
       "description_placeholder": "ニュース内容を入力",
-      "category_label": "カテゴリー",
+      "category_label": "カテゴリ",
       "category_placeholder": "例：アップデート、イベント、メンテナンス",
-      "channel_label": "チャンネル選択",
+      "channel_label": "チャンネルを選択",
       "channel_placeholder": "ニュースを送信する場所を選択",
       "sent_success": "✅ ニュースが正常に送信されました！",
       "error": "❌ ニュース送信エラー：{error}"
@@ -206,16 +324,16 @@
       "command_desc": "すべての同盟ギフトコードチャンネルにギフトコードを送信",
       "code_label": "ギフトコード",
       "code_placeholder": "ギフトコードを入力",
-      "sent_success": "✅ ギフトコードが{count}個の同盟チャンネルに送信されました！",
+      "sent_success": "✅ ギフトコードが{count}の同盟チャンネルに送信されました！",
       "no_channels": "❌ ギフトコードチャンネルが見つかりません！",
       "error": "❌ ギフトコード送信エラー：{error}",
       "embed_title": "🎁 新しいギフトコード！",
       "embed_description": "新しいギフトコードが共有されました！",
       "code_field": "コード",
       "validity_field": "有効期限",
-      "validity_value": "お早めにご使用ください！",
-      "shared_by": "{moderator}が共有"
+      "validity_value": "有効な限り使用してください！",
+      "shared_by": "{moderator}によって共有"
     },
-    "no_permission": "❌ このコマンドを使用するにはモデレーターロールが必要です！"
+    "no_permission": "❌ このコマンドを使用するにはモデレーター役割が必要です！"
   }
 }

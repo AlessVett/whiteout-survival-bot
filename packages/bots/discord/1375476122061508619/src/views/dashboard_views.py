@@ -14,14 +14,35 @@ class DashboardView(ui.View):
         if user_data and user_data.get('alliance_role') in ['R4', 'R5']:
             self.add_item(ManageAllianceButton())
     
-    @ui.button(label="🌍 Change Language", style=discord.ButtonStyle.primary, row=0)
+    @ui.button(label="🌍 Language", style=discord.ButtonStyle.primary, row=0)
     async def change_language(self, interaction: discord.Interaction, button: ui.Button):
+        embed = discord.Embed(
+            title="🌍 Language Selection",
+            description="Select your preferred language:",
+            color=0x3498DB
+        )
         view = LanguageChangeView(self.cog)
-        await interaction.response.send_message("Select your language:", view=view, ephemeral=True)
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
     
-    @ui.button(label="⚔️ Change Alliance", style=discord.ButtonStyle.secondary, row=0)
+    @ui.button(label="⚔️ Alliance", style=discord.ButtonStyle.success, row=0)
     async def change_alliance(self, interaction: discord.Interaction, button: ui.Button):
         await self.cog.handle_alliance_change(interaction)
+    
+    @ui.button(label="🔒 Privacy", style=discord.ButtonStyle.gray, row=1) 
+    async def privacy_settings(self, interaction: discord.Interaction, button: ui.Button):
+        from src.views.privacy_views import PrivacyView
+        from src.cogs.commands import CommandsCog
+        
+        embed = discord.Embed(
+            title="🔒 Privacy & Data Management",
+            description="Manage your personal data and privacy settings",
+            color=0xE74C3C
+        )
+        
+        commands_cog = interaction.client.get_cog('CommandsCog')
+        if commands_cog:
+            view = PrivacyView(self.lang, commands_cog)
+            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
     
     async def on_timeout(self):
         for item in self.children:
@@ -30,9 +51,9 @@ class DashboardView(ui.View):
 class ManageAllianceButton(ui.Button):
     def __init__(self):
         super().__init__(
-            label="👥 Manage Alliance",
-            style=discord.ButtonStyle.success,
-            row=1
+            label="👥 Manage",
+            style=discord.ButtonStyle.danger,  # Red for admin functions
+            row=0
         )
     
     async def callback(self, interaction: discord.Interaction):
@@ -57,11 +78,19 @@ class LanguageChangeView(ui.View):
             ("🇺🇦", "Українська", "uk")
         ]
         
-        for emoji, label, code in languages:
+        for i, (emoji, label, code) in enumerate(languages):
+            # Use different button styles for visual appeal
+            if i < 4:
+                style = discord.ButtonStyle.primary
+            elif i < 8:
+                style = discord.ButtonStyle.success
+            else:
+                style = discord.ButtonStyle.secondary
+                
             button = ui.Button(
-                label=label,
-                emoji=emoji,
-                style=discord.ButtonStyle.primary
+                label=f"{emoji} {label}",
+                style=style,
+                row=i // 4  # 4 buttons per row
             )
             button.callback = self.make_callback(code)
             self.add_item(button)

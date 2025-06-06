@@ -58,11 +58,29 @@ class AllianceChangeCog(commands.Cog):
         await self.db.update_user_alliance(member.id, alliance_type=new_type)
         
         if new_type == "alliance":
-            # Mostra modal per nome alleanza
+            # Show alliance name entry with enhanced design
             from src.views.alliance_views import AllianceChangeNameView
             embed = discord.Embed(
-                description=t("alliance.enter_name", lang),
-                color=Config.EMBED_COLOR
+                title="⚔️ Alliance Setup",
+                color=0xFF6B35  # Orange for alliance
+            )
+            embed.set_author(
+                name="Step 2/3 • Alliance Name",
+                icon_url="https://cdn.discordapp.com/emojis/castle.gif"
+            )
+            embed.description = (
+                f"┌──────────────────────────────────────┐\n"
+                f"│  **Enter Your Alliance Name**       │\n"
+                f"└──────────────────────────────────────┘\n\n"
+                f"🏰 {t('alliance.enter_name', lang)}\n\n"
+                f"💡 **Tips:**\n"
+                f"• Make sure to spell it correctly\n"
+                f"• Use the exact name as shown in-game\n"
+                f"• Contact support if you need help"
+            )
+            embed.set_footer(
+                text="📝 Click the button below to enter your alliance name",
+                icon_url="https://cdn.discordapp.com/emojis/edit.gif"
             )
             view = AllianceChangeNameView(lang, self)
             await interaction.followup.send(embed=embed, view=view, ephemeral=True)
@@ -84,12 +102,31 @@ class AllianceChangeCog(commands.Cog):
         # Aggiorna alleanza nel database
         await self.db.update_user_alliance(member.id, alliance=alliance_name)
         
-        # Mostra selezione ruolo
+        # Show role selection with enhanced design
         from src.views.alliance_views import AllianceChangeRoleView
         embed = discord.Embed(
-            title=alliance_name,
-            description=t("alliance.choose_role", lang),
-            color=Config.EMBED_COLOR
+            title=f"👑 {alliance_name}",
+            color=0x9B59B6  # Purple for roles/hierarchy
+        )
+        embed.set_author(
+            name="Step 3/3 • Role Selection",
+            icon_url="https://cdn.discordapp.com/emojis/crown.gif"
+        )
+        embed.description = (
+            f"┌─────────────────────────────────────────┐\n"
+            f"│  **Select Your Role in {alliance_name}** │\n"
+            f"└─────────────────────────────────────────┘\n\n"
+            f"🎭 {t('alliance.choose_role', lang)}\n\n"
+            f"**Choose wisely - this affects your permissions:**\n"
+            f"👑 **R5** - Alliance Leader (full permissions)\n"
+            f"⚔️ **R4** - Officer (management permissions)\n"
+            f"🛡️ **R3** - Elite (advanced permissions)\n"
+            f"⚡ **R2** - Veteran (standard permissions)\n"
+            f"🌱 **R1** - Member (basic permissions)"
+        )
+        embed.set_footer(
+            text="⚠️ Your role determines your server access level",
+            icon_url="https://cdn.discordapp.com/emojis/warning.gif"
         )
         view = AllianceChangeRoleView(lang, self)
         await interaction.followup.send(embed=embed, view=view)

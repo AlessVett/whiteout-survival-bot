@@ -89,7 +89,7 @@ class VerificationView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(label="Inserisci ID", style=discord.ButtonStyle.primary, emoji="🎮")
+    @ui.button(label="🎮 Inserisci ID", style=discord.ButtonStyle.success)
     async def verify_button(self, interaction: discord.Interaction, button: ui.Button):
         modal = GameIDModal(self.lang, self.cog.handle_id_verification if self.cog else None)
         await interaction.response.send_modal(modal)
@@ -100,19 +100,16 @@ class AllianceTypeView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(style=discord.ButtonStyle.success, emoji="✅")
+    @ui.button(label="Yes, I'm in an alliance", style=discord.ButtonStyle.success, emoji="✅")
     async def alliance_yes(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_yes", self.lang)
         await self.cog.handle_alliance_type_selection(interaction, "alliance")
     
-    @ui.button(style=discord.ButtonStyle.danger, emoji="❌")
+    @ui.button(label="No alliance", style=discord.ButtonStyle.danger, emoji="❌")
     async def alliance_no(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_no", self.lang)
         await self.cog.handle_alliance_type_selection(interaction, "no_alliance")
     
-    @ui.button(style=discord.ButtonStyle.secondary, emoji="🌍")
+    @ui.button(label="Other state", style=discord.ButtonStyle.secondary, emoji="🌍")
     async def alliance_other(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("alliance.type_other", self.lang)
         await self.cog.handle_alliance_type_selection(interaction, "other_state")
 
 class AllianceView(ui.View):

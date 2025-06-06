@@ -9,28 +9,86 @@
   },
   "verification": {
     "enter_id": "Per favore inserisci il tuo ID di gioco:",
+    "enter_id_title": "Inserisci ID Gioco",
+    "game_id_label": "ID Gioco",
+    "game_id_placeholder": "123456789",
     "invalid_id": "❌ ID non valido. Per favore inserisci un ID corretto:",
     "id_verified": "✅ ID verificato con successo!",
+    "id_verified_title": "✅ ID Verificato con Successo!",
+    "id_verified_description": "Il tuo account di gioco è stato collegato con successo.",
+    "id_verification_error": "❌ Si è verificato un errore durante la verifica dell'ID. Riprova.",
     "in_progress": "⏳ Verifica in corso...",
     "button": "Verifica ID",
     "id_help": "Puoi trovare il tuo ID nelle impostazioni del gioco:",
-    "id_location": "Impostazioni → Account → ID Giocatore"
+    "id_location": "Impostazioni → Account → ID Giocatore",
+    "id_title": "🎮 Verifica ID Gioco",
+    "id_description": "Inserisci il tuo ID Gioco per collegare il tuo account",
+    "manual_method": "Verifica Manuale",
+    "api_method": "Verifica Automatica",
+    "manual_help_title": "Verifica Manuale",
+    "manual_help_description": "Inserisci il tuo ID di gioco manualmente per la verifica",
+    "api_help_title": "Verifica Automatica",
+    "api_help_description": "Collega il tuo account automaticamente usando l'API del gioco",
+    "help_title": "Aiuto Verifica",
+    "help_description": "Ecco come completare il processo di verifica",
+    "show_tutorial": "Mostra Tutorial",
+    "tutorial_title": "Come Trovare il Tuo ID Gioco",
+    "tutorial_description": "Segui questi passaggi per trovare il tuo ID Gioco:",
+    "tutorial_step1": "Apri il gioco",
+    "tutorial_step2": "Vai alle Impostazioni",
+    "tutorial_step3": "Seleziona Account",
+    "tutorial_step4": "Trova il tuo ID Giocatore",
+    "step": "Passo",
+    "max_retries_reached": "Numero massimo di tentativi di verifica raggiunto",
+    "skip_confirm_title": "Saltare la Verifica?",
+    "skip_confirm_description": "Sei sicuro di voler saltare la verifica? Alcune funzionalità potrebbero essere limitate.",
+    "opening_dashboard": "Apertura del tuo dashboard...",
+    "resuming": "Ripresa del processo di verifica...",
+    "reverify_title": "Ri-verifica Account",
+    "reverify_confirm": "Sei sicuro di voler ri-verificare il tuo account?",
+    "reverify_cancelled": "Ri-verifica annullata",
+    "complete_title": "🎉 Verifica Completata!",
+    "complete_description": "Benvenuto! Ora hai accesso completo al server."
   },
   "alliance": {
     "enter_name": "Inserisci il nome della tua alleanza:",
+    "enter_name_title": "Inserisci Nome Alleanza",
+    "enter_name_description": "Inserisci il nome della tua alleanza",
+    "enter_name_button": "Inserisci Alleanza",
+    "name_label": "Nome Alleanza",
+    "name_placeholder": "MiaAlleanza",
+    "name_requirements": "Requisiti",
+    "name_requirements_text": "• 2-50 caratteri\n• Lettere, numeri, spazi consentiti",
+    "name_too_short": "❌ Il nome dell'alleanza deve essere di almeno 2 caratteri",
+    "suggestions": "Alleanze Popolari",
     "button": "Conferma Alleanza",
     "role_created": "Ruolo alleanza creato: {alliance}",
     "role_assigned": "Ti è stato assegnato il ruolo: {alliance}",
     "choose_type": "Sei parte di un'alleanza di questo stato?",
+    "choose_role": "Seleziona il tuo ruolo nell'alleanza:",
+    "type_title": "⚔️ Configurazione Alleanza",
+    "type_description": "Seleziona il tuo stato alleanza",
     "type_yes": "✅ Sì, faccio parte di un'alleanza",
     "type_no": "❌ No alleanza",
     "type_other": "🌍 Altro stato",
-    "choose_role": "Seleziona il tuo ruolo nell'alleanza:",
+    "type_alliance": "Membro Alleanza",
+    "type_no_alliance": "Nessuna Alleanza",
+    "type_other_state": "Altro Stato",
+    "type_alliance_description": "Sono un membro di un'alleanza in questo stato",
+    "type_no_alliance_description": "Gioco indipendentemente senza alleanza",
+    "type_other_state_description": "Provengo da un altro stato di gioco",
+    "role_selection_title": "Selezione Ruolo",
+    "role_selection_description": "Qual è il tuo ruolo nell'alleanza?",
     "role_r5": "R5",
     "role_r4": "R4",
     "role_r3": "R3",
     "role_r2": "R2",
-    "role_r1": "R1"
+    "role_r1": "R1",
+    "role_r5_description": "Leader Alleanza (R5) - Permessi completi",
+    "role_r4_description": "Ufficiale (R4) - Permessi di gestione",
+    "role_r3_description": "Membro Elite (R3) - Membro fidato",
+    "role_r2_description": "Membro Senior (R2) - Membro attivo",
+    "role_r1_description": "Membro (R1) - Membro standard"
   },
   "setup": {
     "complete": "✅ Configurazione completata!",
@@ -40,9 +98,15 @@
   },
   "errors": {
     "generic": "❌ Si è verificato un errore. Riprova più tardi.",
+    "generic_error": "❌ Si è verificato un errore. Riprova più tardi.",
     "api_error": "❌ Errore nella verifica dell'ID. Riprova.",
     "timeout": "⏳ Tempo scaduto. Usa /start per continuare il processo di verifica.",
-    "view_timeout": "⏰ Questa interazione è scaduta. Usa /start per continuare."
+    "view_timeout": "⏰ Questa interazione è scaduta. Usa /start per continuare.",
+    "verification_cog_not_found": "❌ Il sistema di verifica non è disponibile al momento.",
+    "interaction_error": "❌ Si è verificato un errore con questa interazione.",
+    "modal_error": "❌ Si è verificato un errore nell'elaborazione del tuo input.",
+    "not_your_interaction": "❌ Questo pulsante non è per te!",
+    "cannot_delete": "❌ Impossibile eliminare questo messaggio."
   },
   "commands": {
     "start": {
@@ -186,6 +250,30 @@
     "cancel": "Annulla",
     "yes": "Sì",
     "no": "No"
+  },
+  "buttons": {
+    "back": "Indietro",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "skip": "Salta",
+    "help": "Aiuto",
+    "open_dashboard": "Apri Dashboard",
+    "get_help": "Ottieni Aiuto"
+  },
+  "modal": {
+    "submitted": "✅ Informazioni inviate con successo"
+  },
+  "pagination": {
+    "no_items": "Nessun elemento da visualizzare"
+  },
+  "help": {
+    "welcome_title": "Benvenuto nel Bot!",
+    "welcome_description": "Ecco i comandi disponibili:"
+  },
+  "dashboard": {
+    "title": "🎛️ Dashboard Personale",
+    "description": "Gestisci le impostazioni e le preferenze del tuo account"
   },
   "moderator": {
     "news": {

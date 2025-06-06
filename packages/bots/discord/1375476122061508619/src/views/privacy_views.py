@@ -11,48 +11,89 @@ class PrivacyView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(label="📄 View My Data", style=discord.ButtonStyle.primary, row=0)
+    @ui.button(label="🔍 View Data", style=discord.ButtonStyle.primary, row=0)
     async def view_data(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("privacy.view_data", self.lang)
         await self.cog.handle_view_data(interaction, self.lang)
     
+    @ui.button(label="📥 Export Data", style=discord.ButtonStyle.secondary, row=0)
+    async def export_data(self, interaction: discord.Interaction, button: ui.Button):
+        await self.cog.handle_export_data(interaction, self.lang)
     
-    @ui.button(label="🗑️ Delete My Data", style=discord.ButtonStyle.danger, row=0)
+    @ui.button(label="🗑️ Delete Data", style=discord.ButtonStyle.danger, row=1)
     async def delete_data(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("privacy.delete_data", self.lang)
         view = DeleteConfirmationView(self.lang, self.cog)
         
         embed = discord.Embed(
-            title=t("privacy.delete_confirmation", self.lang),
-            description=t("privacy.delete_warning", self.lang),
-            color=discord.Color.red()
+            title="⚠️ " + t("privacy.delete_confirmation", self.lang),
+            color=0xE74C3C  # Red for danger
+        )
+        embed.set_author(
+            name="Data Deletion Warning",
+            icon_url="https://cdn.discordapp.com/emojis/warning.gif"
+        )
+        
+        embed.description = (
+            f"┌─────────────────────────────────────────┐\n"
+            f"│  **⚠️ PERMANENT ACTION WARNING**       │\n"
+            f"└─────────────────────────────────────────┘\n\n"
+            f"🚨 {t('privacy.delete_warning', self.lang)}\n\n"
+            f"**❗ What will be deleted:**\n"
+            f"🔹 Your Discord account data\n"
+            f"🔹 Game ID and verification info\n"
+            f"🔹 Alliance membership and role\n"
+            f"🔹 All personal settings and preferences\n"
+            f"🔹 Event history and participation\n\n"
+            f"**⚡ This action is IRREVERSIBLE!**"
+        )
+        
+        embed.set_footer(
+            text="💭 Think carefully before proceeding • You can always contact support",
+            icon_url="https://cdn.discordapp.com/emojis/thinking.gif"
         )
         
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
     
-    @ui.button(label="📋 Privacy Policy", style=discord.ButtonStyle.secondary, row=1)
+    @ui.button(label="📋 Policies", style=discord.ButtonStyle.gray, row=1)
     async def privacy_policy(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("privacy.privacy_policy", self.lang)
-        
         embed = discord.Embed(
-            title=t("privacy.policy_links", self.lang),
-            description=t("privacy.policy_description", self.lang),
-            color=discord.Color.blue()
+            title="📋 Legal Documents",
+            color=0x95A5A6  # Gray for info
+        )
+        embed.set_author(
+            name="Privacy & Terms",
+            icon_url="https://cdn.discordapp.com/emojis/document.gif"
         )
         
-        # Replace with your actual URLs
+        embed.description = (
+            f"┌────────────────────────────────────┐\n"
+            f"│  **Legal Information & Policies** │\n"
+            f"└────────────────────────────────────┘\n\n"
+            f"📖 {t('privacy.policy_description', self.lang)}"
+        )
+        
+        # Enhanced policy links with descriptions
         privacy_url = "https://wos-2630.fun/discord/privacy-policy/"
         terms_url = "https://wos-2630.fun/discord/terms-of-service/"
         
         embed.add_field(
-            name=t("privacy.privacy_policy", self.lang),
-            value=f"[View Privacy Policy]({privacy_url})",
+            name="🔒 Privacy Policy",
+            value=f"[📄 Read Privacy Policy]({privacy_url})\n└─ How we handle your data",
             inline=True
         )
         embed.add_field(
-            name=t("privacy.terms_service", self.lang),
-            value=f"[View Terms of Service]({terms_url})",
+            name="📜 Terms of Service", 
+            value=f"[📄 Read Terms of Service]({terms_url})\n└─ Rules and conditions of use",
             inline=True
+        )
+        embed.add_field(
+            name="📧 Contact",
+            value="support@wos-2630.fun\n└─ Questions about privacy",
+            inline=True
+        )
+        
+        embed.set_footer(
+            text="🔗 Links open in your browser • Updated regularly",
+            icon_url="https://cdn.discordapp.com/emojis/link.gif"
         )
         
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -63,18 +104,31 @@ class DeleteConfirmationView(ui.View):
         self.lang = lang
         self.cog = cog
     
-    @ui.button(label="🗑️ Yes, Delete Everything", style=discord.ButtonStyle.danger)
+    @ui.button(label="🗑️ DELETE EVERYTHING", style=discord.ButtonStyle.danger, row=0)
     async def confirm_delete(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("privacy.delete_confirm", self.lang)
         await self.cog.handle_delete_data(interaction, self.lang)
+        
+        # Disable all buttons after confirmation
+        for item in self.children:
+            item.disabled = True
+        await interaction.edit_original_response(view=self)
     
-    @ui.button(label="❌ Cancel", style=discord.ButtonStyle.secondary)
+    @ui.button(label="🛡️ Keep My Data", style=discord.ButtonStyle.success, row=0) 
     async def cancel_delete(self, interaction: discord.Interaction, button: ui.Button):
-        button.label = t("privacy.delete_cancel", self.lang)
-        await interaction.response.send_message(
-            "❌ Deletion cancelled.",
-            ephemeral=True
+        embed = discord.Embed(
+            title="✅ Data Deletion Cancelled",
+            description=(
+                "🛡️ Your data is safe and remains intact.\n"
+                "You can access this menu anytime to manage your privacy settings."
+            ),
+            color=0x27AE60  # Green for safety
         )
+        embed.set_footer(
+            text="💚 Thank you for staying with us!",
+            icon_url="https://cdn.discordapp.com/emojis/heart_green.gif"
+        )
+        
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         
         # Disable all buttons
         for item in self.children:

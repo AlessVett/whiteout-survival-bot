@@ -125,6 +125,15 @@ class Database:
         )
         return result.modified_count > 0
     
+    async def update_user(self, discord_id: int, update_data: Dict[str, Any]) -> bool:
+        """Aggiorna i dati dell'utente in modo generico"""
+        update_data["updated_at"] = datetime.utcnow()
+        result = await self.users.update_one(
+            {"discord_id": discord_id},
+            {"$set": update_data}
+        )
+        return result.modified_count > 0
+    
     async def get_users_by_alliance(self, alliance: str) -> list:
         """Ottiene tutti gli utenti di un'alleanza"""
         cursor = self.users.find({"alliance": alliance})

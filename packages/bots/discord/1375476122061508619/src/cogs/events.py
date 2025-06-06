@@ -70,9 +70,31 @@ class EventsCog(commands.Cog):
                     if channel:
                         lang = new_r5_data.get('language', 'en')
                         embed = discord.Embed(
-                            title="⚠️ Leadership Transfer",
-                            description=t("alliance_management.r5_abandoned", lang, member=new_r5_member.mention),
-                            color=discord.Color.orange()
+                            title="👑 Leadership Transfer",
+                            color=0xFF6B35  # Orange for important alliance events
+                        )
+                        embed.set_author(
+                            name="⚠️ Automatic Leadership Change",
+                            icon_url="https://cdn.discordapp.com/emojis/crown_transfer.gif"
+                        )
+                        embed.description = (
+                            f"┌────────────────────────────────────────┐\n"
+                            f"│  **Alliance Leadership Change**       │\n"
+                            f"└────────────────────────────────────────┘\n\n"
+                            f"🔄 {t('alliance_management.r5_abandoned', lang, member=new_r5_member.mention)}\n\n"
+                            f"**What happened:**\n"
+                            f"🚪 Previous R5 left the alliance\n"
+                            f"👑 Leadership automatically transferred\n"
+                            f"⚡ Alliance continues under new leadership"
+                        )
+                        embed.add_field(
+                            name="🎯 New Leader",
+                            value=f"• {new_r5_member.mention}\n• Now has full R5 permissions\n• Can manage alliance settings",
+                            inline=False
+                        )
+                        embed.set_footer(
+                            text="🤖 Automatic system action • Alliance stability maintained",
+                            icon_url="https://cdn.discordapp.com/emojis/robot.gif"
                         )
                         await channel.send(embed=embed)
         else:
