@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - DWOS Infrastructure</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-color: #6c757d;
+            --success-color: #4ecdc4;
+            --success-gradient: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            --danger-color: #ff6b6b;
+            --danger-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            --warning-color: #ffe66d;
+            --warning-gradient: linear-gradient(135deg, #ffe66d 0%, #ff8b94 100%);
+            --dark-color: #2c3e50;
+            --sidebar-width: 280px;
+            --card-border-radius: 1rem;
+            --shadow-light: 0 2px 10px rgba(0,0,0,0.05);
+            --shadow-medium: 0 4px 20px rgba(0,0,0,0.1);
+            --shadow-heavy: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: white;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-heavy);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar-header .version {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 0.25rem;
+        }
+
+        .nav-section {
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%);
+            color: white;
+            border-left-color: var(--primary-color);
+            transform: translateX(4px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .nav-link i {
+            width: 1.25rem;
+            margin-right: 0.75rem;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            border-radius: var(--card-border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-medium);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1.25rem;
+            font-weight: 600;
+        }
+
+        .metric-card {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: var(--card-border-radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .metric-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-label {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .metric-sublabel {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            font-weight: 400;
+            margin-top: 0.25rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .metric-display {
+            padding: 1rem 0;
+        }
+        
+        .metric-display-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-display-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 0.875rem;
+            height: 0.875rem;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            position: relative;
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
+        }
+        
+        .status-indicator::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: pulse-ring 2s infinite;
+        }
+
+        .status-healthy { 
+            background-color: var(--success-color);
+        }
+        .status-healthy::before {
+            background-color: var(--success-color);
+        }
+        
+        .status-warning { 
+            background-color: var(--warning-color);
+        }
+        .status-warning::before {
+            background-color: var(--warning-color);
+        }
+        
+        .status-error { 
+            background-color: var(--danger-color);
+        }
+        .status-error::before {
+            background-color: var(--danger-color);
+        }
+        
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Services Horizontal Layout */
+        .services-horizontal {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Fix for services list container */
+        #services-list {
+            min-height: 120px;
+        }
+        
+        #services-list.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+        
+        .service-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: var(--primary-color);
+        }
+        
+        .service-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .service-card-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2c3e50;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .service-card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .service-card-status.status-running {
+            background: rgba(78, 205, 196, 0.15);
+            color: #2d8a85;
+        }
+        
+        .service-card-status.status-stopped {
+            background: rgba(255, 107, 107, 0.15);
+            color: #dc3545;
+        }
+        
+        .service-card-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+        }
+        
+        .service-card-health {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        /* Resource Metrics */
+        .resource-metric {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .resource-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .resource-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        /* Scrollbar styling */
+        .services-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .services-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .services-grid::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .services-grid::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .btn-action {
+            margin: 0 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .log-entry {
+            padding: 1rem;
+            border-left: 4px solid #dee2e6;
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0.5rem 0.5rem 0;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+        
+        .log-entry:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .log-entry.level-error { border-left-color: var(--danger-color); background: linear-gradient(90deg, rgba(255, 107, 107, 0.05) 0%, rgba(255, 255, 255, 0.95) 10%); }
+        .log-entry.level-warning { border-left-color: var(--warning-color); background: linear-gradient(90deg, rgba(255, 230, 109, 0.05) 0%, rgba(255, 255, 255, 0.95) 10%); }
+        .log-entry.level-info { border-left-color: var(--primary-color); background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(255, 255, 255, 0.95) 10%); }
+        .log-entry.level-debug { border-left-color: #6c757d; background: linear-gradient(90deg, rgba(108, 117, 125, 0.05) 0%, rgba(255, 255, 255, 0.95) 10%); }
+        
+        .log-level {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .log-message {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        
+        .log-metadata {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        #logs-container {
+            max-height: 600px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .table-responsive {
+            border-radius: var(--card-border-radius);
+            overflow-x: auto;
+            overflow-y: visible;
+            box-shadow: var(--shadow-light);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Table styling improvements */
+        .table {
+            min-width: 600px; /* Force horizontal scroll on small screens */
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table thead th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: none;
+            font-weight: 600;
+            color: var(--dark-color);
+            padding: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(102, 126, 234, 0.02);
+            transform: scale(1.01);
+        }
+        
+        .table tbody td {
+            padding: 1rem;
+            border-color: rgba(0,0,0,0.05);
+            vertical-align: middle;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+        }
+        
+        .btn-success {
+            background: var(--success-gradient);
+        }
+        
+        .btn-warning {
+            background: var(--warning-gradient);
+            color: #2c3e50;
+        }
+        
+        .btn-danger {
+            background: var(--danger-gradient);
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            padding: 0.75rem;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+                top: 0.75rem;
+                left: 0.75rem;
+                padding: 0.6rem;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+                box-shadow: 0 0 0 100vw rgba(0,0,0,0.5);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .header {
+                margin-top: 4rem;
+                padding: 1rem;
+            }
+            
+            .metric-card {
+                margin-bottom: 1rem;
+            }
+            
+            .metric-value {
+                font-size: 2rem;
+            }
+            
+            .col-md-3 {
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .col-xl-4 {
+                margin-bottom: 1.5rem;
+            }
+            
+            .metric-display-value {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .row.mb-4 .col-lg-3 {
+                margin-bottom: 1rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .metric-value {
+                font-size: 2.5rem;
+            }
+            
+            .metric-display-value {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+                margin-top: 3.5rem;
+            }
+            
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .service-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            
+            .metric-card {
+                padding: 1.5rem 1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .metric-value {
+                font-size: 2rem;
+            }
+            
+            .metric-sublabel {
+                font-size: 0.75rem;
+            }
+            
+            .card-header {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .metric-display {
+                padding: 0.75rem 0;
+            }
+            
+            .metric-display-value {
+                font-size: 1rem;
+            }
+            
+            .metric-display-label {
+                font-size: 0.7rem;
+            }
+            
+            .btn-action {
+                padding: 0.25rem 0.4rem;
+                font-size: 0.75rem;
+                margin: 0.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .col-lg-3, .col-md-6 {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .metric-card {
+                padding: 1.25rem 0.75rem;
+            }
+            
+            .d-flex.gap-3 {
+                flex-direction: column;
+                gap: 1rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-cogs"></i> DWOS Admin</h3>
+            <div class="version">v{{ version }}</div>
+        </div>
+        
+        <nav class="nav-section">
+            <div class="nav-section-title">Overview</div>
+            <a href="#" class="nav-link active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+            <a href="#" class="nav-link" data-section="services">
+                <i class="fas fa-server"></i>
+                Services
+            </a>
+            <a href="#" class="nav-link" data-section="monitoring">
+                <i class="fas fa-chart-line"></i>
+                Monitoring
+            </a>
+        </nav>
+        
+        <nav class="nav-section">
+            <div class="nav-section-title">Data</div>
+            <a href="#" class="nav-link" data-section="database">
+                <i class="fas fa-database"></i>
+                Database
+            </a>
+            <a href="#" class="nav-link" data-section="logs">
+                <i class="fas fa-file-alt"></i>
+                Logs
+            </a>
+        </nav>
+        
+        <nav class="nav-section">
+            <div class="nav-section-title">System</div>
+            <a href="#" class="nav-link" data-section="configuration">
+                <i class="fas fa-cog"></i>
+                Configuration
+            </a>
+            <a href="#" class="nav-link" data-section="tickets">
+                <i class="fas fa-ticket-alt"></i>
+                Tickets <span class="badge bg-warning ms-2">Soon</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <!-- Mobile Toggle Button -->
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 class="mb-0">Infrastructure Dashboard</h1>
+                <p class="text-muted mb-0">Real-time monitoring and management</p>
+            </div>
+            <div>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-primary d-flex align-items-center gap-2" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> 
+                        <span>Refresh</span>
+                    </button>
+                    <div class="status-badge">
+                        <span class="badge bg-success d-flex align-items-center gap-2 px-3 py-2" style="font-size: 0.9rem; border-radius: 2rem;">
+                            <div class="status-dot" style="width: 8px; height: 8px; background: #4ecdc4; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                            <span>System Online</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <style>
+                @keyframes pulse {
+                    0% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                    100% { opacity: 1; }
+                }
+                </style>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="content-section">
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="background: var(--success-gradient);">
+                        <i class="fas fa-server fa-2x mb-3" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="services-count">-</div>
+                        <div class="metric-label">Active Services</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="background: var(--primary-gradient);">
+                        <i class="fas fa-users fa-2x mb-3" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="users-count">-</div>
+                        <div class="metric-label">Total Users</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="background: var(--warning-gradient);">
+                        <i class="fas fa-shield-alt fa-2x mb-3" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="alliances-count">-</div>
+                        <div class="metric-label">Alliances</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="background: var(--danger-gradient);">
+                        <i class="fas fa-calendar-alt fa-2x mb-3" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="events-count">-</div>
+                        <div class="metric-label">Active Events</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Status Full Width -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fas fa-server me-2"></i>
+                                Service Status
+                            </span>
+                            <small class="text-muted">Real-time service monitoring</small>
+                        </div>
+                        <div class="card-body p-3">
+                            <div id="services-list" class="loading">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Resources -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-2"></i>
+                            System Resources
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <canvas id="resourcesChart" width="300" height="300"></canvas>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-6 mb-3">
+                                            <div class="resource-metric">
+                                                <div class="resource-label">CPU Usage</div>
+                                                <div class="resource-value" id="resource-cpu">-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="resource-metric">
+                                                <div class="resource-label">Memory Usage</div>
+                                                <div class="resource-value" id="resource-memory">-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="resource-metric">
+                                                <div class="resource-label">Disk Usage</div>
+                                                <div class="resource-value" id="resource-disk">-</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="resource-metric">
+                                                <div class="resource-label">Network I/O</div>
+                                                <div class="resource-value" id="resource-network">-</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-clock me-2"></i>
+                    Recent Activity
+                </div>
+                <div class="card-body">
+                    <div id="recent-logs">
+                        <p class="text-muted">Recent activity will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div id="services-section" class="content-section d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-server me-2"></i>Service Management</span>
+                    <button class="btn btn-success btn-sm" onclick="refreshServices()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="services-management">
+                        <div class="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Section -->
+        <div id="database-section" class="content-section d-none">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-database me-2"></i>Database Explorer
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select class="form-select" id="collection-select">
+                                <option value="">Select Collection...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="query-input" placeholder='Query (JSON format, e.g., {"verified": true})'>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" onclick="queryDatabase()">
+                                <i class="fas fa-search me-1"></i>Query
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="database-results">
+                        <p class="text-muted">Select a collection to explore the database.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Section -->
+        <div id="monitoring-section" class="content-section d-none">
+            <!-- Real-time Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--primary-gradient);">
+                        <i class="fas fa-microchip fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="cpu-usage">-</div>
+                        <div class="metric-label">CPU Usage</div>
+                        <div class="metric-sublabel" id="cpu-cores">- Cores</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--success-gradient);">
+                        <i class="fas fa-memory fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="memory-usage">-</div>
+                        <div class="metric-label">Memory Usage</div>
+                        <div class="metric-sublabel" id="memory-total">- GB Total</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--warning-gradient);">
+                        <i class="fas fa-hdd fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="disk-usage">-</div>
+                        <div class="metric-label">Disk Usage</div>
+                        <div class="metric-sublabel" id="disk-total">- GB Total</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--danger-gradient);">
+                        <i class="fas fa-network-wired fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="network-io">-</div>
+                        <div class="metric-label">Network I/O</div>
+                        <div class="metric-sublabel" id="network-packets">- Packets</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Charts -->
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-microchip me-2"></i>CPU Metrics</span>
+                            <small class="text-muted" id="cpu-load-avg">Load: -</small>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="cpuChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-4 col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-memory me-2"></i>Memory Breakdown
+                        </div>
+                        <div class="card-body">
+                            <canvas id="memoryChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-4 col-lg-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-hdd me-2"></i>Storage Overview
+                        </div>
+                        <div class="card-body">
+                            <canvas id="diskChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Network and Services -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-network-wired me-2"></i>Network Activity
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 200px; position: relative;">
+                                <canvas id="networkChart"></canvas>
+                            </div>
+                            <div class="row text-center mt-3">
+                                <div class="col-6">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value" id="network-sent">-</div>
+                                        <div class="metric-display-label">Bytes Sent</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value" id="network-received">-</div>
+                                        <div class="metric-display-label">Bytes Received</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center mt-3">
+                                <div class="col-6">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value" id="packets-sent">-</div>
+                                        <div class="metric-display-label">Packets Sent</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value" id="packets-received">-</div>
+                                        <div class="metric-display-label">Packets Received</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-server me-2"></i>Service Health
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value text-primary" id="services-total">-</div>
+                                        <div class="metric-display-label">Total Services</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value text-success" id="services-healthy">-</div>
+                                        <div class="metric-display-label">Healthy</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="metric-display">
+                                        <div class="metric-display-value text-danger" id="services-unhealthy">-</div>
+                                        <div class="metric-display-label">Unhealthy</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="progress" style="height: 8px; border-radius: 4px;">
+                                    <div class="progress-bar bg-success" id="services-health-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div id="logs-section" class="content-section d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-file-alt me-2"></i>System Logs</span>
+                    <div>
+                        <select class="form-select form-select-sm d-inline-block me-2" style="width: auto;" id="log-service-filter">
+                            <option value="">All Services</option>
+                        </select>
+                        <select class="form-select form-select-sm d-inline-block me-2" style="width: auto;" id="log-level-filter">
+                            <option value="">All Levels</option>
+                            <option value="ERROR">Error</option>
+                            <option value="WARNING">Warning</option>
+                            <option value="INFO">Info</option>
+                            <option value="DEBUG">Debug</option>
+                        </select>
+                        <button class="btn btn-primary btn-sm" onclick="refreshLogs()">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="logs-container">
+                        <div class="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div id="configuration-section" class="content-section d-none">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cog me-2"></i>System Configuration
+                </div>
+                <div class="card-body">
+                    <div id="config-container">
+                        <div class="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tickets Section -->
+        <div id="tickets-section" class="content-section d-none">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-ticket-alt me-2"></i>Ticketing System
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-tools fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Coming Soon</h4>
+                    <p class="text-muted">The ticketing system is under development and will be available in the next release.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/static/admin/dashboard.js"></script>
+    
+    <script>
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            }
+        });
+        
+        // Add loading animation to metric cards
+        function animateCounters() {
+            const counters = document.querySelectorAll('.metric-value');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent) || 0;
+                if (target === 0 || counter.textContent === '-') return;
+                
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.ceil(current);
+                    }
+                }, 20);
+            });
+        }
+        
+        // Call animation when data is loaded
+        const originalUpdateOverview = loadOverviewData;
+        window.loadOverviewData = async function() {
+            await originalUpdateOverview();
+            setTimeout(animateCounters, 500);
+        };
+    </script>
+</body>
+</html>

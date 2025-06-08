@@ -78,4 +78,44 @@ async def reload():
     
     bot_process = subprocess.Popen(["python", "main.py"])
     
-    return {"status": "reloaded", "service": "discord-bot", "pid": bot_process.pid}
+    return {
+        "action": "reload",
+        "timestamp": "2025-06-06T15:40:00.000000",
+        "success": True,
+        "message": "Discord bot reloaded successfully",
+        "pid": bot_process.pid
+    }
+
+@app.post("/admin/restart")
+async def restart():
+    global bot_process
+    
+    if bot_process:
+        bot_process.terminate()
+        bot_process.wait()
+    
+    bot_process = subprocess.Popen(["python", "main.py"])
+    
+    return {
+        "action": "restart",
+        "timestamp": "2025-06-06T15:40:00.000000", 
+        "success": True,
+        "message": "Discord bot restarted successfully",
+        "pid": bot_process.pid
+    }
+
+@app.post("/admin/stop")
+async def stop():
+    global bot_process
+    
+    if bot_process:
+        bot_process.terminate()
+        bot_process.wait()
+        bot_process = None
+    
+    return {
+        "action": "stop",
+        "timestamp": "2025-06-06T15:40:00.000000",
+        "success": True,
+        "message": "Discord bot stopped successfully"
+    }

@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -12,24 +13,11 @@ from prometheus_client import make_asgi_app
 from configs.settings import settings
 from applications.v1.core.service_discovery import ServiceRegistry, ServiceProxy
 from applications.v1.core.message_queue import MessageBroker, EventBus
-from applications.v1.routers import health, services
+from applications.v1.routers import health, services, admin, service_admin
+from applications.v1.core.log_processor import configure_logging
 
-# Configure structured logging
-structlog.configure(
-    processors=[
-        structlog.stdlib.filter_by_level,
-        structlog.stdlib.add_logger_name,
-        structlog.stdlib.add_log_level,
-        structlog.stdlib.PositionalArgumentsFormatter(),
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.processors.StackInfoRenderer(),
-        structlog.processors.format_exc_info,
-        structlog.processors.JSONRenderer() if settings.log_format == "json" else structlog.dev.ConsoleRenderer()
-    ],
-    context_class=dict,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    cache_logger_on_first_use=True,
-)
+# Configure structured logging with log collector
+configure_logging(service_name="api-gateway")
 
 logger = structlog.get_logger()
 
@@ -140,6 +128,9 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 metrics_app = make_asgi_app()
 app.mount("/metrics", metrics_app)
 
+# Mount static files for admin panel
+app.mount("/static", StaticFiles(directory="applications/v1/static"), name="static")
+
 # Dependency injection functions
 def get_service_registry(request: Request):
     return request.state.service_registry
@@ -150,6 +141,8 @@ def get_service_proxy(request: Request):
 # Include routers
 app.include_router(health.router, prefix=settings.api_v1_str)
 app.include_router(services.router, prefix=settings.api_v1_str)
+app.include_router(admin.router)
+app.include_router(service_admin.router)
 
 # Dependency injection
 @app.middleware("http")
