@@ -221,6 +221,7 @@ class EventDetailsModal(BaseModal):
 
 class EventListView(BaseView):
     def __init__(self, alliance: str, lang: str, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons edit messages
         super().__init__(timeout=600, lang=lang, **kwargs)
         self.alliance = alliance
         self.current_page = 0
@@ -302,11 +303,19 @@ class EventListView(BaseView):
     
     def make_event_callback(self, event):
         async def callback(interaction: discord.Interaction):
-            await interaction.response.send_message(
-                embed=self.create_event_embed(event),
-                view=EventDetailView(event, self.lang),
-                ephemeral=True
-            )
+            # Check if interaction has already been responded to
+            if interaction.response.is_done():
+                await interaction.followup.send(
+                    embed=self.create_event_embed(event),
+                    view=EventDetailView(event, self.lang),
+                    ephemeral=True
+                )
+            else:
+                await interaction.response.send_message(
+                    embed=self.create_event_embed(event),
+                    view=EventDetailView(event, self.lang),
+                    ephemeral=True
+                )
         return callback
     
     def create_event_embed(self, event):
@@ -355,11 +364,19 @@ class EventListView(BaseView):
         return embed
     
     async def create_event(self, interaction: discord.Interaction):
-        await interaction.response.send_message(
-            t("events.select_type_prompt", self.lang),
-            view=EventTypeSelectView(self.lang),
-            ephemeral=True
-        )
+        # Check if interaction has already been responded to
+        if interaction.response.is_done():
+            await interaction.followup.send(
+                t("events.select_type_prompt", self.lang),
+                view=EventTypeSelectView(self.lang),
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                t("events.select_type_prompt", self.lang),
+                view=EventTypeSelectView(self.lang),
+                ephemeral=True
+            )
     
     async def prev_page(self, interaction: discord.Interaction):
         self.current_page -= 1
@@ -577,6 +594,7 @@ class EventEditModal(BaseModal):
 
 class ConfirmDeleteView(BaseView):
     def __init__(self, event: Dict[str, Any], lang: str, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons edit messages
         super().__init__(timeout=60, lang=lang, **kwargs)
         self.event = event
         
