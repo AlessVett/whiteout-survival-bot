@@ -669,7 +669,6 @@ class VerificationCog(BaseCog, InteractionHandler):
         
         view = AllianceNameModal(
             callback=self._handle_alliance_name_submission,
-            user_id=user_id,
             lang=lang
         )
         

@@ -172,6 +172,24 @@ class Database:
         """Ottiene un'alleanza dal database"""
         return await self.alliances.find_one({"name": name})
     
+    async def get_popular_alliances(self, limit: int = 5) -> list:
+        """Ottiene le alleanze più popolari (con più membri)"""
+        try:
+            # Aggrega per ottenere le alleanze con più membri
+            pipeline = [
+                {"$match": {"alliance": {"$ne": None, "$ne": ""}}},  # Utenti con alleanza
+                {"$group": {"_id": "$alliance", "member_count": {"$sum": 1}}},  # Conta membri per alleanza
+                {"$sort": {"member_count": -1}},  # Ordina per numero di membri
+                {"$limit": limit},  # Limita i risultati
+                {"$project": {"name": "$_id", "member_count": 1, "_id": 0}}  # Proietta il formato desiderato
+            ]
+            
+            cursor = self.users.aggregate(pipeline)
+            return await cursor.to_list(length=limit)
+        except Exception as e:
+            print(f"Error getting popular alliances: {e}")
+            return []
+    
     async def update_alliance_r5(self, name: str, new_r5_discord_id: int) -> bool:
         """Aggiorna l'R5 di un'alleanza"""
         result = await self.alliances.update_one(

@@ -483,6 +483,8 @@ class AllianceRoleSelectionView(BaseView):
         callback: Optional[Callable] = None,
         **kwargs
     ):
+        # Disable auto_defer since buttons need to edit messages
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         self.callback = callback
         self._create_role_buttons()
