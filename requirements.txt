@@ -23,12 +23,21 @@ python-jose[cryptography]==3.5.0
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.20
 
+# Database
+motor==3.6.0
+pymongo==4.9.1
+
+# Templates and Static Files
+jinja2==3.1.4
+aiofiles==24.1.0
+
 # Utilities
 python-dotenv==1.1.0
 
 # Monitoring and Logging
 prometheus-client==0.22.1
 structlog==24.4.0
+psutil==7.0.0
 
 # Rate Limiting
 slowapi==0.1.9

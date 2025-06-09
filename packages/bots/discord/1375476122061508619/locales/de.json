@@ -335,5 +335,61 @@
       "shared_by": "Geteilt von {moderator}"
     },
     "no_permission": "❌ Sie benötigen die Moderatorrolle, um diesen Befehl zu verwenden!"
+  },
+  "privacy": {
+    "title": "🔒 Datenschutz & Datenverwaltung",
+    "description": "Verwalten Sie Ihre von diesem Bot gespeicherten persönlichen Daten",
+    "view_data": "📄 Meine Daten anzeigen",
+    "delete_data": "🗑️ Meine Daten löschen",
+    "privacy_policy": "📋 Datenschutzrichtlinie",
+    "terms_service": "📜 Nutzungsbedingungen",
+    "data_overview": "Datenübersicht",
+    "discord_id": "Discord-ID",
+    "game_id": "Spiel-ID",
+    "nickname": "Spitzname",
+    "alliance": "Allianz",
+    "alliance_role": "Allianzrolle",
+    "language": "Sprache",
+    "verified": "Verifiziert",
+    "created_at": "Konto erstellt",
+    "last_activity": "Letzte Aktivität",
+    "delete_confirmation": "⚠️ Alle meine Daten löschen",
+    "delete_warning": "Dies wird alle Ihre Daten dauerhaft aus unseren Systemen löschen. Diese Aktion kann nicht rückgängig gemacht werden!\n\n**Was gelöscht wird:**\n• Ihr Verifizierungsstatus\n• Allianz-Mitgliedschaft\n• Event-Verlauf\n• Spracheinstellungen\n• Alle zugehörigen Aufzeichnungen\n\n**Hinweis:** Sie müssen sich erneut verifizieren, um den Bot zu verwenden.",
+    "delete_confirm": "🗑️ Ja, alles löschen",
+    "delete_cancel": "❌ Abbrechen",
+    "deletion_complete": "✅ Ihre Daten wurden dauerhaft aus unseren Systemen gelöscht.",
+    "no_data": "ℹ️ Keine Daten für Ihr Konto gefunden.",
+    "policy_links": "📚 Rechtliche Dokumente",
+    "policy_description": "Lesen Sie unsere Datenschutzrichtlinie und Nutzungsbedingungen:",
+    "data_retention": "📅 Datenspeicherung",
+    "retention_info": "Ihre Daten werden gespeichert, solange Sie den Bot aktiv nutzen. Inaktive Konten werden nach 90 Tagen automatisch bereinigt.",
+    "your_rights": "🛡️ Ihre Rechte",
+    "rights_info": "Sie haben das Recht, jederzeit auf Ihre persönlichen Daten zuzugreifen, sie zu korrigieren, zu exportieren oder zu löschen, indem Sie diesen Befehl verwenden."
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 Support-Ticket erstellen",
+      "title_label": "Ticket-Titel",
+      "title_placeholder": "Kurze Beschreibung Ihres Problems",
+      "description_label": "Beschreibung",
+      "description_placeholder": "Bitte beschreiben Sie Ihr Problem im Detail...",
+      "priority_label": "Priorität",
+      "priority_placeholder": "niedrig, mittel, hoch, dringend"
+    },
+    "creation": {
+      "success_title": "🎫 Ticket erfolgreich erstellt",
+      "success_description": "Ihr Support-Ticket `{ticket_id}` wurde erstellt!\n\nÜberprüfen Sie {channel}, um das Gespräch fortzusetzen.",
+      "title_field": "Titel",
+      "priority_field": "Priorität",
+      "error": "❌ Ticket konnte nicht erstellt werden. Bitte versuchen Sie es später erneut."
+    },
+    "channel": {
+      "creation_error": "❌ Ticket-Kanal konnte nicht erstellt werden. Bitte kontaktieren Sie einen Administrator."
+    },
+    "already_exists": "⚠️ Sie haben bereits ein offenes Ticket: `{ticket_id}`\nBitte verwenden Sie Ihr bestehendes Ticket oder schließen Sie es zuerst.",
+    "close": {
+      "success": "✅ Ticket erfolgreich geschlossen.",
+      "error": "❌ Ticket konnte nicht geschlossen werden. Bitte versuchen Sie es erneut."
+    }
   }
 }

@@ -335,5 +335,31 @@
     "retention_info": "I tuoi dati vengono conservati mentre usi attivamente il bot. Gli account inattivi vengono puliti automaticamente dopo 90 giorni.",
     "your_rights": "🛡️ I Tuoi Diritti",
     "rights_info": "Hai il diritto di accedere, correggere, esportare o eliminare i tuoi dati personali in qualsiasi momento usando questo comando."
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 Crea Ticket di Supporto",
+      "title_label": "Titolo Ticket",
+      "title_placeholder": "Breve descrizione del tuo problema",
+      "description_label": "Descrizione",
+      "description_placeholder": "Descrivi il tuo problema in dettaglio...",
+      "priority_label": "Priorità",
+      "priority_placeholder": "bassa, media, alta, urgente"
+    },
+    "creation": {
+      "success_title": "🎫 Ticket Creato con Successo",
+      "success_description": "Il tuo ticket di supporto `{ticket_id}` è stato creato!\n\nControlla {channel} per continuare la conversazione.",
+      "title_field": "Titolo",
+      "priority_field": "Priorità",
+      "error": "❌ Impossibile creare il ticket. Riprova più tardi."
+    },
+    "channel": {
+      "creation_error": "❌ Impossibile creare il canale del ticket. Contatta un amministratore."
+    },
+    "already_exists": "⚠️ Hai già un ticket aperto: `{ticket_id}`\nUsa il tuo ticket esistente o chiudilo prima.",
+    "close": {
+      "success": "✅ Ticket chiuso con successo.",
+      "error": "❌ Impossibile chiudere il ticket. Riprova."
+    }
   }
 }

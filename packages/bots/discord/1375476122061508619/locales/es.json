@@ -335,5 +335,61 @@
       "shared_by": "Compartido por {moderator}"
     },
     "no_permission": "❌ ¡Necesitas el rol de Moderador para usar este comando!"
+  },
+  "privacy": {
+    "title": "🔒 Privacidad y Gestión de Datos",
+    "description": "Gestiona tus datos personales almacenados por este bot",
+    "view_data": "📄 Ver Mis Datos",
+    "delete_data": "🗑️ Eliminar Mis Datos",
+    "privacy_policy": "📋 Política de Privacidad",
+    "terms_service": "📜 Términos de Servicio",
+    "data_overview": "Resumen de Datos",
+    "discord_id": "ID de Discord",
+    "game_id": "ID del Juego",
+    "nickname": "Apodo",
+    "alliance": "Alianza",
+    "alliance_role": "Rol de Alianza",
+    "language": "Idioma",
+    "verified": "Verificado",
+    "created_at": "Cuenta Creada",
+    "last_activity": "Última Actividad",
+    "delete_confirmation": "⚠️ Eliminar Todos Mis Datos",
+    "delete_warning": "Esto eliminará permanentemente todos tus datos de nuestros sistemas. ¡Esta acción no se puede deshacer!\n\n**Lo que se eliminará:**\n• Tu estado de verificación\n• Membresía de alianza\n• Historial de eventos\n• Preferencias de idioma\n• Todos los registros asociados\n\n**Nota:** Necesitarás verificarte de nuevo para usar el bot.",
+    "delete_confirm": "🗑️ Sí, Eliminar Todo",
+    "delete_cancel": "❌ Cancelar",
+    "deletion_complete": "✅ Tus datos han sido eliminados permanentemente de nuestros sistemas.",
+    "no_data": "ℹ️ No se encontraron datos para tu cuenta.",
+    "policy_links": "📚 Documentos Legales",
+    "policy_description": "Revisa nuestra política de privacidad y términos de servicio:",
+    "data_retention": "📅 Retención de Datos",
+    "retention_info": "Tus datos se conservan mientras uses activamente el bot. Las cuentas inactivas se limpian automáticamente después de 90 días.",
+    "your_rights": "🛡️ Tus Derechos",
+    "rights_info": "Tienes derecho a acceder, corregir, exportar o eliminar tus datos personales en cualquier momento usando este comando."
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 Crear Ticket de Soporte",
+      "title_label": "Título del Ticket",
+      "title_placeholder": "Breve descripción de tu problema",
+      "description_label": "Descripción",
+      "description_placeholder": "Describe tu problema en detalle...",
+      "priority_label": "Prioridad",
+      "priority_placeholder": "baja, media, alta, urgente"
+    },
+    "creation": {
+      "success_title": "🎫 Ticket Creado Exitosamente",
+      "success_description": "¡Tu ticket de soporte `{ticket_id}` ha sido creado!\n\nRevisa {channel} para continuar la conversación.",
+      "title_field": "Título",
+      "priority_field": "Prioridad",
+      "error": "❌ Error al crear el ticket. Inténtalo de nuevo más tarde."
+    },
+    "channel": {
+      "creation_error": "❌ Error al crear el canal del ticket. Contacta a un administrador."
+    },
+    "already_exists": "⚠️ Ya tienes un ticket abierto: `{ticket_id}`\nUsa tu ticket existente o ciérralo primero.",
+    "close": {
+      "success": "✅ Ticket cerrado exitosamente.",
+      "error": "❌ Error al cerrar el ticket. Inténtalo de nuevo."
+    }
   }
 }

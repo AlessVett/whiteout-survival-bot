@@ -335,5 +335,61 @@
       "shared_by": "Partagé par {moderator}"
     },
     "no_permission": "❌ Vous avez besoin du rôle Modérateur pour utiliser cette commande !"
+  },
+  "privacy": {
+    "title": "🔒 Confidentialité et Gestion des Données",
+    "description": "Gérez vos données personnelles stockées par ce bot",
+    "view_data": "📄 Voir Mes Données",
+    "delete_data": "🗑️ Supprimer Mes Données",
+    "privacy_policy": "📋 Politique de Confidentialité",
+    "terms_service": "📜 Conditions de Service",
+    "data_overview": "Aperçu des Données",
+    "discord_id": "ID Discord",
+    "game_id": "ID du Jeu",
+    "nickname": "Pseudonyme",
+    "alliance": "Alliance",
+    "alliance_role": "Rôle d'Alliance",
+    "language": "Langue",
+    "verified": "Vérifié",
+    "created_at": "Compte Créé",
+    "last_activity": "Dernière Activité",
+    "delete_confirmation": "⚠️ Supprimer Toutes Mes Données",
+    "delete_warning": "Ceci supprimera définitivement toutes vos données de nos systèmes. Cette action ne peut pas être annulée !\n\n**Ce qui sera supprimé :**\n• Votre statut de vérification\n• Adhésion à l'alliance\n• Historique des événements\n• Préférences de langue\n• Tous les enregistrements associés\n\n**Note :** Vous devrez vous vérifier à nouveau pour utiliser le bot.",
+    "delete_confirm": "🗑️ Oui, Tout Supprimer",
+    "delete_cancel": "❌ Annuler",
+    "deletion_complete": "✅ Vos données ont été définitivement supprimées de nos systèmes.",
+    "no_data": "ℹ️ Aucune donnée trouvée pour votre compte.",
+    "policy_links": "📚 Documents Légaux",
+    "policy_description": "Consultez notre politique de confidentialité et nos conditions de service :",
+    "data_retention": "📅 Rétention des Données",
+    "retention_info": "Vos données sont conservées tant que vous utilisez activement le bot. Les comptes inactifs sont automatiquement nettoyés après 90 jours.",
+    "your_rights": "🛡️ Vos Droits",
+    "rights_info": "Vous avez le droit d'accéder, corriger, exporter ou supprimer vos données personnelles à tout moment en utilisant cette commande."
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 Créer un Ticket de Support",
+      "title_label": "Titre du Ticket",
+      "title_placeholder": "Brève description de votre problème",
+      "description_label": "Description",
+      "description_placeholder": "Veuillez décrire votre problème en détail...",
+      "priority_label": "Priorité",
+      "priority_placeholder": "faible, moyenne, élevée, urgente"
+    },
+    "creation": {
+      "success_title": "🎫 Ticket Créé avec Succès",
+      "success_description": "Votre ticket de support `{ticket_id}` a été créé !\n\nVeuillez vérifier {channel} pour continuer la conversation.",
+      "title_field": "Titre",
+      "priority_field": "Priorité",
+      "error": "❌ Échec de la création du ticket. Veuillez réessayer plus tard."
+    },
+    "channel": {
+      "creation_error": "❌ Échec de la création du canal de ticket. Veuillez contacter un administrateur."
+    },
+    "already_exists": "⚠️ Vous avez déjà un ticket ouvert : `{ticket_id}`\nVeuillez utiliser votre ticket existant ou le fermer d'abord.",
+    "close": {
+      "success": "✅ Ticket fermé avec succès.",
+      "error": "❌ Échec de la fermeture du ticket. Veuillez réessayer."
+    }
   }
 }

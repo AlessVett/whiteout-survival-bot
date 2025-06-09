@@ -12,7 +12,7 @@ services:
       DISCORD_TOKEN: ${DISCORD_TOKEN}
       
       # MongoDB Configuration
-      MONGODB_URI: mongodb://mongodb:27017/whiteout_bot
+      MONGODB_URI: mongodb://mongodb:27017/whiteout_survival_crm
       
       # API Configuration
       API_BASE_URL: ${API_BASE_URL}
@@ -40,7 +40,7 @@ services:
     container_name: whiteout-mongodb
     restart: unless-stopped
     environment:
-      MONGO_INITDB_DATABASE: whiteout_bot
+      MONGO_INITDB_DATABASE: whiteout_survival_crm
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:

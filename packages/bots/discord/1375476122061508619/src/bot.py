@@ -7,6 +7,7 @@ from src.config import Config
 from locales import get_localization
 from src.database import get_database
 from src.services.cron_manager import CronManager
+from src.services.admin_message_handler import AdminMessageHandler
 
 class CRMBot(commands.Bot):
     def __init__(self):
@@ -23,6 +24,7 @@ class CRMBot(commands.Bot):
         self.localization = get_localization()
         self.db = get_database()
         self.cron_manager = None
+        self.admin_message_handler = None
     
     async def setup_hook(self):
         """Carica i cogs e prepara il bot"""
@@ -73,6 +75,10 @@ class CRMBot(commands.Bot):
         self.cron_manager = CronManager(self)
         await self.cron_manager.start()
         
+        # Avvia l'Admin Message Handler
+        self.admin_message_handler = AdminMessageHandler(self)
+        await self.admin_message_handler.start()
+        
         # Sincronizza i comandi slash solo per il guild autorizzato
         try:
             synced = await self.tree.sync(guild=authorized_guild)
@@ -94,6 +100,10 @@ class CRMBot(commands.Bot):
         # Ferma il CronManager
         if self.cron_manager:
             await self.cron_manager.stop()
+            
+        # Ferma l'Admin Message Handler
+        if self.admin_message_handler:
+            await self.admin_message_handler.stop()
         
         await self.db.close()
         await super().close()

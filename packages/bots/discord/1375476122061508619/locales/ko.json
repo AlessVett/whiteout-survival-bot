@@ -335,5 +335,61 @@
       "shared_by": "{moderator}님이 공유"
     },
     "no_permission": "❌ 이 명령을 사용하려면 관리자 역할이 필요합니다!"
+  },
+  "privacy": {
+    "title": "🔒 개인정보 및 데이터 관리",
+    "description": "이 봇에 저장된 개인 데이터를 관리합니다",
+    "view_data": "📄 내 데이터 보기",
+    "delete_data": "🗑️ 내 데이터 삭제",
+    "privacy_policy": "📋 개인정보 처리방침",
+    "terms_service": "📜 서비스 약관",
+    "data_overview": "데이터 개요",
+    "discord_id": "Discord ID",
+    "game_id": "게임 ID",
+    "nickname": "닉네임",
+    "alliance": "연합",
+    "alliance_role": "연합 역할",
+    "language": "언어",
+    "verified": "인증됨",
+    "created_at": "계정 생성일",
+    "last_activity": "마지막 활동",
+    "delete_confirmation": "⚠️ 모든 데이터 삭제",
+    "delete_warning": "이 작업은 시스템에서 모든 데이터를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다!\n\n**삭제될 항목:**\n• 인증 상태\n• 연합 멤버십\n• 이벤트 기록\n• 언어 설정\n• 모든 관련 기록\n\n**참고:** 봇을 사용하려면 다시 인증해야 합니다.",
+    "delete_confirm": "🗑️ 예, 모두 삭제",
+    "delete_cancel": "❌ 취소",
+    "deletion_complete": "✅ 데이터가 시스템에서 영구적으로 삭제되었습니다.",
+    "no_data": "ℹ️ 계정에 대한 데이터를 찾을 수 없습니다.",
+    "policy_links": "📚 법적 문서",
+    "policy_description": "개인정보 처리방침과 서비스 약관을 확인하세요:",
+    "data_retention": "📅 데이터 보존",
+    "retention_info": "봇을 적극적으로 사용하는 동안 데이터가 보존됩니다. 비활성 계정은 90일 후 자동으로 정리됩니다.",
+    "your_rights": "🛡️ 귀하의 권리",
+    "rights_info": "이 명령어를 사용하여 언제든지 개인 데이터에 액세스하거나 수정, 내보내기, 삭제할 권리가 있습니다."
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 지원 티켓 생성",
+      "title_label": "티켓 제목",
+      "title_placeholder": "문제에 대한 간단한 설명",
+      "description_label": "설명",
+      "description_placeholder": "문제를 자세히 설명해 주세요...",
+      "priority_label": "우선순위",
+      "priority_placeholder": "낮음, 보통, 높음, 긴급"
+    },
+    "creation": {
+      "success_title": "🎫 티켓이 성공적으로 생성되었습니다",
+      "success_description": "지원 티켓 `{ticket_id}`가 생성되었습니다!\n\n{channel}에서 대화를 계속하세요.",
+      "title_field": "제목",
+      "priority_field": "우선순위",
+      "error": "❌ 티켓 생성에 실패했습니다. 나중에 다시 시도해 주세요."
+    },
+    "channel": {
+      "creation_error": "❌ 티켓 채널 생성에 실패했습니다. 관리자에게 문의하세요."
+    },
+    "already_exists": "⚠️ 이미 열린 티켓이 있습니다: `{ticket_id}`\n기존 티켓을 사용하거나 먼저 닫아주세요.",
+    "close": {
+      "success": "✅ 티켓이 성공적으로 닫혔습니다.",
+      "error": "❌ 티켓을 닫는데 실패했습니다. 다시 시도해 주세요."
+    }
   }
 }
