@@ -681,6 +681,9 @@ class VerificationCog(BaseCog, InteractionHandler):
         )
         
         async def open_modal(interaction: discord.Interaction):
+            if interaction.response.is_done():
+                return  # Interaction already handled
+            
             modal = AllianceNameModal(
                 callback=self._handle_alliance_name_submission,
                 lang=lang
@@ -689,7 +692,7 @@ class VerificationCog(BaseCog, InteractionHandler):
         
         enter_btn.callback = open_modal
         
-        view = BaseView(user_id=user_id, lang=lang)
+        view = BaseView(user_id=user_id, lang=lang, auto_defer=False)
         view.add_item(enter_btn)
         
         message = await channel.send(embed=embed, view=view)
