@@ -122,8 +122,14 @@
       "change_alliance": "⚔️ Changer d'Alliance",
       "manage_alliance": "👥 Gérer l'Alliance",
       "no_permission": "❌ Vous n'avez pas la permission de gérer l'alliance.",
-      "only_personal": "❌ Cette commande ne fonctionne que dans votre canal personnel."
-    }
+      "only_personal": "❌ Cette commande ne fonctionne que dans votre canal personnel.",
+      "not_verified": "❌ Vous devez d'abord terminer la vérification. Utilisez `/start` pour commencer."
+    },
+    "dashboard_description": "Accédez à votre tableau de bord personnel et gérez vos paramètres",
+    "events_description": "Afficher et gérer les événements et horaires de l'alliance",
+    "alliance_description": "Afficher et gérer les informations de votre alliance",
+    "profile_description": "Voir votre profil de jeu et vos statistiques",
+    "help_description": "Obtenir de l'aide et des informations sur les commandes du bot"
   },
   "personal_channel": {
     "welcome": "Bienvenue dans votre canal personnel !",

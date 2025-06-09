@@ -2,10 +2,11 @@ import discord
 from discord import ui
 from typing import Optional, Callable
 from locales import t
+from .base import BaseView, BaseModal
 
-class AllianceChangeTypeView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)
+class AllianceChangeTypeView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        super().__init__(timeout=600, lang=lang, **kwargs)
         self.lang = lang
         self.cog = cog
     
@@ -21,9 +22,9 @@ class AllianceChangeTypeView(ui.View):
     async def alliance_other(self, interaction: discord.Interaction, button: ui.Button):
         await self.cog.handle_alliance_change_type(interaction, "other_state")
 
-class AllianceChangeNameModal(ui.Modal):
+class AllianceChangeNameModal(BaseModal):
     def __init__(self, lang: str = "en", submit_callback: Optional[Callable] = None):
-        super().__init__(title=t("alliance.enter_name", lang))
+        super().__init__(title=t("alliance.enter_name", lang), lang=lang, custom_id="alliance_change_name_modal")
         self.lang = lang
         self.submit_callback = submit_callback
         
@@ -41,9 +42,10 @@ class AllianceChangeNameModal(ui.Modal):
         if self.submit_callback:
             await self.submit_callback(interaction, self.alliance_name.value)
 
-class AllianceChangeNameView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)
+class AllianceChangeNameView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send modals
+        super().__init__(timeout=600, lang=lang, **kwargs)
         self.lang = lang
         self.cog = cog
     
@@ -52,9 +54,9 @@ class AllianceChangeNameView(ui.View):
         modal = AllianceChangeNameModal(self.lang, self.cog.handle_alliance_change_name if self.cog else None)
         await interaction.response.send_modal(modal)
 
-class AllianceChangeRoleView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)
+class AllianceChangeRoleView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        super().__init__(timeout=600, lang=lang, **kwargs)
         self.lang = lang
         self.cog = cog
         

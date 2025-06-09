@@ -122,8 +122,14 @@
       "change_alliance": "⚔️ Change Alliance",
       "manage_alliance": "👥 Manage Alliance",
       "no_permission": "❌ You don't have permission to manage the alliance.",
-      "only_personal": "❌ This command only works in your personal channel."
-    }
+      "only_personal": "❌ This command only works in your personal channel.",
+      "not_verified": "❌ You need to complete verification first. Use `/start` to begin."
+    },
+    "dashboard_description": "Access your personal dashboard and manage your settings",
+    "events_description": "View and manage alliance events and schedules",
+    "alliance_description": "View and manage your alliance information",
+    "profile_description": "View your game profile and statistics",
+    "help_description": "Get help and information about bot commands"
   },
   "personal_channel": {
     "welcome": "Welcome to your personal channel!",

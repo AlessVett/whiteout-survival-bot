@@ -122,8 +122,14 @@
       "change_alliance": "⚔️ 同盟変更",
       "manage_alliance": "👥 同盟管理",
       "no_permission": "❌ 同盟を管理する権限がありません。",
-      "only_personal": "❌ このコマンドは個人チャンネルでのみ動作します。"
-    }
+      "only_personal": "❌ このコマンドは個人チャンネルでのみ動作します。",
+      "not_verified": "❌ 最初に認証を完了する必要があります。`/start` を使用して開始してください。"
+    },
+    "dashboard_description": "個人ダッシュボードにアクセスして設定を管理",
+    "events_description": "アライアンスのイベントとスケジュールを表示・管理",
+    "alliance_description": "アライアンス情報を表示・管理",
+    "profile_description": "ゲームプロフィールと統計を表示",
+    "help_description": "ボットコマンドのヘルプと情報を取得"
   },
   "personal_channel": {
     "welcome": "個人チャンネルへようこそ！",

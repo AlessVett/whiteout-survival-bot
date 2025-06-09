@@ -35,6 +35,8 @@ class LanguageSelectionView(BaseView):
         callback: Optional[Callable] = None,
         **kwargs
     ):
+        # Disable auto_defer since buttons need to edit messages
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         self.callback = callback
         self._create_buttons()
@@ -129,6 +131,8 @@ class VerificationMethodView(BaseView):
         show_api: bool = True,
         **kwargs
     ):
+        # Disable auto_defer since buttons need to send messages
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         self.callback = callback
         
@@ -369,6 +373,8 @@ class AllianceSelectionView(BaseView):
         callback: Optional[Callable] = None,
         **kwargs
     ):
+        # Disable auto_defer since buttons need to send messages
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         self.callback = callback
         
@@ -523,6 +529,8 @@ class VerificationCompleteView(BaseView):
         show_help: bool = True,
         **kwargs
     ):
+        # Disable auto_defer since buttons need to send messages
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         
         # Dashboard button - primary action

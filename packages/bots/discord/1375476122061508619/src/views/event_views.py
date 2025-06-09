@@ -6,6 +6,7 @@ import asyncio
 from src.database import Database
 from locales import t
 from src.services.alliance_channels import AllianceChannels
+from .base import BaseView, BaseModal
 
 
 class EventTypeSelect(ui.Select):
@@ -51,14 +52,14 @@ class EventTypeSelect(ui.Select):
         )
 
 
-class EventDetailsModal(ui.Modal):
+class EventDetailsModal(BaseModal):
     def __init__(self, event_type: str, lang: str):
         super().__init__(
             title=t("events.create_event", lang),
-            timeout=300
+            lang=lang,
+            custom_id="event_details_modal"
         )
         self.event_type = event_type
-        self.lang = lang
         
         self.name = ui.TextInput(
             label=t("events.name_label", lang),
@@ -104,7 +105,7 @@ class EventDetailsModal(ui.Modal):
         )
         self.add_item(self.reminders)
     
-    async def on_submit(self, interaction: discord.Interaction):
+    async def handle_submit(self, interaction: discord.Interaction):
         try:
             # Parse start time
             start_time = datetime.strptime(self.start_time.value, "%Y-%m-%d %H:%M")
@@ -218,11 +219,10 @@ class EventDetailsModal(ui.Modal):
             )
 
 
-class EventListView(ui.View):
-    def __init__(self, alliance: str, lang: str):
-        super().__init__(timeout=600)
+class EventListView(BaseView):
+    def __init__(self, alliance: str, lang: str, **kwargs):
+        super().__init__(timeout=600, lang=lang, **kwargs)
         self.alliance = alliance
-        self.lang = lang
         self.current_page = 0
         self.events_per_page = 5
         
@@ -372,17 +372,18 @@ class EventListView(ui.View):
         await interaction.response.edit_message(view=self)
 
 
-class EventTypeSelectView(ui.View):
-    def __init__(self, lang: str):
-        super().__init__(timeout=300)
+class EventTypeSelectView(BaseView):
+    def __init__(self, lang: str, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since select sends modal
+        super().__init__(timeout=300, lang=lang, **kwargs)
         self.add_item(EventTypeSelect(lang))
 
 
-class EventDetailView(ui.View):
-    def __init__(self, event: Dict[str, Any], lang: str):
-        super().__init__(timeout=300)
+class EventDetailView(BaseView):
+    def __init__(self, event: Dict[str, Any], lang: str, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send messages/modals
+        super().__init__(timeout=300, lang=lang, **kwargs)
         self.event = event
-        self.lang = lang
         
         # Toggle active/inactive button - enhanced
         is_active = event.get('active', True)
@@ -470,14 +471,14 @@ class EventDetailView(ui.View):
         )
 
 
-class EventEditModal(ui.Modal):
+class EventEditModal(BaseModal):
     def __init__(self, event: Dict[str, Any], lang: str):
         super().__init__(
             title=t("events.edit_event", lang),
-            timeout=300
+            lang=lang,
+            custom_id="event_edit_modal"
         )
         self.event = event
-        self.lang = lang
         
         self.name = ui.TextInput(
             label=t("events.name_label", lang),
@@ -522,7 +523,7 @@ class EventEditModal(ui.Modal):
         )
         self.add_item(self.reminders)
     
-    async def on_submit(self, interaction: discord.Interaction):
+    async def handle_submit(self, interaction: discord.Interaction):
         try:
             # Parse start time
             start_time = datetime.strptime(self.start_time.value, "%Y-%m-%d %H:%M")
@@ -574,11 +575,10 @@ class EventEditModal(ui.Modal):
             )
 
 
-class ConfirmDeleteView(ui.View):
-    def __init__(self, event: Dict[str, Any], lang: str):
-        super().__init__(timeout=60)
+class ConfirmDeleteView(BaseView):
+    def __init__(self, event: Dict[str, Any], lang: str, **kwargs):
+        super().__init__(timeout=60, lang=lang, **kwargs)
         self.event = event
-        self.lang = lang
         
         confirm_btn = ui.Button(
             label=f"🗑️ {t('common.confirm', lang)}",

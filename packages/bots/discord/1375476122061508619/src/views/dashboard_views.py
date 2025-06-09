@@ -2,11 +2,11 @@ import discord
 from discord import ui
 from typing import Optional, List
 from locales import t
+from .base import BaseView, BaseModal
 
-class DashboardView(ui.View):
+class DashboardView(BaseView):
     def __init__(self, lang: str = "en", user_data: dict = None, cog = None):
-        super().__init__(timeout=600)
-        self.lang = lang
+        super().__init__(timeout=600, lang=lang, auto_defer=False)
         self.user_data = user_data
         self.cog = cog
         
@@ -44,9 +44,6 @@ class DashboardView(ui.View):
             view = PrivacyView(self.lang, commands_cog)
             await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
     
-    async def on_timeout(self):
-        for item in self.children:
-            item.disabled = True
 
 class ManageAllianceButton(ui.Button):
     def __init__(self):
@@ -59,9 +56,9 @@ class ManageAllianceButton(ui.Button):
     async def callback(self, interaction: discord.Interaction):
         await self.view.cog.handle_alliance_management(interaction)
 
-class LanguageChangeView(ui.View):
+class LanguageChangeView(BaseView):
     def __init__(self, cog = None):
-        super().__init__(timeout=300)
+        super().__init__(timeout=300, auto_defer=False)
         self.cog = cog
         
         languages = [
@@ -142,11 +139,10 @@ class AllianceMemberSelect(ui.Select):
         elif self.action == "transfer":
             await self.cog.handle_leadership_transfer(interaction, selected_id)
 
-class RoleSelectView(ui.View):
+class RoleSelectView(BaseView):
     def __init__(self, member_id: int, lang: str, cog = None):
-        super().__init__(timeout=300)
+        super().__init__(timeout=300, lang=lang, auto_defer=False)
         self.member_id = member_id
-        self.lang = lang
         self.cog = cog
         
         roles = ["R1", "R2", "R3", "R4"]
@@ -163,13 +159,12 @@ class RoleSelectView(ui.View):
             await self.cog.handle_role_change(interaction, self.member_id, new_role)
         return callback
 
-class AllianceManagementView(ui.View):
+class AllianceManagementView(BaseView):
     def __init__(self, alliance_name: str, members: List[dict], user_role: str, lang: str, cog = None):
-        super().__init__(timeout=600)
+        super().__init__(timeout=600, lang=lang)
         self.alliance_name = alliance_name
         self.members = members
         self.user_role = user_role
-        self.lang = lang
         self.cog = cog
         
         # Filtra membri che possono essere gestiti
@@ -238,7 +233,7 @@ class TransferLeadershipButton(ui.Button):
         eligible_members = [m for m in self.view.members if m.get('alliance_role') != 'R5']
         if eligible_members:
             select = AllianceMemberSelect(eligible_members, self.lang, "transfer", self.view.cog)
-            view = ui.View(timeout=300)
+            view = BaseView(timeout=300, lang=self.lang, auto_defer=False)
             view.add_item(select)
             await interaction.response.send_message(
                 t("alliance_management.select_new_leader", self.lang),
@@ -269,10 +264,9 @@ class DissolveAllianceButton(ui.Button):
             ephemeral=True
         )
 
-class ConfirmDissolveView(ui.View):
+class ConfirmDissolveView(BaseView):
     def __init__(self, lang: str, cog = None, alliance_name: str = None):
-        super().__init__(timeout=60)
-        self.lang = lang
+        super().__init__(timeout=60, lang=lang, auto_defer=False)
         self.cog = cog
         self.alliance_name = alliance_name
     

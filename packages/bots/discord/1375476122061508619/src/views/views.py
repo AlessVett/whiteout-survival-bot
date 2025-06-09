@@ -2,10 +2,12 @@ import discord
 from discord import ui
 from typing import Optional, Callable
 from locales import t
+from .base import BaseView, BaseModal
 
-class LanguageSelectView(ui.View):
-    def __init__(self, cog = None):
-        super().__init__(timeout=600)  # 10 minuti
+class LanguageSelectView(BaseView):
+    def __init__(self, cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons edit messages
+        super().__init__(timeout=600, **kwargs)  # 10 minuti
         self.cog = cog
         
         # Add language buttons
@@ -43,9 +45,9 @@ class LanguageSelectView(ui.View):
         for item in self.children:
             item.disabled = True
 
-class GameIDModal(ui.Modal):
+class GameIDModal(BaseModal):
     def __init__(self, lang: str = "en", verify_callback: Optional[Callable] = None):
-        super().__init__(title=t("verification.enter_id", lang))
+        super().__init__(title=t("verification.enter_id", lang), lang=lang, custom_id="legacy_game_id_modal")
         self.lang = lang
         self.verify_callback = verify_callback
         
@@ -63,9 +65,9 @@ class GameIDModal(ui.Modal):
         if self.verify_callback:
             await self.verify_callback(interaction, self.game_id.value)
 
-class AllianceModal(ui.Modal):
+class AllianceModal(BaseModal):
     def __init__(self, lang: str = "en", submit_callback: Optional[Callable] = None):
-        super().__init__(title=t("alliance.enter_name", lang))
+        super().__init__(title=t("alliance.enter_name", lang), lang=lang, custom_id="legacy_alliance_modal")
         self.lang = lang
         self.submit_callback = submit_callback
         
@@ -83,9 +85,10 @@ class AllianceModal(ui.Modal):
         if self.submit_callback:
             await self.submit_callback(interaction, self.alliance_name.value)
 
-class VerificationView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)  # 10 minuti
+class VerificationView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send modals
+        super().__init__(timeout=600, lang=lang, **kwargs)  # 10 minuti
         self.lang = lang
         self.cog = cog
     
@@ -94,9 +97,9 @@ class VerificationView(ui.View):
         modal = GameIDModal(self.lang, self.cog.handle_id_verification if self.cog else None)
         await interaction.response.send_modal(modal)
 
-class AllianceTypeView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)  # 10 minuti
+class AllianceTypeView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        super().__init__(timeout=600, lang=lang, **kwargs)  # 10 minuti
         self.lang = lang
         self.cog = cog
     
@@ -112,9 +115,10 @@ class AllianceTypeView(ui.View):
     async def alliance_other(self, interaction: discord.Interaction, button: ui.Button):
         await self.cog.handle_alliance_type_selection(interaction, "other_state")
 
-class AllianceView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)  # 10 minuti
+class AllianceView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send modals
+        super().__init__(timeout=600, lang=lang, **kwargs)  # 10 minuti
         self.lang = lang
         self.cog = cog
     
@@ -123,9 +127,9 @@ class AllianceView(ui.View):
         modal = AllianceModal(self.lang, self.cog.handle_alliance_submission if self.cog else None)
         await interaction.response.send_modal(modal)
 
-class AllianceRoleView(ui.View):
-    def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=600)  # 10 minuti
+class AllianceRoleView(BaseView):
+    def __init__(self, lang: str = "en", cog = None, **kwargs):
+        super().__init__(timeout=600, lang=lang, **kwargs)  # 10 minuti
         self.lang = lang
         self.cog = cog
         

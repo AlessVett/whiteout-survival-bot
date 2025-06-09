@@ -122,8 +122,14 @@
       "change_alliance": "⚔️ Allianz wechseln",
       "manage_alliance": "👥 Allianz verwalten",
       "no_permission": "❌ Sie haben keine Berechtigung, die Allianz zu verwalten.",
-      "only_personal": "❌ Dieser Befehl funktioniert nur in Ihrem persönlichen Kanal."
-    }
+      "only_personal": "❌ Dieser Befehl funktioniert nur in Ihrem persönlichen Kanal.",
+      "not_verified": "❌ Sie müssen zuerst die Verifizierung abschließen. Verwenden Sie `/start`, um zu beginnen."
+    },
+    "dashboard_description": "Greifen Sie auf Ihr persönliches Dashboard zu und verwalten Sie Ihre Einstellungen",
+    "events_description": "Allianz-Events und Zeitpläne anzeigen und verwalten",
+    "alliance_description": "Informationen Ihrer Allianz anzeigen und verwalten",
+    "profile_description": "Ihr Spielprofil und Statistiken anzeigen",
+    "help_description": "Hilfe und Informationen zu Bot-Befehlen erhalten"
   },
   "personal_channel": {
     "welcome": "Willkommen in Ihrem persönlichen Kanal!",

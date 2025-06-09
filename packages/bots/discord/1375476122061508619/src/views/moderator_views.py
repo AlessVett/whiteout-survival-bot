@@ -4,12 +4,17 @@ from typing import Optional, List
 from locales import t
 from src.database import Database
 from datetime import datetime
+from .base import BaseView, BaseModal
 
 
-class NewsModal(ui.Modal):
+class NewsModal(BaseModal):
     def __init__(self, lang: str):
-        super().__init__(title="Send News", timeout=300)
-        self.lang = lang
+        super().__init__(
+            title="Send News",
+            lang=lang,
+            custom_id="news_modal",
+            timeout=300
+        )
         
         # Title input
         self.title_input = ui.TextInput(
@@ -80,7 +85,7 @@ class NewsModal(ui.Modal):
         )
         
         # Show channel selection
-        view = ChannelSelectView(embed, self.lang)
+        view = ChannelSelectView(embed=embed, lang=self.lang)
         await interaction.response.send_message(
             t("moderator.news.channel_label", self.lang),
             view=view,
@@ -88,11 +93,15 @@ class NewsModal(ui.Modal):
         )
 
 
-class ChannelSelectView(ui.View):
+class ChannelSelectView(BaseView):
     def __init__(self, embed: discord.Embed, lang: str):
-        super().__init__(timeout=60)
+        super().__init__(
+            lang=lang,
+            timeout=60,
+            auto_defer=False,
+            custom_id="channel_select_view"
+        )
         self.embed = embed
-        self.lang = lang
         
     @ui.select(
         cls=ui.ChannelSelect,
@@ -128,10 +137,14 @@ class ChannelSelectView(ui.View):
             )
 
 
-class GiftCodeModal(ui.Modal):
+class GiftCodeModal(BaseModal):
     def __init__(self, lang: str):
-        super().__init__(title="Gift Code", timeout=60)
-        self.lang = lang
+        super().__init__(
+            title="Gift Code",
+            lang=lang,
+            custom_id="gift_code_modal",
+            timeout=60
+        )
         
         # Gift code input
         self.code = ui.TextInput(

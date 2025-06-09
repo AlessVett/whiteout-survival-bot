@@ -4,11 +4,16 @@ from typing import Optional
 from locales import t
 import json
 from datetime import datetime
+from .base import BaseView
 
-class PrivacyView(ui.View):
+class PrivacyView(BaseView):
     def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=300)
-        self.lang = lang
+        super().__init__(
+            lang=lang,
+            timeout=300,
+            auto_defer=False,
+            custom_id="privacy_view"
+        )
         self.cog = cog
     
     @ui.button(label="🔍 View Data", style=discord.ButtonStyle.primary, row=0)
@@ -98,10 +103,14 @@ class PrivacyView(ui.View):
         
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-class DeleteConfirmationView(ui.View):
+class DeleteConfirmationView(BaseView):
     def __init__(self, lang: str = "en", cog = None):
-        super().__init__(timeout=60)
-        self.lang = lang
+        super().__init__(
+            lang=lang,
+            timeout=60,
+            auto_defer=False,
+            custom_id="delete_confirmation_view"
+        )
         self.cog = cog
     
     @ui.button(label="🗑️ DELETE EVERYTHING", style=discord.ButtonStyle.danger, row=0)

@@ -122,8 +122,14 @@
       "change_alliance": "⚔️ 연맹 변경",
       "manage_alliance": "👥 연맹 관리",
       "no_permission": "❌ 연맹을 관리할 권한이 없습니다.",
-      "only_personal": "❌ 이 명령은 개인 채널에서만 작동합니다."
-    }
+      "only_personal": "❌ 이 명령은 개인 채널에서만 작동합니다.",
+      "not_verified": "❌ 먼저 인증을 완료해야 합니다. `/start`를 사용하여 시작하세요."
+    },
+    "dashboard_description": "개인 대시보드에 액세스하고 설정 관리",
+    "events_description": "연합 이벤트 및 일정 보기 및 관리",
+    "alliance_description": "연합 정보 보기 및 관리",
+    "profile_description": "게임 프로필 및 통계 보기",
+    "help_description": "봇 명령어에 대한 도움말 및 정보 보기"
   },
   "personal_channel": {
     "welcome": "개인 채널에 오신 것을 환영합니다!",

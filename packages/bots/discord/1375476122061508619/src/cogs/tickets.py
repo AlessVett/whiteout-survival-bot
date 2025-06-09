@@ -17,16 +17,20 @@ from typing import Optional
 from src.config import Config
 from locales import t
 from src.cogs.base import BaseCog
+from src.views.base import BaseView, BaseModal
 
 logger = logging.getLogger(__name__)
 
-class TicketModal(discord.ui.Modal):
+class TicketModal(BaseModal):
     """Modal for ticket creation"""
     
     def __init__(self, cog, lang='en'):
-        super().__init__(title=t("tickets.modal.title", lang=lang))
+        super().__init__(
+            title=t("tickets.modal.title", lang=lang),
+            lang=lang,
+            custom_id="ticket_modal"
+        )
         self.cog = cog
-        self.lang = lang
         
         # Title input
         self.title_input = discord.ui.TextInput(
@@ -520,11 +524,15 @@ class TicketsCog(BaseCog):
             logger.error(f"Error checking existing tickets: {e}")
             return None
 
-class TicketControlView(discord.ui.View):
+class TicketControlView(BaseView):
     """View with controls for ticket management"""
     
     def __init__(self, cog, ticket_id: str):
-        super().__init__(timeout=None)  # Persistent view
+        super().__init__(
+            timeout=None,  # Persistent view
+            auto_defer=False,
+            custom_id=f"ticket_control_{ticket_id}"
+        )
         self.cog = cog
         self.ticket_id = ticket_id
     
