@@ -96,6 +96,7 @@ class GameIDModal(BaseModal):
     ):
         super().__init__(
             title=t("verification.enter_id_title", kwargs.get('lang', 'en')),
+            custom_id="game_id_modal",
             **kwargs
         )
         self.callback = callback
