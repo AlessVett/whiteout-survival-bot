@@ -98,8 +98,7 @@ class ChannelSelectView(BaseView):
         super().__init__(
             lang=lang,
             timeout=60,
-            auto_defer=False,
-            custom_id="channel_select_view"
+            auto_defer=False
         )
         self.embed = embed
         
