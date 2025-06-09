@@ -94,17 +94,29 @@ class RulesAutomationCog(BaseCog):
             return
         
         try:
-            # Check if channel has recent messages (last 24 hours)
-            cutoff_time = datetime.utcnow() - timedelta(hours=24)
-            recent_messages = []
+            # Check if channel has any messages at all (last 50 messages)
+            has_human_messages = False
+            has_bot_rules = False
             
-            async for message in rules_channel.history(limit=10, after=cutoff_time):
-                if not message.author.bot:  # Ignore bot messages
-                    recent_messages.append(message)
+            async for message in rules_channel.history(limit=50):
+                if message.author.bot and message.author.id == self.bot.user.id:
+                    # Check if this is a rules message from our bot
+                    if message.embeds and "Server Rules" in str(message.embeds[0].title):
+                        has_bot_rules = True
+                        break  # Found rules, no need to continue
+                elif not message.author.bot:
+                    # Human message found
+                    has_human_messages = True
             
-            # If no recent human messages, send rules
-            if not recent_messages:
+            # Send rules ONLY if:
+            # 1. No human messages in the channel
+            # 2. AND no bot rules messages found
+            if not has_human_messages and not has_bot_rules:
                 await self._send_rules_to_channel(rules_channel, guild.id)
+            elif has_bot_rules:
+                self.logger.debug(f"Rules already exist in guild {guild.id}, skipping")
+            elif has_human_messages:
+                self.logger.debug(f"Human messages found in rules channel for guild {guild.id}, skipping")
                 
         except discord.Forbidden:
             self.logger.warning(f"No permission to read rules channel in guild {guild.id}")
