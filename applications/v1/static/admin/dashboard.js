@@ -133,6 +133,9 @@ function showSection(sectionName) {
             case 'configuration':
                 loadConfiguration();
                 break;
+            case 'tickets':
+                loadTicketsData();
+                break;
         }
     }
 }
@@ -1065,6 +1068,9 @@ async function refreshData() {
         case 'configuration':
             await loadConfiguration();
             break;
+        case 'tickets':
+            await loadTicketsData();
+            break;
     }
 }
 
@@ -1350,3 +1356,386 @@ function updateDiskChart(diskData) {
         }
     });
 }
+
+// ===============================
+// TICKETING SYSTEM FUNCTIONS
+// ===============================
+
+/**
+ * Load tickets data and stats
+ */
+async function loadTicketsData() {
+    try {
+        // Load stats and tickets in parallel
+        await Promise.all([
+            loadTicketStats(),
+            loadTickets()
+        ]);
+    } catch (error) {
+        console.error('Error loading tickets data:', error);
+        showError('Failed to load tickets data');
+    }
+}
+
+/**
+ * Load ticket statistics
+ */
+async function loadTicketStats() {
+    try {
+        const data = await apiRequest('/tickets-stats');
+        const stats = data.stats;
+        
+        // Update metric cards
+        document.getElementById('total-tickets').textContent = stats.total || 0;
+        document.getElementById('open-tickets').textContent = stats.open || 0;
+        document.getElementById('pending-tickets').textContent = stats.in_progress || 0;
+        document.getElementById('resolved-tickets').textContent = stats.resolved || 0;
+        
+    } catch (error) {
+        console.error('Error loading ticket stats:', error);
+    }
+}
+
+/**
+ * Load tickets list
+ */
+async function loadTickets() {
+    try {
+        const statusFilter = document.getElementById('ticket-status-filter')?.value || '';
+        
+        const params = new URLSearchParams();
+        if (statusFilter) params.append('status', statusFilter);
+        params.append('limit', '50');
+        
+        const data = await apiRequest(`/tickets?${params.toString()}`);
+        
+        const container = document.getElementById('tickets-container');
+        container.classList.remove('loading');
+        
+        if (data.tickets.length === 0) {
+            container.innerHTML = '<p class="text-muted text-center py-4">No tickets found</p>';
+            return;
+        }
+        
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.tickets.map(ticket => `
+                            <tr>
+                                <td>
+                                    <code class="text-primary">${ticket.ticket_id}</code>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <strong>${escapeHtml(ticket.user_name)}</strong>
+                                        <small class="text-muted">${ticket.user_id}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ticket-title" style="max-width: 200px;">
+                                        ${escapeHtml(ticket.title)}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill bg-${getStatusColor(ticket.status)} px-3 py-2">
+                                        ${getStatusDisplay(ticket.status)}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-${getPriorityColor(ticket.priority)}">
+                                        ${ticket.priority.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="text-muted">${getTimeAgo(new Date(ticket.created_at))}</span>
+                                    <br>
+                                    <small class="text-muted">${new Date(ticket.created_at).toLocaleDateString()}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTicket('${ticket.ticket_id}')" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="replyToTicket('${ticket.ticket_id}')" title="Reply">
+                                            <i class="fas fa-reply"></i>
+                                        </button>
+                                        ${ticket.status !== 'closed' ? `
+                                        <button class="btn btn-sm btn-outline-danger" onclick="closeTicket('${ticket.ticket_id}')" title="Close">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        ` : ''}
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+    } catch (error) {
+        console.error('Error loading tickets:', error);
+        showError('Failed to load tickets');
+    }
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'open': 'primary',
+        'in_progress': 'warning',
+        'waiting_response': 'info',
+        'resolved': 'success',
+        'closed': 'secondary'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getStatusDisplay(status) {
+    const displays = {
+        'open': 'Open',
+        'in_progress': 'In Progress',
+        'waiting_response': 'Waiting Response',
+        'resolved': 'Resolved',
+        'closed': 'Closed'
+    };
+    return displays[status] || status;
+}
+
+function getPriorityColor(priority) {
+    const colors = {
+        'low': 'success',
+        'medium': 'warning',
+        'high': 'danger',
+        'urgent': 'dark'
+    };
+    return colors[priority] || 'secondary';
+}
+
+async function viewTicket(ticketId) {
+    try {
+        const data = await apiRequest(`/tickets/${ticketId}`);
+        const ticket = data.ticket;
+        
+        document.getElementById('ticketModalLabel').innerHTML = `
+            <span class="me-2">${ticket.ticket_id}</span>
+            <span class="badge bg-${getStatusColor(ticket.status)}">${getStatusDisplay(ticket.status)}</span>
+        `;
+        
+        const modalBody = document.getElementById('ticketModalBody');
+        modalBody.innerHTML = `
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>${escapeHtml(ticket.title)}</h5>
+                    <p class="text-muted mb-3">
+                        Created by <strong>${escapeHtml(ticket.user_name)}</strong> 
+                        on ${new Date(ticket.created_at).toLocaleString()}
+                    </p>
+                    
+                    <div class="ticket-messages" style="max-height: 400px; overflow-y: auto;">
+                        ${ticket.messages.map(msg => `
+                            <div class="message mb-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <strong class="text-${msg.author_type === 'admin' ? 'danger' : 'primary'}">
+                                        ${escapeHtml(msg.author_name)} 
+                                        ${msg.author_type === 'admin' ? '(Admin)' : ''}
+                                    </strong>
+                                    <small class="text-muted">${new Date(msg.timestamp).toLocaleString()}</small>
+                                </div>
+                                <div class="message-content mt-2 p-3 rounded" style="background: ${msg.author_type === 'admin' ? '#fff5f5' : '#f8f9fa'};">
+                                    ${escapeHtml(msg.content)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <label for="replyContent" class="form-label">Reply to ticket:</label>
+                        <textarea class="form-control" id="replyContent" rows="3" placeholder="Type your reply..."></textarea>
+                        <div class="mt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="closeTicketCheck">
+                                <label class="form-check-label" for="closeTicketCheck">
+                                    Close ticket after sending reply
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Ticket Information</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Status:</label>
+                                <select class="form-select" id="ticketStatus">
+                                    <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
+                                    <option value="in_progress" ${ticket.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                                    <option value="waiting_response" ${ticket.status === 'waiting_response' ? 'selected' : ''}>Waiting Response</option>
+                                    <option value="resolved" ${ticket.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                                    <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Priority:</label>
+                                <select class="form-select" id="ticketPriority">
+                                    <option value="low" ${ticket.priority === 'low' ? 'selected' : ''}>Low</option>
+                                    <option value="medium" ${ticket.priority === 'medium' ? 'selected' : ''}>Medium</option>
+                                    <option value="high" ${ticket.priority === 'high' ? 'selected' : ''}>High</option>
+                                    <option value="urgent" ${ticket.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Category:</label>
+                                <input type="text" class="form-control" id="ticketCategory" value="${ticket.category || ''}" placeholder="e.g., Technical Support">
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="text-muted small">
+                                <p><strong>User ID:</strong> ${ticket.user_id}</p>
+                                <p><strong>Guild ID:</strong> ${ticket.guild_id}</p>
+                                ${ticket.channel_id ? `<p><strong>Channel ID:</strong> ${ticket.channel_id}</p>` : ''}
+                                <p><strong>Created:</strong> ${new Date(ticket.created_at).toLocaleString()}</p>
+                                <p><strong>Updated:</strong> ${new Date(ticket.updated_at).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        modalBody.dataset.ticketId = ticketId;
+        
+        const modal = new bootstrap.Modal(document.getElementById('ticketModal'));
+        modal.show();
+        
+    } catch (error) {
+        console.error('Error viewing ticket:', error);
+        showError('Failed to load ticket details');
+    }
+}
+
+async function saveTicketChanges() {
+    try {
+        const modalBody = document.getElementById('ticketModalBody');
+        const ticketId = modalBody.dataset.ticketId;
+        
+        if (!ticketId) return;
+        
+        const replyContent = document.getElementById('replyContent').value.trim();
+        const closeTicketCheckbox = document.getElementById('closeTicketCheck').checked;
+        const newStatus = document.getElementById('ticketStatus').value;
+        
+        // Check if ticket should be closed (either by checkbox or status change)
+        const isStatusClosed = newStatus === 'closed';
+        const shouldCloseTicket = closeTicketCheckbox || isStatusClosed;
+        
+        if (replyContent || shouldCloseTicket) {
+            // Send reply if there's content OR if we're closing the ticket
+            const replyMessage = replyContent || (shouldCloseTicket ? 'This ticket has been closed by an administrator.' : '');
+            
+            await apiRequest(`/tickets/${ticketId}/reply`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    content: replyMessage,
+                    close_ticket: shouldCloseTicket
+                })
+            });
+        } else {
+            // Only update ticket data if not closing (to avoid double update)
+            const updateData = {
+                status: newStatus,
+                priority: document.getElementById('ticketPriority').value,
+                category: document.getElementById('ticketCategory').value || null
+            };
+            
+            await apiRequest(`/tickets/${ticketId}`, {
+                method: 'PUT',
+                body: JSON.stringify(updateData)
+            });
+        }
+        
+        showSuccess('Ticket updated successfully');
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('ticketModal'));
+        modal.hide();
+        
+        await loadTicketsData();
+        
+    } catch (error) {
+        console.error('Error saving ticket changes:', error);
+        showError('Failed to save ticket changes');
+    }
+}
+
+async function replyToTicket(ticketId) {
+    const reply = prompt('Enter your reply:');
+    if (!reply) return;
+    
+    try {
+        await apiRequest(`/tickets/${ticketId}/reply`, {
+            method: 'POST',
+            body: JSON.stringify({
+                content: reply
+            })
+        });
+        
+        showSuccess('Reply sent successfully');
+        await loadTicketsData();
+        
+    } catch (error) {
+        console.error('Error replying to ticket:', error);
+        showError('Failed to send reply');
+    }
+}
+
+async function closeTicket(ticketId) {
+    if (!confirm('Are you sure you want to close this ticket?')) return;
+    
+    try {
+        // Send closing message to Discord and update ticket status
+        await apiRequest(`/tickets/${ticketId}/reply`, {
+            method: 'POST',
+            body: JSON.stringify({
+                content: 'This ticket has been closed by an administrator.',
+                close_ticket: true
+            })
+        });
+        
+        showSuccess('Ticket closed successfully');
+        await loadTicketsData();
+        
+    } catch (error) {
+        console.error('Error closing ticket:', error);
+        showError('Failed to close ticket');
+    }
+}
+
+function refreshTickets() {
+    loadTicketsData();
+}
+
+// Setup event listeners for ticket filters
+document.addEventListener('DOMContentLoaded', function() {
+    const statusFilter = document.getElementById('ticket-status-filter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', loadTickets);
+    }
+});

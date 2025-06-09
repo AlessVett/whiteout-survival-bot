@@ -16,6 +16,10 @@ class Config:
     API_KEY = os.getenv('API_KEY', '')
     API_TIMEOUT = int(os.getenv('API_TIMEOUT', '30'))
     
+    # DWOS API Gateway Configuration
+    API_GATEWAY_URL = os.getenv('API_GATEWAY_URL', 'http://api-gateway:8000')
+    DISCORD_BOT_API_KEY = os.getenv('DISCORD_BOT_API_KEY', 'discord-bot-api-key-change-me')
+    
     # Database Configuration
     MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
     MONGODB_DB = os.getenv('MONGODB_DB', 'whiteout_survival_crm')

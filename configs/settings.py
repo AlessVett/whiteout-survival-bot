@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     algorithm: str = Field(default="HS256", env="ALGORITHM")
     access_token_expire_minutes: int = Field(default=30, env="ACCESS_TOKEN_EXPIRE_MINUTES")
     admin_token: str = Field(default="admin-token-change-me", env="ADMIN_TOKEN")
+    discord_bot_api_key: str = Field(default="discord-bot-api-key-change-me", env="DISCORD_BOT_API_KEY")
     
     # Database
     mongodb_url: str = Field(default="mongodb://localhost:27017", env="MONGODB_URI")

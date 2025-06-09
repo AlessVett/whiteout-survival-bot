@@ -1218,14 +1218,83 @@
 
         <!-- Tickets Section -->
         <div id="tickets-section" class="content-section d-none">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-ticket-alt me-2"></i>Ticketing System
+            <!-- Ticket Stats -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--primary-gradient);">
+                        <i class="fas fa-ticket-alt fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="total-tickets">-</div>
+                        <div class="metric-label">Total Tickets</div>
+                    </div>
                 </div>
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-tools fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">Coming Soon</h4>
-                    <p class="text-muted">The ticketing system is under development and will be available in the next release.</p>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--success-gradient);">
+                        <i class="fas fa-folder-open fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="open-tickets">-</div>
+                        <div class="metric-label">Open Tickets</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--warning-gradient);">
+                        <i class="fas fa-clock fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="pending-tickets">-</div>
+                        <div class="metric-label">In Progress</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="metric-card" style="background: var(--danger-gradient);">
+                        <i class="fas fa-check-circle fa-2x mb-2" style="opacity: 0.3; position: absolute; top: 1rem; right: 1rem;"></i>
+                        <div class="metric-value" id="resolved-tickets">-</div>
+                        <div class="metric-label">Resolved</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tickets Management -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="fas fa-ticket-alt me-2"></i>Support Tickets
+                    </span>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-sm" style="width: auto;" id="ticket-status-filter">
+                            <option value="">All Status</option>
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="waiting_response">Waiting Response</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                        <button class="btn btn-primary btn-sm" onclick="refreshTickets()">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div id="tickets-container" class="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ticket Detail Modal -->
+        <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ticketModalLabel">Ticket Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="ticketModalBody">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="saveTicketChanges()">Save Changes</button>
+                    </div>
                 </div>
             </div>
         </div>

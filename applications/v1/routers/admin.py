@@ -26,6 +26,10 @@ import structlog
 
 from configs.settings import settings
 from applications.v1.core.log_collector import log_collector
+from applications.v1.core.ticket_system import (
+    TicketManager, Ticket, TicketCreate, TicketUpdate, TicketReply,
+    TicketStatus, TicketPriority
+)
 
 logger = structlog.get_logger()
 
@@ -595,3 +599,336 @@ async def admin_health():
         "timestamp": datetime.utcnow().isoformat(),
         "admin_panel": "operational"
     }
+
+# Ticket Management Endpoints
+
+@router.get("/api/tickets")
+async def get_tickets(
+    status: Optional[TicketStatus] = Query(None, description="Filter by status"),
+    user_id: Optional[str] = Query(None, description="Filter by user ID"),
+    assigned_to: Optional[str] = Query(None, description="Filter by assigned admin"),
+    limit: int = Query(50, description="Number of tickets to return"),
+    skip: int = Query(0, description="Number of tickets to skip"),
+    admin: dict = Depends(verify_admin_token)
+):
+    """Get tickets with filtering and pagination"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        tickets = await ticket_manager.get_tickets(
+            status=status,
+            user_id=user_id,
+            assigned_to=assigned_to,
+            limit=limit,
+            skip=skip
+        )
+        
+        # Convert to dict for JSON serialization
+        tickets_data = []
+        for ticket in tickets:
+            ticket_dict = ticket.dict()
+            # Convert datetime objects to ISO strings
+            for key, value in ticket_dict.items():
+                if isinstance(value, datetime):
+                    ticket_dict[key] = value.isoformat()
+            # Handle messages datetime conversion
+            for msg in ticket_dict.get("messages", []):
+                if isinstance(msg.get("timestamp"), datetime):
+                    msg["timestamp"] = msg["timestamp"].isoformat()
+            tickets_data.append(ticket_dict)
+        
+        return {
+            "tickets": tickets_data,
+            "total": len(tickets_data),
+            "filters": {
+                "status": status,
+                "user_id": user_id,
+                "assigned_to": assigned_to
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting tickets: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/api/tickets/{ticket_id}")
+async def get_ticket(
+    ticket_id: str,
+    admin: dict = Depends(verify_admin_token)
+):
+    """Get a specific ticket by ID"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        ticket = await ticket_manager.get_ticket(ticket_id)
+        
+        if not ticket:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+            
+        # Convert to dict for JSON serialization
+        ticket_dict = ticket.dict()
+        for key, value in ticket_dict.items():
+            if isinstance(value, datetime):
+                ticket_dict[key] = value.isoformat()
+        # Handle messages datetime conversion
+        for msg in ticket_dict.get("messages", []):
+            if isinstance(msg.get("timestamp"), datetime):
+                msg["timestamp"] = msg["timestamp"].isoformat()
+                
+        return {"ticket": ticket_dict}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting ticket {ticket_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.put("/api/tickets/{ticket_id}")
+async def update_ticket(
+    ticket_id: str,
+    update_data: TicketUpdate,
+    admin: dict = Depends(verify_admin_token)
+):
+    """Update a ticket"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        updated_ticket = await ticket_manager.update_ticket(ticket_id, update_data)
+        
+        if not updated_ticket:
+            raise HTTPException(status_code=404, detail="Ticket not found or not updated")
+            
+        # Convert to dict for JSON serialization
+        ticket_dict = updated_ticket.dict()
+        for key, value in ticket_dict.items():
+            if isinstance(value, datetime):
+                ticket_dict[key] = value.isoformat()
+        # Handle messages datetime conversion
+        for msg in ticket_dict.get("messages", []):
+            if isinstance(msg.get("timestamp"), datetime):
+                msg["timestamp"] = msg["timestamp"].isoformat()
+                
+        return {
+            "success": True,
+            "ticket": ticket_dict,
+            "message": "Ticket updated successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating ticket {ticket_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/api/tickets/{ticket_id}/reply")
+async def reply_to_ticket(
+    ticket_id: str,
+    reply: TicketReply,
+    admin: dict = Depends(verify_admin_token)
+):
+    """Reply to a ticket"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        
+        # Use admin info from token
+        admin_id = admin.get("user", "admin")
+        admin_name = f"Admin ({admin_id})"
+        
+        updated_ticket = await ticket_manager.reply_to_ticket(
+            ticket_id=ticket_id,
+            admin_id=admin_id,
+            admin_name=admin_name,
+            reply=reply
+        )
+        
+        if not updated_ticket:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+            
+        # Send message to Discord channel if channel_id exists
+        ticket = await ticket_manager.get_ticket(ticket_id)
+        if ticket and ticket.channel_id:
+            await send_message_to_discord_channel(
+                ticket.channel_id,
+                reply.content,
+                admin_name,
+                is_admin=True,
+                close_ticket=reply.close_ticket
+            )
+        
+        # Convert to dict for JSON serialization
+        ticket_dict = updated_ticket.dict()
+        for key, value in ticket_dict.items():
+            if isinstance(value, datetime):
+                ticket_dict[key] = value.isoformat()
+        # Handle messages datetime conversion
+        for msg in ticket_dict.get("messages", []):
+            if isinstance(msg.get("timestamp"), datetime):
+                msg["timestamp"] = msg["timestamp"].isoformat()
+                
+        return {
+            "success": True,
+            "ticket": ticket_dict,
+            "message": "Reply sent successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error replying to ticket {ticket_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/api/tickets-stats")
+async def get_ticket_stats(admin: dict = Depends(verify_admin_token)):
+    """Get ticket statistics"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        stats = await ticket_manager.get_ticket_stats()
+        
+        return {
+            "stats": stats,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting ticket stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/api/tickets/create")
+async def create_ticket_from_discord(
+    ticket_data: TicketCreate,
+    admin: dict = Depends(verify_admin_token)
+):
+    """Create a new ticket from Discord bot"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        ticket_manager = TicketManager(db)
+        ticket = await ticket_manager.create_ticket(ticket_data)
+        
+        # Convert to dict for JSON serialization
+        ticket_dict = ticket.dict()
+        for key, value in ticket_dict.items():
+            if isinstance(value, datetime):
+                ticket_dict[key] = value.isoformat()
+        # Handle messages datetime conversion
+        for msg in ticket_dict.get("messages", []):
+            if isinstance(msg.get("timestamp"), datetime):
+                msg["timestamp"] = msg["timestamp"].isoformat()
+        
+        logger.info(f"Created ticket {ticket.ticket_id} from Discord for user {ticket.user_name}")
+        
+        return {
+            "success": True,
+            "ticket": ticket_dict,
+            "message": f"Ticket {ticket.ticket_id} created successfully"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error creating ticket from Discord: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.put("/api/tickets/{ticket_id}/channel")
+async def update_ticket_channel(
+    ticket_id: str,
+    channel_data: dict,
+    admin: dict = Depends(verify_admin_token)
+):
+    """Update ticket with Discord channel information"""
+    try:
+        db = await get_database()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database not available")
+            
+        # Update ticket with channel_id
+        result = await db.tickets.update_one(
+            {"_id": ticket_id},
+            {
+                "$set": {
+                    "channel_id": channel_data.get("channel_id"),
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+            
+        return {
+            "success": True,
+            "message": "Ticket channel updated successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating ticket channel: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Discord Integration Functions
+
+async def send_message_to_discord_channel(
+    channel_id: str,
+    message: str,
+    author_name: str,
+    is_admin: bool = True,
+    close_ticket: bool = False
+):
+    """Send a message to Discord channel via bot API"""
+    try:
+        import httpx
+        
+        # Get Discord bot API configuration
+        bot_api_url = os.getenv('DISCORD_BOT_API_URL', 'http://discord-bot:8001')
+        api_key = os.getenv('DISCORD_BOT_ADMIN_API_KEY', 'admin-integration-key')
+        
+        # Prepare the request
+        headers = {
+            'X-API-Key': api_key,
+            'Content-Type': 'application/json'
+        }
+        
+        data = {
+            'channel_id': channel_id,
+            'content': message,
+            'admin_name': author_name,
+            'close_ticket': close_ticket
+        }
+        
+        # Send the message to Discord bot API
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{bot_api_url}/send-message",
+                headers=headers,
+                json=data,
+                timeout=10.0
+            )
+            
+            if response.status_code != 200:
+                logger.error(f"Failed to send message to Discord: {response.status_code} - {response.text}")
+                return False
+                
+            logger.info(f"Admin message sent to Discord channel {channel_id}")
+            return True
+            
+    except Exception as e:
+        logger.error(f"Error sending message to Discord: {e}")
+        return False

@@ -13,7 +13,7 @@ from prometheus_client import make_asgi_app
 from configs.settings import settings
 from applications.v1.core.service_discovery import ServiceRegistry, ServiceProxy
 from applications.v1.core.message_queue import MessageBroker, EventBus
-from applications.v1.routers import health, services, admin, service_admin
+from applications.v1.routers import health, services, admin, service_admin, tickets
 from applications.v1.core.log_processor import configure_logging
 
 # Configure structured logging with log collector
@@ -143,6 +143,7 @@ app.include_router(health.router, prefix=settings.api_v1_str)
 app.include_router(services.router, prefix=settings.api_v1_str)
 app.include_router(admin.router)
 app.include_router(service_admin.router)
+app.include_router(tickets.router)
 
 # Dependency injection
 @app.middleware("http")
