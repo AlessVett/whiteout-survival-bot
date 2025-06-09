@@ -11,3 +11,4 @@ ENV/
 .idea/
 *.log
 /.env.production
+/logs/dwos_admin_logs.jsonl
