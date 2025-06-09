@@ -24,6 +24,7 @@ class CommandsCog(BaseCog):
     async def start_command(self, interaction: discord.Interaction):
         """Start or resume the verification process."""
         try:
+            await interaction.response.defer(ephemeral=True)
             member = interaction.user
             
             # Get or create user data
