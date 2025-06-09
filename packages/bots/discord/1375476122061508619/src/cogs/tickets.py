@@ -530,8 +530,7 @@ class TicketControlView(BaseView):
     def __init__(self, cog, ticket_id: str):
         super().__init__(
             timeout=None,  # Persistent view
-            auto_defer=False,
-            custom_id=f"ticket_control_{ticket_id}"
+            auto_defer=False
         )
         self.cog = cog
         self.ticket_id = ticket_id
