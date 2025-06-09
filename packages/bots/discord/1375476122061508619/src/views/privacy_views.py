@@ -11,8 +11,7 @@ class PrivacyView(BaseView):
         super().__init__(
             lang=lang,
             timeout=300,
-            auto_defer=False,
-            custom_id="privacy_view"
+            auto_defer=False
         )
         self.cog = cog
     
@@ -108,8 +107,7 @@ class DeleteConfirmationView(BaseView):
         super().__init__(
             lang=lang,
             timeout=60,
-            auto_defer=False,
-            custom_id="delete_confirmation_view"
+            auto_defer=False
         )
         self.cog = cog
     
