@@ -187,7 +187,8 @@ async def get_stats():
                     "active_events": await bot_instance.db.events.count_documents({"active": True})
                 }
             except Exception as e:
-                db_stats = {"error": f"Database unavailable: {str(e)}"}
+                logging.error(f"Database error: {e}")
+                db_stats = {"error": "Database unavailable"}
         
         return {
             "bot_stats": {
