@@ -569,14 +569,15 @@ class VerificationCompleteView(BaseView):
     
     async def _dashboard_callback(self, interaction: discord.Interaction):
         """Open user dashboard."""
-        await interaction.response.send_message(
-            t("verification.opening_dashboard", self.lang),
-            ephemeral=True
-        )
-        # Trigger dashboard command
-        dashboard_command = interaction.client.get_command("dashboard")
-        if dashboard_command:
-            await dashboard_command(interaction)
+        # Get the commands cog and call dashboard directly
+        commands_cog = interaction.client.get_cog('CommandsCog')
+        if commands_cog:
+            await commands_cog.dashboard_command(interaction)
+        else:
+            await interaction.response.send_message(
+                "Dashboard unavailable. Please use /dashboard command.",
+                ephemeral=True
+            )
     
     async def _help_callback(self, interaction: discord.Interaction):
         """Show help information."""
