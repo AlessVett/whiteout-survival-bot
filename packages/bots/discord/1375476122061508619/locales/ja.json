@@ -335,5 +335,61 @@
       "shared_by": "{moderator}によって共有"
     },
     "no_permission": "❌ このコマンドを使用するにはモデレーター役割が必要です！"
+  },
+  "privacy": {
+    "title": "🔒 プライバシーとデータ管理",
+    "description": "このボットに保存されている個人データを管理する",
+    "view_data": "📄 データを表示",
+    "delete_data": "🗑️ データを削除",
+    "privacy_policy": "📋 プライバシーポリシー",
+    "terms_service": "📜 利用規約",
+    "data_overview": "データ概要",
+    "discord_id": "Discord ID",
+    "game_id": "ゲームID",
+    "nickname": "ニックネーム",
+    "alliance": "アライアンス",
+    "alliance_role": "アライアンス役割",
+    "language": "言語",
+    "verified": "認証済み",
+    "created_at": "アカウント作成日",
+    "last_activity": "最終活動",
+    "delete_confirmation": "⚠️ すべてのデータを削除",
+    "delete_warning": "これにより、すべてのデータがシステムから永久に削除されます。この操作は元に戻せません！\n\n**削除されるもの：**\n• 認証ステータス\n• アライアンスメンバーシップ\n• イベント履歴\n• 言語設定\n• すべての関連記録\n\n**注意：** ボットを使用するには再度認証が必要になります。",
+    "delete_confirm": "🗑️ はい、すべて削除",
+    "delete_cancel": "❌ キャンセル",
+    "deletion_complete": "✅ データがシステムから永久に削除されました。",
+    "no_data": "ℹ️ アカウントのデータが見つかりません。",
+    "policy_links": "📚 法的文書",
+    "policy_description": "プライバシーポリシーと利用規約をご確認ください：",
+    "data_retention": "📅 データ保持",
+    "retention_info": "ボットを積極的に使用している間、データは保持されます。非アクティブなアカウントは90日後に自動的にクリーンアップされます。",
+    "your_rights": "🛡️ あなたの権利",
+    "rights_info": "このコマンドを使用して、いつでも個人データにアクセス、修正、エクスポート、または削除する権利があります。"
+  },
+  "tickets": {
+    "modal": {
+      "title": "🎫 サポートチケットを作成",
+      "title_label": "チケットタイトル",
+      "title_placeholder": "問題の簡潔な説明",
+      "description_label": "説明",
+      "description_placeholder": "問題を詳しく説明してください...",
+      "priority_label": "優先度",
+      "priority_placeholder": "低、中、高、緊急"
+    },
+    "creation": {
+      "success_title": "🎫 チケットが正常に作成されました",
+      "success_description": "サポートチケット`{ticket_id}`が作成されました！\n\n{channel}をチェックして会話を続けてください。",
+      "title_field": "タイトル",
+      "priority_field": "優先度",
+      "error": "❌ チケットの作成に失敗しました。後でもう一度お試しください。"
+    },
+    "channel": {
+      "creation_error": "❌ チケットチャンネルの作成に失敗しました。管理者にお問い合わせください。"
+    },
+    "already_exists": "⚠️ すでに開いているチケットがあります：`{ticket_id}`\n既存のチケットを使用するか、まず閉じてください。",
+    "close": {
+      "success": "✅ チケットが正常に閉じられました。",
+      "error": "❌ チケットを閉じることができませんでした。もう一度お試しください。"
+    }
   }
 }
