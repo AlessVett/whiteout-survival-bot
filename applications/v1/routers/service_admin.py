@@ -63,7 +63,9 @@ def get_process_info() -> Dict[str, Any]:
             "create_time": process.create_time()
         }
     except Exception as e:
-        return {"error": f"Could not get process info: {str(e)}"}
+        # Log the exception details for debugging purposes
+        print(f"Error in get_process_info: {str(e)}", file=sys.stderr)
+        return {"error": "Could not retrieve process information due to an internal error."}
 
 @router.get("/status")
 async def get_service_status():
