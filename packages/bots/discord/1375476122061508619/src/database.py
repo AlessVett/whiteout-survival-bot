@@ -11,6 +11,8 @@ class Database:
         self.alliances = self.db.alliances
         self.events = self.db.events
         self.alliance_channels = self.db.alliance_channels
+        self.rules = self.db.rules
+        self.automation_logs = self.db.automation_logs
         
     async def create_indexes(self):
         """Crea gli indici necessari per le performance"""
@@ -22,6 +24,9 @@ class Database:
         await self.events.create_index([("alliance", 1), ("event_date", 1)])
         await self.events.create_index("next_reminder")
         await self.alliance_channels.create_index([("alliance", 1), ("channel_type", 1)])
+        await self.rules.create_index("guild_id")
+        await self.automation_logs.create_index("timestamp")
+        await self.automation_logs.create_index("guild_id")
         
     async def get_user(self, discord_id: int) -> Optional[Dict[str, Any]]:
         """Ottiene un utente dal database"""
