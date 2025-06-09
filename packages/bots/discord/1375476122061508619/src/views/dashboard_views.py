@@ -161,7 +161,8 @@ class RoleSelectView(BaseView):
 
 class AllianceManagementView(BaseView):
     def __init__(self, alliance_name: str, members: List[dict], user_role: str, lang: str, cog = None):
-        super().__init__(timeout=600, lang=lang)
+        # Disable auto_defer since buttons need to send messages
+        super().__init__(timeout=600, lang=lang, auto_defer=False)
         self.alliance_name = alliance_name
         self.members = members
         self.user_role = user_role

@@ -6,6 +6,7 @@ from .base import BaseView, BaseModal
 
 class AllianceChangeTypeView(BaseView):
     def __init__(self, lang: str = "en", cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send responses
         super().__init__(timeout=600, lang=lang, **kwargs)
         self.lang = lang
         self.cog = cog
@@ -56,6 +57,7 @@ class AllianceChangeNameView(BaseView):
 
 class AllianceChangeRoleView(BaseView):
     def __init__(self, lang: str = "en", cog = None, **kwargs):
+        kwargs['auto_defer'] = False  # Disable auto_defer since buttons send responses
         super().__init__(timeout=600, lang=lang, **kwargs)
         self.lang = lang
         self.cog = cog
