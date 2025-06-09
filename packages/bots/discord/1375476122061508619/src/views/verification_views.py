@@ -206,6 +206,8 @@ class GameIDVerificationView(BaseView):
         max_retries: int = 3,
         **kwargs
     ):
+        # Disable auto_defer since we need to send modals
+        kwargs['auto_defer'] = False
         super().__init__(**kwargs)
         self.callback = callback
         self.max_retries = max_retries
