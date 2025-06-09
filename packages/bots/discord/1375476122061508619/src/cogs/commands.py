@@ -49,8 +49,8 @@ class CommandsCog(BaseCog):
                         "commands.start.wrong_channel",
                         lang=lang,
                         ephemeral=True
-                )
-                return
+                    )
+                    return
             
             # Show resuming message
             await self.send_success_message(

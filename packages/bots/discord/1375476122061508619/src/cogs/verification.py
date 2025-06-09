@@ -409,6 +409,12 @@ class VerificationCog(BaseCog, InteractionHandler):
         except Exception as e:
             self.logger.error(f"Error handling alliance: {e}")
         
+        # Send success response to complete the deferred interaction
+        await interaction.followup.send(
+            f"✅ Alliance name set to: **{alliance_name}**",
+            ephemeral=True
+        )
+        
         # Send next step
         await self._send_alliance_role_selection(interaction.channel, user_id, lang)
     
