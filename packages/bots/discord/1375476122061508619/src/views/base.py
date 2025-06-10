@@ -333,6 +333,10 @@ class BaseModal(ui.Modal):
         lang: str = "en",
         custom_id: Optional[str] = None
     ):
+        # Generate a default custom_id if not provided
+        if custom_id is None:
+            custom_id = f"{self.__class__.__name__.lower()}_{datetime.utcnow().timestamp()}"
+        
         super().__init__(title=title, custom_id=custom_id)
         self.lang = lang
         self.logger = logging.getLogger(f"modal.{self.__class__.__name__}")
