@@ -44,4 +44,4 @@ slowapi==0.1.9
 
 # Development
 pytest==8.4.0
-pytest-asyncio==0.26.0
+pytest-asyncio==1.0.0
