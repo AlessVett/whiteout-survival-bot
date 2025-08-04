@@ -6,7 +6,7 @@ pydantic-settings==2.10.1
 
 # HTTP Client for microservices communication
 httpx==0.28.1
-aiohttp==3.12.14
+aiohttp==3.12.15
 
 # Service Discovery & Health Checks
 python-consul==1.1.0
@@ -44,4 +44,4 @@ slowapi==0.1.9
 
 # Development
 pytest==8.4.1
-pytest-asyncio==1.0.0
+pytest-asyncio==1.1.0
