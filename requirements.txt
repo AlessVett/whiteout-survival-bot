@@ -1,22 +1,22 @@
 # Core FastAPI dependencies
-fastapi==0.116.1
-uvicorn[standard]==0.35.0
-pydantic==2.11.7
+fastapi==0.117.1
+uvicorn[standard]==0.36.0
+pydantic==2.11.9
 pydantic-settings==2.10.1
 
 # HTTP Client for microservices communication
 httpx==0.28.1
-aiohttp==3.12.14
+aiohttp==3.12.15
 
 # Service Discovery & Health Checks
 python-consul==1.1.0
 
 # Message Queue
-aio-pika==9.5.5
+aio-pika==9.5.7
 aiokafka==0.12.0
 
 # Caching
-redis==6.2.0
+redis==6.4.0
 
 # Security
 python-jose[cryptography]==3.5.0
@@ -25,7 +25,7 @@ python-multipart==0.0.20
 
 # Database
 motor==3.7.1
-pymongo==4.13.2
+pymongo==4.15.1
 
 # Templates and Static Files
 jinja2==3.1.6
@@ -35,13 +35,13 @@ aiofiles==24.1.0
 python-dotenv==1.1.1
 
 # Monitoring and Logging
-prometheus-client==0.22.1
+prometheus-client==0.23.1
 structlog==24.4.0
-psutil==7.0.0
+psutil==7.1.0
 
 # Rate Limiting
 slowapi==0.1.9
 
 # Development
-pytest==8.4.1
-pytest-asyncio==1.0.0
+pytest==8.4.2
+pytest-asyncio==1.2.0
